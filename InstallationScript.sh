@@ -192,7 +192,7 @@ elif [ `which pacman` ]; then
 	
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
 	echo 'alias ..="cd .."' >> ~/.zshrc
-	echo 'alias pr-steam "prime-run steam"' >> ~/.zshrc
+	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
 	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
 	
 	echo '------------------------------------------------------------------------------------------------'
