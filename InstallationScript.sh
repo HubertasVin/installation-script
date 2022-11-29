@@ -95,20 +95,11 @@ elif [ `which rpm` ]; then
 	read  -n 1 -p '(Press any key to continue)' input
 	
 	# Setup git
-	mkdir Linux_Setup
-	cd ~/Linux_Setup
-	git init
-	rm -rf .git
-	git clone git@github.com:HubertasVin/Linux_Setup.git ~/Linux_Setup
-	sudo cp ~/Linux_Setup/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
-	cp -r ~/Linux_Setup/DB/ ~/Documents/
-	cp -r ~/Linux_Setup/ProPro/ ~/Documents/
-	cp -r ~/Linux_Setup/Anglu/ ~/Documents/
-	cp -r ~/Linux_Setup/C#/ ~/Documents/
-	
-	# Setup DOSBox for school
-	cd /usr/share/applications/
-	git 
+	git config --global user.name "HubertasVin"
+	git config --global user.email "hubertas2003@gmail.com"
+	cd ~/Documents
+	git clone git@github.com:HubertasVin/Studijos.git
+	sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
 
 	# Setup ./bashrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
@@ -177,19 +168,13 @@ elif [ `which pacman` ]; then
 	read  -n 1 -p '(Press any key to continue)' input
 	
 	# Setup git
-	mkdir Linux_Setup
-	cd ~/Linux_Setup
-	git init
-	rm -rf .git
-	git clone git@github.com:HubertasVin/Linux_Setup.git ~/Linux_Setup
-	sudo cp ~/Linux_Setup/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
-	cp -r ~/Linux_Setup/DB/ ~/Documents/
-	cp -r ~/Linux_Setup/ProPro/ ~/Documents/
-	cp -r ~/Linux_Setup/Anglu/ ~/Documents/
-	cp -r ~/Linux_Setup/C#/ ~/Documents/
+	git config --global user.name "HubertasVin"
+	git config --global user.email "hubertas2003@gmail.com"
+	cd ~/Documents
+	git clone git@github.com:HubertasVin/Studijos.git
+	sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
 	
-	cd /usr/share/applications/
-	
+	# Setup .zshrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
 	echo 'alias ..="cd .."' >> ~/.zshrc
 	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
