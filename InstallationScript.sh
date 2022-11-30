@@ -37,6 +37,9 @@ if [ `which apt` ]; then	# App DEBIAN
 	# Screen time-out
 	gsettings set org.gnome.desktop.session idle-delay 2700
 	gsettings set org.gnome.desktop.screensaver lock-delay 900
+	
+	
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bash_profile
 
 # ----------------------------------------------
 # |                  FEDORA                    |
@@ -105,6 +108,7 @@ elif [ `which rpm` ]; then
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
 	echo 'alias ..="cd .."' >> ~/.bashrc
 	echo 'eval "$(starship init bash)"' >> ~/.bashrc
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bash_profile
 
 
 
@@ -179,6 +183,7 @@ elif [ `which pacman` ]; then
 	echo 'alias ..="cd .."' >> ~/.zshrc
 	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
 	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zsh_profile
 	
 	echo '------------------------------------------------------------------------------------------------'
 	echo '---------------------Switch on auto start on startup for optimus-manager-qt---------------------'
