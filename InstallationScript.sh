@@ -35,7 +35,7 @@ if [ `which apt` ]; then	# App DEBIAN
 	# Force alt + tab to switch only on current workspace in GNOME
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
 	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 2700
+	gsettings set org.gnome.desktop.session idle-delay 4500
 	gsettings set org.gnome.desktop.screensaver lock-delay 900
 	
 	
@@ -85,7 +85,7 @@ elif [ `which rpm` ]; then
 	# Force alt + tab to switch only on current workspace in GNOME
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
 	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 2700
+	gsettings set org.gnome.desktop.session idle-delay 4500
 	gsettings set org.gnome.desktop.screensaver lock-delay 900
 	
 	# Setup SSH
@@ -159,7 +159,7 @@ elif [ `which pacman` ]; then
 	# Force alt + tab to switch only on current workspace in GNOME
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
 	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 2700
+	gsettings set org.gnome.desktop.session idle-delay 4500
 	gsettings set org.gnome.desktop.screensaver lock-delay 900
 	
 	# Setup SSH
