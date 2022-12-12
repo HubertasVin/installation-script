@@ -131,6 +131,7 @@ elif [ `which pacman` ]; then
 	
 	# Setup .zshrc
 	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
+	echo 'xrandr --output DP-1-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
 	echo 'alias ..="cd .."' >> ~/.zshrc
 	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
