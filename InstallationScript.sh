@@ -1,9 +1,11 @@
 #! /bin/bash
 # Basic commands after linux install
 
-# ----------------------------------------------
-# |                  DEBIAN                    |
-# ----------------------------------------------
+scriptLoc=$(pwd)
+
+# ?----------------------------------------------
+# ?|                  DEBIAN                    |
+# ?----------------------------------------------
 if [ `which apt` ]; then	# App DEBIAN
 	sudo apt update
 	sudo apt upgrade
@@ -35,9 +37,9 @@ if [ `which apt` ]; then	# App DEBIAN
 	echo 'eval "$(starship init bash)"' >> ~/.bashrc
 	
 
-# ----------------------------------------------
-# |                  FEDORA                    |
-# ----------------------------------------------
+# ?----------------------------------------------
+# ?|                  FEDORA                    |
+# ?----------------------------------------------
 elif [ `which rpm` ]; then
 
 	# Flatpak
@@ -83,53 +85,59 @@ elif [ `which rpm` ]; then
 
 
 
-# ----------------------------------------------
-# |                   ARCH                     |
-# ----------------------------------------------
+# ?----------------------------------------------
+# ?|                   ARCH                     |
+# ?----------------------------------------------
 
 elif [ `which pacman` ]; then
 	sudo pacman -Syu
-	sudo pacman -S --noconfirm build-essentials
-	sudo pacman -S --noconfirm base-devel
-	sudo git clone https://aur.archlinux.org/yay.git
-	sudo chown -R hubertas yay
+	sudo pacman -S --noconfirm build-essentials base-devel
+
+	#TODO ---- Install yay ----
+	cd ~/Downloads
+	git clone https://aur.archlinux.org/yay.git
 	cd yay
 	makepkg -si
 	cd ..
+	rm -r yay
+	cd ${scriptLoc}
+	
+	#TODO ---- Install applications ----
+	yayapps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
+	pacapps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
+	for i in ${!yayapps[@]}
+	do
+		yay -S --noconfirm ${yayapps[$i]}
+	done
+	
+	for i in ${!pacapps[@]}
+	do
+		sudo pacman -S --noconfirm ${pacapps[$i]}
+	done
+
+	#TODO ---- Setup react ----
+	sudo npm -g install create-react-app
+
+	#TODO ---- Install rust ----
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh
 	chmod +x rust.sh
 	./rust.sh
 	source ~/.cargo/env
+	cd ${scriptLoc}
 	
-	# yayapps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
-	# pacapps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc)
-	# for i in ${!yayapps[@]}
-	# do
-	# 	yay -S --noconfirm ${yayapps[$i]}
-	# done
-	
-	# for i in ${!pacapps[@]}
-	# do
-	# 	sudo pacman -S --noconfirm ${pacapps[$i]}
-	# done
-
-	sudo pacman -S --noconfirm nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc
-
-	yay -S --noconfirm optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams
-
-	sudo npm -g install create-react-app
-	
+	#TODO ---- Setup sddm ----
+	if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
+		echo 'Pakeičiamas display manager į sddm'
+		systemctl disable `systemctl status display-manager | head -n1 | awk '{print $2;}'`
+		systemctl enable sddm
+		sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
+		sudo mv plasma-chili /usr/share/sddm/themes/
+	fi
 		
-	#cd
-	#vim .bashrc
-	# Paste this code at the end of the file:
-		#powerline-daemon -q
-		#POWERLINE_BASH_CONTINUATION=1
-		#POWERLINE_BASH_SELECT=1
-		#. /usr/share/powerline/bindings/bash/powerline.sh
+	#TODO ---- Change from hardware clock to local clock ----
 	timedatectl set-local-rtc 1 --adjust-system-clock
 	
-	# Setup .zshrc
+	#TODO ---- Setup .zshrc ----
 	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
 	echo 'xrandr --output DP-1-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
@@ -144,15 +152,18 @@ else
 	echo "Unknown distribution"
 fi
 
-# Configuration
+#TODO ---- Gnome configuration ----
 # Force alt + tab to switch only on current workspace in GNOME
 gsettings set org.gnome.shell.app-switcher current-workspace-only true
 # Screen time-out
 gsettings set org.gnome.desktop.session idle-delay 4500
 gsettings set org.gnome.desktop.screensaver lock-delay 900
 
-# Setup SSH
-ssh-keygen -t rsa -b 4096 -C "hubertas2003@gmail.com"
+#TODO ---- Setup SSH ----
+echo 'Setting up ssh'
+echo 'Enter git email:'
+read gitEmail
+ssh-keygen -t rsa -b 4096 -C $gitEmail
 cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
 echo 'SSH key copied to clipboard, go to Github:'
 echo '1. Go to user settings'
@@ -160,11 +171,14 @@ echo '2. Press "SSH and GPG keys"'
 echo '3. Paste in the copied text in to the text box'
 read  -n 1 -p '(Press any key to continue)' input
 
-# Setup git
-git config --global user.name "HubertasVin"
-git config --global user.email "hubertas2003@gmail.com"
+#TODO ---- Setup git ----
+echo 'Setting up git'
+echo 'Enter git username:'
+read gitName
+git config --global user.name "$gitName"
+git config --global user.email $gitEmail
 cd ~/Documents
-git clone git@github.com:HubertasVin/Studijos.git
-sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
-mv ~/Documents/Studijos/startup.sh ~
+git clone git@github.com:"$gitName"/Studijos.git
+sudo mv "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
+mv "$scriptLoc"/startup.sh ~
 sudo chmod +x ~/startup.sh
