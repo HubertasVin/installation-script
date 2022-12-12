@@ -31,14 +31,6 @@ if [ `which apt` ]; then	# App DEBIAN
 	
 	echo 'eval "$(starship init bash)"' >> ~/.bashrc
 	
-	# Configuration
-	# Force alt + tab to switch only on current workspace in GNOME
-	gsettings set org.gnome.shell.app-switcher current-workspace-only true
-	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 4500
-	gsettings set org.gnome.desktop.screensaver lock-delay 900
-	
-	
 	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bash_profile
 
 # ----------------------------------------------
@@ -79,30 +71,6 @@ elif [ `which rpm` ]; then
 	dnf check-update
 	sudo dnf install code
 	flatpak install flathub com.discordapp.Discord
-	
-	
-	# Configuration
-	# Force alt + tab to switch only on current workspace in GNOME
-	gsettings set org.gnome.shell.app-switcher current-workspace-only true
-	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 4500
-	gsettings set org.gnome.desktop.screensaver lock-delay 900
-	
-	# Setup SSH
-	ssh-keygen -t rsa -b 4096 -C "hubertas2003@gmail.com"
-	cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-	echo 'SSH key copied to clipboard, go to Github:'
-	echo '1. Go to user settings'
-	echo '2. Press "SSH and GPG keys"'
-	echo '3. Paste in the copied text in to the text box'
-	read  -n 1 -p '(Press any key to continue)' input
-	
-	# Setup git
-	git config --global user.name "HubertasVin"
-	git config --global user.email "hubertas2003@gmail.com"
-	cd ~/Documents
-	git clone git@github.com:HubertasVin/Studijos.git
-	sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
 
 	# Setup ./bashrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
@@ -155,29 +123,6 @@ elif [ `which pacman` ]; then
 		#. /usr/share/powerline/bindings/bash/powerline.sh
 	timedatectl set-local-rtc 1 --adjust-system-clock
 	
-	# Configuration
-	# Force alt + tab to switch only on current workspace in GNOME
-	gsettings set org.gnome.shell.app-switcher current-workspace-only true
-	# Screen time-out
-	gsettings set org.gnome.desktop.session idle-delay 4500
-	gsettings set org.gnome.desktop.screensaver lock-delay 900
-	
-	# Setup SSH
-	ssh-keygen -t rsa -b 4096 -C "hubertas2003@gmail.com"
-	cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-	echo 'SSH key copied to clipboard, go to Github:'
-	echo '1. Go to user settings'
-	echo '2. Press "SSH and GPG keys"'
-	echo '3. Paste in the copied text in to the text box'
-	read  -n 1 -p '(Press any key to continue)' input
-	
-	# Setup git
-	git config --global user.name "HubertasVin"
-	git config --global user.email "hubertas2003@gmail.com"
-	cd ~/Documents
-	git clone git@github.com:HubertasVin/Studijos.git
-	sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
-	
 	# Setup .zshrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
 	echo 'alias ..="cd .."' >> ~/.zshrc
@@ -191,3 +136,29 @@ elif [ `which pacman` ]; then
 else
 	echo "Unknown distribution"
 fi
+
+# Configuration
+# Force alt + tab to switch only on current workspace in GNOME
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
+# Screen time-out
+gsettings set org.gnome.desktop.session idle-delay 4500
+gsettings set org.gnome.desktop.screensaver lock-delay 900
+
+# Setup SSH
+ssh-keygen -t rsa -b 4096 -C "hubertas2003@gmail.com"
+cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+echo 'SSH key copied to clipboard, go to Github:'
+echo '1. Go to user settings'
+echo '2. Press "SSH and GPG keys"'
+echo '3. Paste in the copied text in to the text box'
+read  -n 1 -p '(Press any key to continue)' input
+
+# Setup git
+git config --global user.name "HubertasVin"
+git config --global user.email "hubertas2003@gmail.com"
+cd ~/Documents
+git clone git@github.com:HubertasVin/Studijos.git
+sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
+sudo cp ~/Documents/Studijos/'desktop shortcuts'/startup-script.desktop /usr/share/applications/
+mv ~/Documents/Studijos/startup.sh ~
+sudo chmod +x ~/startup.sh
