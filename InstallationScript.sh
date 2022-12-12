@@ -29,9 +29,11 @@ if [ `which apt` ]; then	# App DEBIAN
 	
 	curl -sS https://starship.rs/install.sh | sh
 	
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bashrc
+	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
+	echo 'alias ..="cd .."' >> ~/.bashrc
 	echo 'eval "$(starship init bash)"' >> ~/.bashrc
 	
-	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bash_profile
 
 # ----------------------------------------------
 # |                  FEDORA                    |
@@ -73,10 +75,10 @@ elif [ `which rpm` ]; then
 	flatpak install flathub com.discordapp.Discord
 
 	# Setup ./bashrc
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bashrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
 	echo 'alias ..="cd .."' >> ~/.bashrc
 	echo 'eval "$(starship init bash)"' >> ~/.bashrc
-	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bash_profile
 
 
 
@@ -99,17 +101,21 @@ elif [ `which pacman` ]; then
 	./rust.sh
 	source ~/.cargo/env
 	
-	yayapps=(optimus-manager optimus-manager-qt piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
-	pacapps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher)
-	for i in ${!yayapps[@]}
-	do
-		yay -S --noconfirm ${yayapps[$i]}
-	done
+	# yayapps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
+	# pacapps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc)
+	# for i in ${!yayapps[@]}
+	# do
+	# 	yay -S --noconfirm ${yayapps[$i]}
+	# done
 	
-	for i in ${!pacapps[@]}
-	do
-		sudo pacman -S --noconfirm ${pacapps[$i]}
-	done
+	# for i in ${!pacapps[@]}
+	# do
+	# 	sudo pacman -S --noconfirm ${pacapps[$i]}
+	# done
+
+	sudo pacman -S --noconfirm nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc
+
+	yay -S --noconfirm optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams
 
 	sudo npm -g install create-react-app
 	
@@ -124,11 +130,11 @@ elif [ `which pacman` ]; then
 	timedatectl set-local-rtc 1 --adjust-system-clock
 	
 	# Setup .zshrc
+	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
 	echo 'alias ..="cd .."' >> ~/.zshrc
 	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
 	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
-	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zsh_profile
 	
 	echo '------------------------------------------------------------------------------------------------'
 	echo '---------------------Switch on auto start on startup for optimus-manager-qt---------------------'
@@ -159,6 +165,5 @@ git config --global user.email "hubertas2003@gmail.com"
 cd ~/Documents
 git clone git@github.com:HubertasVin/Studijos.git
 sudo cp ~/Documents/Studijos/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
-sudo cp ~/Documents/Studijos/'desktop shortcuts'/startup-script.desktop /usr/share/applications/
 mv ~/Documents/Studijos/startup.sh ~
 sudo chmod +x ~/startup.sh
