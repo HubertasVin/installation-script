@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=DOSBox School
-Exec=dosbox Documents/BackupFolder/Programming/Assembly/
-Icon=dosbox-staging
-Type=Application
-Terminal=false
-Keywords=dos;gaming;game;games;emulator;
-Categories=Game;Emulator;
