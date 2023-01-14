@@ -13,6 +13,8 @@ if [ `which apt` ]; then	# App DEBIAN
 	sudo apt clean
 	sudo apt autoremove
 
+	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 	sudo dpkg -i packages-microsoft-prod.deb
 	rm packages-microsoft-prod.deb
@@ -209,7 +211,7 @@ read gitName
 git config --global user.name "$gitName"
 git config --global user.email $gitEmail
 cd ~/Documents
-git clone git@github.com:"$gitName"/Studijos.git
+git clone git@github.com:"$gitName"/BackupFolder.git
 sudo mv "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
 mv "$scriptLoc"/startup.sh ~
 sudo chmod +x ~/startup.sh

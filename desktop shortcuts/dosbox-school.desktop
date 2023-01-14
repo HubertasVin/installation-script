@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=DOSBox School
-Exec=dosbox Documents/Studijos/DB/
+Exec=dosbox Documents/BackupFolder/Programming/Assembly/
 Icon=dosbox-staging
 Type=Application
 Terminal=false
