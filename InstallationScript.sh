@@ -9,27 +9,58 @@ scriptLoc=$(pwd)
 if [ `which apt` ]; then	# App DEBIAN
 	sudo apt update
 	sudo apt upgrade
-	sudo apt install -y flatpak vim
+	sudo apt install -y flatpak wget
 	sudo apt clean
 	sudo apt autoremove
-	
-	wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-	mv download\?build\=stable\&os\=linux-deb-x64 VS-code.deb
-	sudo dpkg -i VS-code.deb
-	
-	# Install dotnet for Ubuntu 22.04
+
 	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 	sudo dpkg -i packages-microsoft-prod.deb
-	
-	#Dotnet SDK install
-	sudo apt install -y apt-transport-https
+	rm packages-microsoft-prod.deb
+
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+	rm -f packages.microsoft.gpg
+
+	curl https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg
+	sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/ms-teams stable main" > /etc/apt/sources.list.d/teams.list'
 	sudo apt update
-	sudo apt install -y dotnet-sdk-6.0
+
+	aptApps=(ubuntu-restricted-extras snapd gpg vim gdb gnome-common steam-installer code piper npm dosbox balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm)
+	snapApps=(starship xclip spotify mc-installer discord vlc)
 	
-	#Dotnet runtime
-	sudo apt install -y aspnetcore-runtime-6.0
+	for i in ${!aptApps[@]}
+	do
+		sudo apt install -y ${aptApps[$i]}
+	done
+	for i in ${!snapApps[@]}
+	do
+		sudo snap install -y ${snapApps[$i]}
+	done
+
+	sudo apt install apt-transport-https
+	sudo apt install code
+
+	# wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+	# mv download\?build\=stable\&os\=linux-deb-x64 VS-code.deb
+	# sudo dpkg -i VS-code.deb
+
+	# wget https://launcher.mojang.com/download/Minecraft.deb
+	# sudo dpkg -i Minecraft.deb
 	
-	curl -sS https://starship.rs/install.sh | sh
+	# # Install dotnet for Ubuntu 22.04
+	# wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+	# sudo dpkg -i packages-microsoft-prod.deb
+	
+	# #Dotnet SDK install
+	# sudo apt install -y apt-transport-https
+	# sudo apt update
+	# sudo apt install -y dotnet-sdk-6.0
+	
+	# #Dotnet runtime
+	# sudo apt install -y aspnetcore-runtime-6.0
+	
+	# curl -sS https://starship.rs/install.sh | sh
 	
 	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bashrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
@@ -61,15 +92,15 @@ elif [ `which rpm` ]; then
    	chmod +x setup.sh
    	sudo ./setup.sh web
    
-	dnfapps=(discord minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind)
-	flatapps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
-	for i in ${!dnfapps[@]}
+	dnfApps=(discord minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind)
+	flatApps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
+	for i in ${!dnfApps[@]}
 	do
-		sudo dnf install -y ${dnfapps[$i]}
+		sudo dnf install -y ${dnfApps[$i]}
 	done
-	for i in ${!flatapps[@]}
+	for i in ${!flatApps[@]}
 	do
-		flatpak install flathub ${flatapps[$i]}
+		flatpak install flathub ${flatApps[$i]}
 	done
 	
 	dnf check-update
@@ -103,16 +134,16 @@ elif [ `which pacman` ]; then
 	cd ${scriptLoc}
 	
 	#TODO ---- Install applications ----
-	yayapps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
-	pacapps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
-	for i in ${!yayapps[@]}
+	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
+	pacApps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
+	for i in ${!yayApps[@]}
 	do
-		yay -S --noconfirm ${yayapps[$i]}
+		yay -S --noconfirm ${yayApps[$i]}
 	done
 	
-	for i in ${!pacapps[@]}
+	for i in ${!pacApps[@]}
 	do
-		sudo pacman -S --noconfirm ${pacapps[$i]}
+		sudo pacman -S --noconfirm ${pacApps[$i]}
 	done
 
 	#TODO ---- Setup react ----
