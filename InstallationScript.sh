@@ -28,7 +28,7 @@ if [ `which apt` ]; then	# App DEBIAN
 	sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/ms-teams stable main" > /etc/apt/sources.list.d/teams.list'
 	sudo apt update
 
-	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm)
+	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm apt-transport-https code dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm)
 	snapApps=(starship spotify mc-installer discord vlc)
 	
 	for i in ${!aptApps[@]}
@@ -37,33 +37,9 @@ if [ `which apt` ]; then	# App DEBIAN
 	done
 	for i in ${!snapApps[@]}
 	do
-		sudo snap install -y ${snapApps[$i]}
+		sudo snap install ${snapApps[$i]}
 	done
 
-	sudo apt install apt-transport-https
-	sudo apt install code
-
-	# wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-	# mv download\?build\=stable\&os\=linux-deb-x64 VS-code.deb
-	# sudo dpkg -i VS-code.deb
-
-	# wget https://launcher.mojang.com/download/Minecraft.deb
-	# sudo dpkg -i Minecraft.deb
-	
-	# # Install dotnet for Ubuntu 22.04
-	# wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-	# sudo dpkg -i packages-microsoft-prod.deb
-	
-	# #Dotnet SDK install
-	# sudo apt install -y apt-transport-https
-	# sudo apt update
-	# sudo apt install -y dotnet-sdk-6.0
-	
-	# #Dotnet runtime
-	# sudo apt install -y aspnetcore-runtime-6.0
-	
-	# curl -sS https://starship.rs/install.sh | sh
-	
 	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.bashrc
 	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.bashrc
 	echo 'alias ..="cd .."' >> ~/.bashrc
@@ -212,4 +188,4 @@ git config --global user.name "$gitName"
 git config --global user.email $gitEmail
 cd ~/Documents
 git clone git@github.com:"$gitName"/BackupFolder.git
-sudo mv "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
+sudo cp "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
