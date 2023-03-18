@@ -69,7 +69,7 @@ if [ `which apt` ]; then	# App DEBIAN
 	fi
 
 	#TODO ---- Setup .bashrc ----
-	cat bashrc_config.bashrc >> ~/.bashrc
+	cat template.bashrc >> ~/.bashrc
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
@@ -121,7 +121,7 @@ elif [ `which rpm` ]; then
 	flatpak install flathub com.discordapp.Discord
 
 	#TODO ---- Setup .bashrc ----
-	cat bashrc_config.bashrc >> ~/.bashrc
+	cat template.bashrc >> ~/.bashrc
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
@@ -270,7 +270,7 @@ if [ `which gsettings` ]; then
 	PROMPT_COMMAND="Configuring Starship"
 	mkdir -p ~/.config && touch ~/.config/starship.toml
 	search=%COLORCODE
-	cat starship.toml > ~/.config/starship.toml
+	cat starship_template.toml > ~/.config/starship.toml
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
