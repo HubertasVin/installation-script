@@ -164,13 +164,13 @@ elif [ `which pacman 2>/dev/null` ]; then
 	cd ${scriptLoc}
 	
 	#TODO ---- Setup SDDM ----
-	PROMPT_COMMAND="Setting Up SDDM..."
-	if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
-		systemctl disable `systemctl status display-manager | head -n1 | awk '{print $2;}'`
-		systemctl enable sddm
-		sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
-		sudo mv plasma-chili /usr/share/sddm/themes/
-	fi
+	# PROMPT_COMMAND="Setting Up SDDM..."
+	# if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
+	# 	systemctl disable `systemctl status display-manager | head -n1 | awk '{print $2;}'`
+	# 	systemctl enable sddm
+	# 	sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
+	# 	sudo mv plasma-chili /usr/share/sddm/themes/
+	# fi
 		
 	#TODO ---- Change from hardware clock to local clock ----
 	PROMPT_COMMAND="Changing from hardware to local clock..."
