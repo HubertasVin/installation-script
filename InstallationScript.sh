@@ -127,10 +127,10 @@ elif [ `which rpm` ]; then
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 
-elif [ `which pacman` ]; then
+elif [ `which pacman 2>/dev/null` ]; then
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	sudo pacman -Syu
-	sudo pacman -S --noconfirm build-essentials base-devel
+	sudo pacman -Syu --noconfirm
+	sudo pacman -S --noconfirm base-devel cmake
 
 	#TODO ---- Install yay ----
 	cd ~/Downloads
@@ -184,6 +184,12 @@ elif [ `which pacman` ]; then
 	echo 'alias ..="cd .."' >> ~/.zshrc
 	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
 	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+	
+	#TODO ---- Setup .bashrc ----
+	cat 'file templates'/template.bashrctemplate.bashrc >> ~/.bashrc
+
+	#TODO ---- Update mimeapps.list to change from VSCode home directory launch to Nautilus ----
+	echo "inode/directory=org.gnome.Nautilus.desktop" >> ~/.config/mimeapps.list
 	
 	echo '------------------------------------------------------------------------------------------------'
 	echo '-------------------- Switch on auto start on startup for optimus-manager-qt --------------------'
@@ -296,10 +302,10 @@ git config --global user.email $gitEmail
 
 PROMPT_COMMAND="Downloading BackupFolder..."
 cd ~/Documents
-git clone git@github.com:"$gitName"/BackupFolder.git
+git clone git@github.com:HubertasVin/BackupFolder.git
 
 PROMPT_COMMAND="Downloading Pictures Backup..."
-git clone git@github.com:"$gitName"/PictureBackup.git
+git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
 rm -r PictureBackup/
 
