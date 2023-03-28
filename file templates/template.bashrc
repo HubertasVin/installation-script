@@ -1,4 +1,5 @@
 xrandr --output DP-1-1 --mode 1920x1080 --rate 144 2>/dev/null
+alias backupDevice="~/./Documents/Installation_Script/Backup.sh"
 alias xr144="xrandr --output DP-1-1 --mode 1920x1080 --rate 144"
 alias ..="cd .."
 
