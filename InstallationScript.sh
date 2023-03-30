@@ -6,7 +6,7 @@ scriptLoc=$(pwd)
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   DEBIAN                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-if [ `which apt` ]; then	# App DEBIAN
+if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
@@ -74,7 +74,7 @@ if [ `which apt` ]; then	# App DEBIAN
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-elif [ `which rpm` ]; then
+elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
@@ -130,7 +130,7 @@ elif [ `which rpm` ]; then
 elif [ `which pacman 2>/dev/null` ]; then
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
 	sudo pacman -Syu --noconfirm
-	sudo pacman -S --noconfirm base-devel cmake
+	sudo pacman -S base-devel
 
 	#TODO ---- Install yay ----
 	cd ~/Downloads
@@ -138,7 +138,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	cd yay
 	makepkg -si
 	cd ..
-	rm -r yay
+	sudo rm -r yay
 	cd ${scriptLoc}
 	
 	#TODO ---- Install applications ----
@@ -302,12 +302,12 @@ git config --global user.email $gitEmail
 
 PROMPT_COMMAND="Downloading BackupFolder..."
 cd ~/Documents
-git clone git@github.com:HubertasVin/BackupFolder.git
+yes | git clone git@github.com:HubertasVin/BackupFolder.git
 
 PROMPT_COMMAND="Downloading Pictures Backup..."
 git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
-rm -r PictureBackup/
+sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
 chmod +x Backup.sh
