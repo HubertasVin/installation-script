@@ -69,7 +69,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 	fi
 
 	#TODO ---- Setup .bashrc ----
-	cat 'file templates'/template.bashrc >> ~/.bashrc
+	cat user_configs/template.bashrc >> ~/.bashrc
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
@@ -121,7 +121,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 	flatpak install flathub com.discordapp.Discord
 
 	#TODO ---- Setup .bashrc ----
-	cat 'file templates'/template.bashrctemplate.bashrc >> ~/.bashrc
+	cat user_configs/template.bashrctemplate.bashrc >> ~/.bashrc
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
@@ -143,8 +143,9 @@ elif [ `which pacman 2>/dev/null` ]; then
 	
 	#TODO ---- Install applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams)
-	pacApps=(nvidia vim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
+	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams bookworm neovim-plug)
+	pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
+
 	for i in ${!yayApps[@]}
 	do
 		yay -S --noconfirm ${yayApps[$i]}
@@ -171,6 +172,9 @@ elif [ `which pacman 2>/dev/null` ]; then
 	# 	sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
 	# 	sudo mv plasma-chili /usr/share/sddm/themes/
 	# fi
+	
+	cp user_configs/init.vim ~/.config/nvim
+	nvim --headless +PlugInstall +qall	
 		
 	#TODO ---- Change from hardware clock to local clock ----
 	PROMPT_COMMAND="Changing from hardware to local clock..."
@@ -186,7 +190,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
 	
 	#TODO ---- Setup .bashrc ----
-	cat 'file templates'/template.bashrctemplate.bashrc >> ~/.bashrc
+	cat user_configs/template.bashrctemplate.bashrc >> ~/.bashrc
 
 	#TODO ---- Update mimeapps.list to change from VSCode home directory launch to Nautilus ----
 	echo "inode/directory=org.gnome.Nautilus.desktop" >> ~/.config/mimeapps.list
@@ -275,7 +279,7 @@ if [ `which gsettings` ]; then
 	PROMPT_COMMAND="Configuring Starship..."
 	mkdir -p ~/.config && touch ~/.config/starship.toml
 	search=%COLORCODE
-	cat 'file templates'/starship_template.toml > ~/.config/starship.toml
+	cat user_configs/starship_template.toml > ~/.config/starship.toml
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
@@ -309,5 +313,5 @@ git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
 sudo rm -r PictureBackup/
 
-sudo cp "$scriptLoc"/'desktop shortcuts'/dosbox-school.desktop /usr/share/applications/
+sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
 chmod +x Backup.sh
