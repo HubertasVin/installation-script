@@ -316,6 +316,7 @@ git clone git@github.com:HubertasVin/CSGO_Config.git
 PROMPT_COMMAND="Downloading Pictures Backup..."
 git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
+cp -r PictureBackup/.git ~/Pictures/
 sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
