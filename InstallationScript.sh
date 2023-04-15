@@ -320,4 +320,6 @@ sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
 
+cd $scriptLoc
+git push --set-upstream origin master
 chmod +x Backup.sh
