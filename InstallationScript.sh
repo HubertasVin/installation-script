@@ -302,11 +302,16 @@ echo 'Setting up git'
 echo 'Enter git username:'
 read gitName
 git config --global user.name "$gitName"
-git config --global user.email $gitEmail
+git config --global user.email "$gitEmail"
+echo "Host *" >> ~/.ssh/config
+echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
 PROMPT_COMMAND="Downloading BackupFolder..."
 cd ~/Documents
-yes | git clone git@github.com:HubertasVin/BackupFolder.git
+git clone git@github.com:HubertasVin/BackupFolder.git
+
+PROMPT_COMMAND="Downloading CSGO Config Backup..."
+git clone git@github.com:HubertasVin/CSGO_Config.git
 
 PROMPT_COMMAND="Downloading Pictures Backup..."
 git clone git@github.com:HubertasVin/PictureBackup.git
@@ -314,4 +319,5 @@ cp -r PictureBackup/* ~/Pictures/
 sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
+
 chmod +x Backup.sh
