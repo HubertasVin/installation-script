@@ -347,5 +347,9 @@ sudo rm -r PictureBackup/
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
 
 cd $scriptLoc
-git push --set-upstream origin master
 chmod +x Backup.sh
+
+#TODO ---- Change Installation script remote origin to ssh ----
+git remote remove origin
+git remote add origin git@github.com:HubertasVin/Installation_Script.git
+git push --set-upstream origin master
