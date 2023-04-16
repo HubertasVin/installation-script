@@ -79,6 +79,25 @@ elif [ `which rpm 2>/dev/null` ]; then
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
 	dnf check-update
+	sudo dnf update -assumeyes
+	sudo dnf upgrade --refresh
+
+	#TODO ---- Setup System76-power ----
+	sudo dnf copr enable szydell/system76
+	sudo dnf install --assumeyes system76*
+	sudo systemctl enable --now com.system76.PowerDaemon.service
+	sudo systemctl enable com.system76.PowerDaemon.service system76-power-wake
+	sudo systemctl start com.system76.PowerDaemon.service
+	sudo systemctl mask power-profiles-daemon.service
+
+	#TODO ---- System76-power extension ----
+	git clone https://github.com/pop-os/gnome-shell-extension-system76-power.git
+	cd gnome-shell-extension-system76-power
+	sudo dnf install nodejs-typescript
+	make
+	make install
+	cd ..
+	rm -rf gnome-shell-extension-system76-power
 
 	#TODO ---- Setup Flatpak ----
 	PROMPT_COMMAND="Setting Up Flatpak..."
@@ -103,14 +122,20 @@ elif [ `which rpm 2>/dev/null` ]; then
    	wget https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh
    	chmod +x setup.sh
    	sudo ./setup.sh web
-   
+	#TODO ---- Install OnlyOffice ----
+	wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
+	sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
+	sudo rm onlyoffice-desktopeditors.x86_64.rpm
+	#TODO ---- Install Starship ----
+	dnf copr enable atim/starship
+
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(discord minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind)
+	dnfApps=(xrandr gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam)
 	flatApps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
-		sudo dnf install -y ${dnfApps[$i]}
+		sudo dnf install -assumeyes ${dnfApps[$i]}
 	done
 	for i in ${!flatApps[@]}
 	do
@@ -121,7 +146,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 	flatpak install flathub com.discordapp.Discord
 
 	#TODO ---- Setup .bashrc ----
-	cat user_configs/template.bashrctemplate.bashrc >> ~/.bashrc
+	cat user_config/template.bashrc >> ~/.bashrc
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
@@ -279,7 +304,7 @@ if [ `which gsettings` ]; then
 	PROMPT_COMMAND="Configuring Starship..."
 	mkdir -p ~/.config && touch ~/.config/starship.toml
 	search=%COLORCODE
-	cat user_configs/starship_template.toml > ~/.config/starship.toml
+	cat user_config/starship_template.toml > ~/.config/starship.toml
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
