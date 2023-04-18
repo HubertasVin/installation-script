@@ -104,6 +104,12 @@ elif [ `which rpm 2>/dev/null` ]; then
 	sudo dnf install -y flatpak
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
+	#TODO ---- Intall ffmpeg ----
+	sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+	sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+	sudo dnf -y install ffmpeg
+	sudo dnf -y install ffmpeg-devel
+
 	#TODO ---- Install VS Code ----
 	PROMPT_COMMAND="Installing VS Code..."
 	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -131,7 +137,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam)
+	dnfApps=(xrandr ffmpeg ffmpeg-devel gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam)
 	flatApps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
