@@ -134,10 +134,12 @@ elif [ `which rpm 2>/dev/null` ]; then
 	sudo rm onlyoffice-desktopeditors.x86_64.rpm
 	#TODO ---- Install Starship ----
 	dnf copr enable atim/starship
+	#TODO ---- Enable H.264 decoder ----
+	sudo dnf config-manager --set-enabled fedora-cisco-openh264
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr ffmpeg ffmpeg-devel gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam)
+	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam htop qbittorrent vlc)
 	flatApps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
