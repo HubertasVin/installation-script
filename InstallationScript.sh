@@ -82,6 +82,10 @@ elif [ `which rpm 2>/dev/null` ]; then
 	sudo dnf update -assumeyes
 	sudo dnf upgrade --refresh
 
+	#TODO ---- Add repos ----
+	sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo
+	sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
+
 	#TODO ---- Setup System76-power ----
 	sudo dnf copr enable szydell/system76
 	sudo dnf install --assumeyes system76*
@@ -136,11 +140,19 @@ elif [ `which rpm 2>/dev/null` ]; then
 	dnf copr enable atim/starship
 	#TODO ---- Enable H.264 decoder ----
 	sudo dnf config-manager --set-enabled fedora-cisco-openh264
+	#TODO ---- Install auto-cpufreq ----
+	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+	cd auto-cpufreq && sudo ./auto-cpufreq-installer
+	#TODO ---- Configuring auto-cpufreq ----
+	sudo auto-cpufreq --install
+	sudo auto-cpufreq --force=powersave
 
+	sudo dnf update -assumeyes
+	
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 discord neovim gnome-tweaks minecraft-launcher dotnet-sdk-6.0 balena-etcher-electron 7z vlc starship xclip valgrind steam htop qbittorrent vlc)
-	flatApps=(com.spotify.Client com.discordapp.Discord com.github.IsmaelMartinez.teams_for_linux)
+	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable dotnet-sdk-6.0 neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord)
+	flatApps=(com.spotify.Client com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
 		sudo dnf install -assumeyes ${dnfApps[$i]}
@@ -149,9 +161,6 @@ elif [ `which rpm 2>/dev/null` ]; then
 	do
 		flatpak install flathub ${flatApps[$i]}
 	done
-	dnf check-update
-	sudo dnf install code
-	flatpak install flathub com.discordapp.Discord
 
 	#TODO ---- Setup .bashrc ----
 	cat user_config/template.bashrc >> ~/.bashrc
