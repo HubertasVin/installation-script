@@ -1,5 +1,6 @@
 #! /bin/bash
 # Backup script
+currentLoc=$(pwd)
 
 PROMPT_COMMAND="Backing up..."
 echo "Backing up BackupFolder"
@@ -35,3 +36,5 @@ git push
 
 PROMPT_COMMAND="Completed backup."
 echo "Completed backup."
+
+cd $currentLoc
