@@ -325,6 +325,12 @@ if [ `which gsettings` ]; then
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
+#TODO ---- Install AT Launcher ----
+wget https://raw.githubusercontent.com/DavidoTek/linux-install-atlauncher/master/linux-install-atlauncher.sh
+chmod +x linux-install-atlauncher.sh
+./linux-install-atlauncher.sh
+rm linux-install-atlauncher.sh
+
 #TODO ---- Setup SSH ----
 PROMPT_COMMAND="Setting Up SSH With Github..."
 echo 'Setting up ssh'
