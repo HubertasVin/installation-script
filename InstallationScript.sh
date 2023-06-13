@@ -327,6 +327,15 @@ if [ `which gsettings` ]; then
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
+#TODO ---- Setup One Dark One for terminal ----
+cd ~
+git clone https://github.com/denysdovhan/one-gnome-terminal.git
+cd one-gnome-terminal/
+chmod +x one-dark.sh
+./one-dark.sh
+cd ~
+rm -rf one-gnome-terminal/
+
 #TODO ---- Install AT Launcher ----
 wget https://raw.githubusercontent.com/DavidoTek/linux-install-atlauncher/master/linux-install-atlauncher.sh
 chmod +x linux-install-atlauncher.sh
