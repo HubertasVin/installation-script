@@ -327,7 +327,7 @@ if [ `which gsettings` ]; then
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
-#TODO ---- Setup One Dark One for terminal ----
+#TODO ---- Setup One Dark Pro for terminal ----
 cd ~
 git clone https://github.com/denysdovhan/one-gnome-terminal.git
 cd one-gnome-terminal/
