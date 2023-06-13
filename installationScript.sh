@@ -66,10 +66,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 		systemctl enable sddm
 		sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
 		sudo mv plasma-chili /usr/share/sddm/themes/
-	fi
-
-	#TODO ---- Setup .bashrc ----
-	cat user_configs/template.bashrc >> ~/.bashrc
+	fi	
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
@@ -162,9 +159,6 @@ elif [ `which rpm 2>/dev/null` ]; then
 		flatpak install flathub ${flatApps[$i]}
 	done
 
-	#TODO ---- Setup .bashrc ----
-	cat user_config/template.bashrc >> ~/.bashrc
-
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
@@ -223,17 +217,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	timedatectl set-local-rtc 1 --adjust-system-clock
 	
 	#TODO ---- Setup .zshrc ----
-	PROMPT_COMMAND="Updating .zshrc..."
-	echo 'xrandr --output DP-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
-	echo 'xrandr --output DP-1-1 --mode 1920x1080 --rate 144' >> ~/.zshrc
-	echo 'alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"' >> ~/.zshrc
-	echo 'alias ..="cd .."' >> ~/.zshrc
-	echo 'alias pr-steam="prime-run steam"' >> ~/.zshrc
-	echo 'eval "$(starship init zsh)"' >> ~/.zshrc
-	
-	#TODO ---- Setup .bashrc ----
-	cat user_configs/template.bashrctemplate.bashrc >> ~/.bashrc
-
+		
 	#TODO ---- Update mimeapps.list to change from VSCode home directory launch to Nautilus ----
 	echo "inode/directory=org.gnome.Nautilus.desktop" >> ~/.config/mimeapps.list
 	
@@ -327,6 +311,18 @@ if [ `which gsettings` ]; then
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
+if [ "$SHELL" = "/bin/bash" ]; then
+	#TODO ---- Setup .bashrc ----
+	PROMPT_COMMAND="Updating .bashrc..."
+	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
+	cat user_configs/template.bashrc >> ~/.bashrc
+elif [ "$SHELL" = "/bin/zsh" ]
+	#TODO ---- Setup .zshrc ----
+	PROMPT_COMMAND="Updating .zshrc..."
+	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
+	cat user_configs/template.bashrc >> ~/.zshrc
+fi
+
 #TODO ---- Setup One Dark Pro for terminal ----
 cd ~
 git clone https://github.com/denysdovhan/one-gnome-terminal.git
@@ -379,6 +375,7 @@ cp -r PictureBackup/.git ~/Pictures/
 sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
+cp "$scriptLoc"/desktop_shortcuts/terminal-autostart.desktop ~/.config/autostart/
 
 cd $scriptLoc
 chmod +x Backup.sh
