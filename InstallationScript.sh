@@ -151,7 +151,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 	
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable dotnet-sdk-6.0 neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord)
+	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable dotnet-sdk-6.0 neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill)
 	flatApps=(com.spotify.Client com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
@@ -246,7 +246,9 @@ fi
 
 if [ `which gsettings` ]; then
 	#TODO ---- Gnome configuration ----
-	PROMPT_COMMAND="Setting gsettings..."
+	PROMPT_COMMAND="Restoring GNOME settings..."
+	cd $scriptLoc/user_config
+	dconf load -f / < saved_settings.dconf
 	# Force alt + tab to switch only on current workspace in GNOME
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
 	# Screen time-out
