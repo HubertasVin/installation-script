@@ -46,7 +46,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm apt-transport-https code dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm dconf-editor)
+	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm apt-transport-https code dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm dconf-editor ranger)
 	snapApps=(starship spotify mc-installer discord vlc)
 	
 	for i in ${!aptApps[@]}
@@ -148,7 +148,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 	
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable dotnet-sdk-6.0 neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill)
+	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable dotnet-sdk-6.0 neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger)
 	flatApps=(com.spotify.Client com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
@@ -180,7 +180,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	#TODO ---- Install applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
 	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams bookworm neovim-plug bashdb)
-	pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm)
+	pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm ranger)
 
 	for i in ${!yayApps[@]}
 	do
@@ -331,6 +331,20 @@ chmod +x one-dark.sh
 ./one-dark.sh
 cd ~
 rm -rf one-gnome-terminal/
+
+#TODO ---- Setup ranger ----
+ranger --copy-config=rifle
+ranger --copy-config=rc
+echo "" >> ~/.config/ranger/rc.config
+echo "# Archives" >> ~/.config/ranger/rc.config
+echo "map ex extract" >> ~/.config/ranger/rc.config
+echo "map ec compress" >> ~/.config/ranger/rc.config
+mkdir ~/.config/ranger/plugins
+cd ~/.config/ranger/plugins
+git clone https://github.com/maximtrp/ranger-archives.git
+
+#TODO ---- Allow nvim to access the clipboard ----
+set clipboard=unnamedplus
 
 #TODO ---- Install AT Launcher ----
 wget https://raw.githubusercontent.com/DavidoTek/linux-install-atlauncher/master/linux-install-atlauncher.sh
