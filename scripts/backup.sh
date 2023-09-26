@@ -39,7 +39,7 @@ cp ~/.config/nvim/init.lua ~/Installation_Script/user_config/init.lua
 
 # backup GNOME settings
 cd ~/Installation_Script/user_config
-dconf dump / > saved_settings.conf
+dconf dump / > saved_settings.dconf
 
 # Backup installation script
 echo -e "${YELLOW}Backing up Installation_Script${NC}"

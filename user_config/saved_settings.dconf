@@ -8,9 +8,17 @@ subtitle-encoding='UTF-8'
 [org/gnome/cheese]
 burst-delay=1000
 
+[org/gnome/clocks/state/window]
+maximized=false
+panel-id='world'
+size=(870, 690)
+
 [org/gnome/control-center]
-last-panel='wifi'
+last-panel='keyboard'
 window-state=(896, 640, false)
+
+[org/gnome/desktop/a11y/applications]
+screen-reader-enabled=false
 
 [org/gnome/desktop/app-folders]
 folder-children=['Utilities', 'YaST']
@@ -36,7 +44,7 @@ secondary-color='#000000000000'
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'lt'), ('xkb', 'gb')]
+mru-sources=[('xkb', 'gb'), ('xkb', 'lt')]
 sources=[('xkb', 'gb'), ('xkb', 'lt')]
 xkb-options=@as []
 
@@ -59,6 +67,9 @@ application-id='code.desktop'
 [org/gnome/desktop/notifications/application/com-spotify-client]
 application-id='com.spotify.Client.desktop'
 
+[org/gnome/desktop/notifications/application/discord]
+application-id='discord.desktop'
+
 [org/gnome/desktop/notifications/application/firefox]
 application-id='firefox.desktop'
 
@@ -70,6 +81,9 @@ application-id='gnome-network-panel.desktop'
 
 [org/gnome/desktop/notifications/application/gnome-power-panel]
 application-id='gnome-power-panel.desktop'
+
+[org/gnome/desktop/notifications/application/google-chrome-unstable]
+application-id='google-chrome-unstable.desktop'
 
 [org/gnome/desktop/notifications/application/jetbrains-idea]
 application-id='jetbrains-idea.desktop'
@@ -100,6 +114,12 @@ application-id='org.gnome.Nautilus.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-settings]
 application-id='org.gnome.Settings.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-shell-extensions]
+application-id='org.gnome.Shell.Extensions.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-shell-portalhelper]
+application-id='org.gnome.Shell.PortalHelper.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-software]
 application-id='org.gnome.Software.desktop'
@@ -151,6 +171,8 @@ move-to-workspace-3=['<Alt><Super>c']
 move-to-workspace-4=['<Alt><Super>a']
 move-to-workspace-5=['<Alt><Super>s']
 move-to-workspace-6=['<Alt><Super>d']
+move-to-workspace-7=['<Control><Alt>d']
+move-to-workspace-8=['<Control><Alt>f']
 switch-applications=@as []
 switch-applications-backward=@as []
 switch-to-workspace-1=['<Super>z']
@@ -159,12 +181,17 @@ switch-to-workspace-3=['<Super>c']
 switch-to-workspace-4=['<Super>a']
 switch-to-workspace-5=['<Super>s']
 switch-to-workspace-6=['<Super>d']
+switch-to-workspace-7=['<Control><Super>d']
+switch-to-workspace-8=['<Control><Super>f']
+switch-to-workspace-left=['<Control><Super>Left']
+switch-to-workspace-right=['<Control><Super>Right']
 switch-windows=@as []
 switch-windows-backward=@as []
 toggle-fullscreen=['<Super>g']
 toggle-maximized=['<Super>w']
 
 [org/gnome/desktop/wm/preferences]
+num-workspaces=6
 theme='Graphite-orange-Dark'
 
 [org/gnome/eog/ui]
@@ -177,7 +204,15 @@ window-ratio=(1.6125781092521672, 1.2447738502470544)
 migrated=true
 
 [org/gnome/evolution-data-server/calendar]
-reminders-past=['485d1783939712e32a21c9663b9ee6082a92e242\n3169dec742025bf4209b8edad178d4f254428e2b\t20230612T120000\n1686558600\n1686560400\n1686564000\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230612T120000\r\nDTEND;TZID=Europe/Vilnius:20230612T130000\r\nDTSTAMP:20230603T161107Z\r\nUID:\r\n ccr3ap1j71hm4bb664s38b9k61j6cbb16ssmcb9kc8sjgc1l68p68p9l60@google.com\r\nCREATED:20230603T161032Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230603T161107Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:AT egzo peržiūra (Naug. )\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63821491867\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:3169dec742025bf4209b8edad178d4f254428e2b\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\nd219ab8480fbfa46ace79b6d512ba7b5f46450f3\t20230612T100000\n1686551400\n1686553200\n1686560400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230612T100000\r\nDTEND;TZID=Europe/Vilnius:20230612T120000\r\nDTSTAMP:20230603T162019Z\r\nUID:3c0u9qdo8rg5fp1c8lf2sr3r7f@google.com\r\nCREATED:20230603T161720Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230603T162019Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:ADS egzas (Naug. 101)\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63821492419\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:d219ab8480fbfa46ace79b6d512ba7b5f46450f3\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\nd2633a48f59c36101b54d3b7b043044cdfd96844\t20230608T200500\n1686242100\n1686243900\n1686247500\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230316T200500\r\nDTEND;TZID=Europe/Vilnius:20230316T210500\r\nRRULE:FREQ=WEEKLY\r\nDTSTAMP:20230315T122632Z\r\nUID:plkahscv1khd83o5ljmhiltdgo@google.com\r\nCREATED:20230315T122419Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230315T122632Z\r\nLOCATION:\r\nSEQUENCE:1\r\nSTATUS:CONFIRMED\r\nSUMMARY:COREPETITUS - Alenas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63819499948\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:d2633a48f59c36101b54d3b7b043044cdfd96844\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\nd94b948adaf2849f3e371df4686bba5483ac81e7\t20230607T180000\n1686148200\n1686150000\n1686153600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230315T180000\r\nDTEND;TZID=Europe/Vilnius:20230315T190000\r\nRRULE:FREQ=WEEKLY\r\nEXDATE;TZID=Europe/Vilnius:20230412T180000\r\nDTSTAMP:20230315T135230Z\r\nUID:0eg7b1nm9kcro774vn3eoebvb8@google.com\r\nCREATED:20230309T182634Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230315T135230Z\r\nLOCATION:\r\nSEQUENCE:1\r\nSTATUS:CONFIRMED\r\nSUMMARY:COREPETITUS - Matas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63821222742\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:d94b948adaf2849f3e371df4686bba5483ac81e7\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\nef4cfb57465f3a3016023ca49eb2ba392b14ddaf\t20230607T165500\n1686144300\n1686146100\n1686149700\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230322T165500\r\nDTEND;TZID=Europe/Vilnius:20230322T175500\r\nRRULE:FREQ=WEEKLY\r\nEXDATE;TZID=Europe/Vilnius:20230412T165500\r\nDTSTAMP:20230601T085843Z\r\nUID:oiid82ere83krba3tfqd5q2mrk_R20230322T145500@google.com\r\nCREATED:20230309T182927Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230601T085843Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:COREPETITUS - Danas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63821293123\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:ef4cfb57465f3a3016023ca49eb2ba392b14ddaf\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\na4d32b10406620d8af34ceea742adf893d27dde3\t20230606T120000\n1686040200\n1686042000\n1686045600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230606T120000\r\nDTEND;TZID=Europe/Vilnius:20230606T130000\r\nDTSTAMP:20230602T102136Z\r\nUID:\r\n c8sj6d1ic9gjcbb2cgp3gb9k6dgjab9o6sp38bb375i3acr175hm2pj370@google.com\r\nCREATED:20230602T102136Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230602T102136Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:MPS kolio pasitikrinimas (Didl. 401)\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63821384496\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:a4d32b10406620d8af34ceea742adf893d27dde3\r\nEND:VALARM\r\nEND:VEVENT\r\n']
+notify-custom-snooze-minutes=[527040]
+notify-last-snooze-minutes=0
+notify-window-height=479
+notify-window-paned-position=62
+notify-window-width=325
+notify-window-x=0
+notify-window-y=32
+reminders-past=['485d1783939712e32a21c9663b9ee6082a92e242\n6bceebb1490d27262d6c3c439c198a6c076beda2\t20230926T180000\n1695738600\n1695740400\n1695747600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T180000\r\nDTEND;TZID=Europe/Vilnius:20230926T200000\r\nDTSTAMP:20230702T084403Z\r\nUID:6848653\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nVieslav \r\n Lapin\\, Lekt.\\n\\nGrupės: \\nPS (bak.) 2k. 3gr.\\, \\nES (kitos)  \r\n tvarkaraštis\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:319 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Programų sistemų inžinerija I/II d.\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6bceebb1490d27262d6c3c439c198a6c076beda2\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\t20230926T160000\n1695731400\n1695733200\n1695740400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T160000\r\nDTEND;TZID=Europe/Vilnius:20230926T180000\r\nDTSTAMP:20230702T084403Z\r\nUID:6987694\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nViačeslav \r\n Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, 3gr.\\, \r\n 4gr.\\, 5gr.\\, \\nES (kitos)  tvarkaraštis\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\r\nEND:VALARM\r\nEND:VEVENT\r\n']
+reminders-snoozed=@as []
 
 [org/gnome/login-screen]
 enable-fingerprint-authentication=true
@@ -185,6 +220,7 @@ enable-password-authentication=true
 enable-smartcard-authentication=false
 
 [org/gnome/mutter]
+center-new-windows=true
 dynamic-workspaces=false
 
 [org/gnome/nautilus/compression]
@@ -211,15 +247,31 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/80544ba5-9939-46dc-80dc-91aca060c56f]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/e181d01d-450e-411f-bc13-bac1cdfaa0f3]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/f9467266-71a6-4d64-b469-5be7fc2c9a21]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/portal/filechooser/com.discordapp.Discord]
 last-folder-path='/home/hubertas/Downloads'
 
 [org/gnome/portal/filechooser/com.github.IsmaelMartinez.teams_for_linux]
 last-folder-path='/home/hubertas/Downloads'
 
+[org/gnome/settings-daemon/plugins/color]
+night-light-enabled=true
+
 [org/gnome/settings-daemon/plugins/media-keys]
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']
 home=['<Super>f']
+screenreader=@as []
 www=['<Super>b']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
@@ -228,7 +280,7 @@ command='gnome-terminal'
 name='Launch terminal'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
-binding='<Super>c'
+binding='<Shift><Super>c'
 command='code'
 name='Launch VSCode'
 
@@ -251,22 +303,89 @@ welcome-dialog-last-shown-version='43.0'
 current-workspace-only=true
 
 [org/gnome/shell/extensions/auto-move-windows]
-application-list=['Counter-Strike Global Offensive.desktop:3', 'steam.desktop:3', 'code.desktop:2', 'com.spotify.Client.desktop:4', 'com.discordapp.Discord.desktop:4', 'com.github.IsmaelMartinez.teams_for_linux.desktop:4', 'jetbrains-idea.desktop:2', 'org.gnome.Evince.desktop:3', 'ATLauncher.desktop:3', 'onlyoffice-desktopeditors.desktop:3', 'libreoffice-calc.desktop:3', 'libreoffice-impress.desktop:3', 'libreoffice-startcenter.desktop:3', 'libreoffice-writer.desktop:3']
+application-list=['code.desktop:2', 'com.spotify.Client.desktop:5', 'com.discordapp.Discord.desktop:5', 'com.github.IsmaelMartinez.teams_for_linux.desktop:5', 'jetbrains-idea.desktop:2', 'org.gnome.Evince.desktop:5', 'ATLauncher.desktop:4', 'onlyoffice-desktopeditors.desktop:5', 'libreoffice-calc.desktop:5', 'libreoffice-impress.desktop:5', 'libreoffice-startcenter.desktop:5', 'libreoffice-writer.desktop:5', 'org.gnome.Terminal.desktop:3']
+
+[org/gnome/shell/extensions/tiling-assistant]
+activate-layout0=@as []
+activate-layout1=@as []
+activate-layout2=@as []
+activate-layout3=@as []
+active-window-hint=1
+active-window-hint-color='rgb(53,132,228)'
+auto-tile=@as []
+center-window=['<Super>period']
+debugging-free-rects=@as []
+debugging-show-tiled-rects=@as []
+default-move-mode=0
+dynamic-keybinding-behavior=0
+import-layout-examples=false
+last-version-installed=41
+maximize-with-gap=true
+restore-window=@as []
+search-popup-layout=@as []
+tile-bottom-half=['<Super>Down']
+tile-bottom-half-ignore-ta=@as []
+tile-bottomleft-quarter=['<Super>bracketleft']
+tile-bottomleft-quarter-ignore-ta=@as []
+tile-bottomright-quarter=['<Super>bracketright']
+tile-bottomright-quarter-ignore-ta=@as []
+tile-edit-mode=['<Super>slash']
+tile-left-half=['<Super>Left', '<Super>KP_4']
+tile-left-half-ignore-ta=@as []
+tile-maximize=@as []
+tile-maximize-horizontally=@as []
+tile-maximize-vertically=@as []
+tile-right-half=['<Super>Right', '<Super>KP_6']
+tile-right-half-ignore-ta=@as []
+tile-top-half=['<Super>Up']
+tile-top-half-ignore-ta=@as []
+tile-topleft-quarter=['<Super>minus']
+tile-topleft-quarter-ignore-ta=@as []
+tile-topright-quarter=['<Super>equal']
+tile-topright-quarter-ignore-ta=@as []
+toggle-always-on-top=@as []
+toggle-tiling-popup=@as []
+window-gap=4
+
+[org/gnome/shell/keybindings]
+toggle-application-view=@as []
+toggle-message-tray=@as []
 
 [org/gnome/shell/world-clocks]
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1686656858
+check-timestamp=int64 1695733308
 first-run=false
-install-timestamp=int64 1686000123
+install-timestamp=int64 1695732366
 online-updates-timestamp=int64 1686471379
 security-timestamp=int64 8556483695
-update-notification-timestamp=int64 1686471335
-upgrade-notification-timestamp=int64 1686277039
+update-notification-timestamp=int64 1695733301
+upgrade-notification-timestamp=int64 1695733357
 
 [org/gnome/system/location]
 enabled=false
+
+[org/gnome/terminal/legacy]
+always-check-default-terminal=true
+headerbar=@mb true
+menu-accelerator-enabled=true
+mnemonics-enabled=false
+
+[org/gnome/terminal/legacy/profiles:]
+list=['58fc2b6d-56e7-4133-99d5-2a3451fb8d84']
+
+[org/gnome/terminal/legacy/profiles:/:58fc2b6d-56e7-4133-99d5-2a3451fb8d84]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
 
 [org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
 background-color='rgb(0,43,54)'
@@ -310,5 +429,5 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(356, 79)
+window-position=(0, 32)
 window-size=(1207, 906)
