@@ -18,6 +18,7 @@ PROMPT_COMMAND="Backing up..."
 
 # Backup BackupFolder
 cd ~/Documents/BackupFolder
+echo -e "${YELLOW}Backing up BackupFolder${NC}"
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
 git push 1> /dev/null 2> /dev/null
@@ -55,7 +56,7 @@ cp ~/.local/share/Steam/steamapps/common/Counter-Strike\ Global\ Offensive/csgo/
 cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/autoexec.cfg ~/Documents/CSGO_Config/
 cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/config.cfg ~/Documents/CSGO_Config/
 
-echo "${YELLOW}Backing up CSGO_Config${NC}"
+echo -e "${YELLOW}Backing up CSGO_Config${NC}"
 cd ~/Documents/CSGO_Config
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
