@@ -11,7 +11,7 @@ function set_win_title() {
     if [[ "$cmd" == " (starship_precmd)" || "$cmd" == " ()" ]]
     then
         cmd=""
-    fi
+    fis
     if [[ $PWD == $HOME ]]
     then
         if [[ $SSH_TTY ]]
@@ -34,3 +34,6 @@ function set_win_title() {
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
 trap "$(trap -p DEBUG |  awk -F"'" '{print $2}');set_win_title \${BASH_COMMAND}" DEBUG
+
+# Switch win key to alt keyss
+setxkbmap -option altwin:swap_alt_win

@@ -5,7 +5,6 @@ currentLoc=$(pwd)
 PROMPT_COMMAND="Backing up..."
 
 # Backup BackupFolder
-echo "Backing up BackupFolder"
 cd ~/Documents/BackupFolder
 git add .
 git commit -m "Backup"
@@ -19,11 +18,11 @@ git commit -m "Backup"
 git push
 
 # Backup nvim settings
-cp ~/.config/nvim/init.vim ~/Documents/Installation_Script/user_config/init.vim
+cp ~/.config/nvim/init.lua ~/Documents/Installation_Script/user_config/init.lua
 
 # Backup GNOME settings
-cd $currentLoc/user_config
-dconf dump / > saved_settings.conf
+#     cd $currentLoc/user_config
+#     dconf dump / > saved_settings.conf
 
 # Backup installation script
 echo "Backing up Installation_Script"
