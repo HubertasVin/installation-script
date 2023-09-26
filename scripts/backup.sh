@@ -19,7 +19,7 @@ PROMPT_COMMAND="Backing up..."
 cd ~/Documents/BackupFolder
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
-git push 1> /dev/null
+git push 1> /dev/null 2> /dev/null
 
 Backup_Success
 
