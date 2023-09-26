@@ -1,59 +1,31 @@
 #! /bin/bash
 # Basic commands after linux install
 scriptLoc=$(pwd)
-scriptProg=0
-scriptSize=7
-
-# set -e
-exec 3>&1 1>/dev/null
-
-update_progress() {
-    local progress=$1
-    local currentWork=$2
-
-    # Move the cursor to the beginning of the line
-    echo -en "\r" >&3
-
-    # Print the progress bar
-    printf "[$progress/$scriptSize]" >&3
-    printf " - $currentWork" >&3
-}
-
-if [ `which gsettings` ]; then
-	((scriptSize+=3))
-fi
 
 #TODO ---- Install SDKMAN ----
 curl -s "https://get.sdkman.io" | bash
 
-clear >&3
+set -e # Crash program on error
+
+clear
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   DEBIAN                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
-	((scriptSize+=48))
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Updating system"
-	yes | sudo apt update >&3
-	yes | sudo apt upgrade >&3
+	yes | sudo apt update
+	yes | sudo apt upgrade
 
 	#TODO ---- Setup flatpak ----
 	PROMPT_COMMAND="Setting Up Flatpak..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Setting up flatpak"
 	sudo apt install -y flatpak wget
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Auto-removing unnecessary packages"
 	sudo apt clean
 	sudo apt autoremove
 
-
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Minecraft"
+	#TODO ---- Install Microsoft packages for VSCode ----
 	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 	sudo dpkg -i packages-microsoft-prod.deb
 	rm packages-microsoft-prod.deb
@@ -73,7 +45,6 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 
 	#TODO ---- Install TrueType fonts ----
 	PROMPT_COMMAND="Installing TrueType Fonts..."
-	((scriptProg+=1))
 	update_progress "$scriptProg" "Installing TrueType fonts"
 	wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb
 	sudo dpkg -i ttf-mscorefonts-installer_3.6_all.deb
@@ -88,14 +59,10 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 	for i in ${!aptApps[@]}
 	do
 
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${aptApps[$i]}"
 		sudo apt install -y ${aptApps[$i]}
 	done
 	for i in ${!snapApps[@]}
 	do
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${snapApps[$i]}"
 		yes | sudo snap install ${snapApps[$i]}
 	done
 
@@ -116,20 +83,18 @@ elif [ `which rpm 2>/dev/null` ]; then
 	((scriptSize+=45))
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Updating system"
 	dnf check-update
 	yes | sudo dnf update --assumeyes
 	yes | sudo dnf upgrade --refresh --assumeyes
 
 	#TODO ---- Add repos ----
+	sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+	sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 	sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo
 	sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
-
+	
 	#TODO ---- Setup Flatpak ----
 	PROMPT_COMMAND="Setting Up Flatpak..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Setting up Flatpak"
 	sudo dnf install --assumeyes flatpak
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -142,40 +107,15 @@ elif [ `which rpm 2>/dev/null` ]; then
 	flatApps=(com.spotify.Client com.github.IsmaelMartinez.teams_for_linux)
 	for i in ${!dnfApps[@]}
 	do
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${dnfApps[$i]}"
 		sudo dnf install -y --assumeyes ${dnfApps[$i]}
 	done
 	for i in ${!flatApps[@]}
 	do
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${flatApps[$i]}"
 		flatpak install flathub -y ${flatApps[$i]}
 	done
 
-	#TODO ---- Setup System76-power ----
-	sudo dnf copr enable szydell/system76
-	sudo dnf install --assumeyes system76*
-	sudo systemctl enable --now com.system76.PowerDaemon.service
-	sudo systemctl enable com.system76.PowerDaemon.service system76-power-wake
-	sudo systemctl start com.system76.PowerDaemon.service
-	sudo systemctl mask power-profiles-daemon.service
-
-	#TODO ---- System76-power extension ----
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing System76-power extension"
-	git clone https://github.com/pop-os/gnome-shell-extension-system76-power.git
-	cd gnome-shell-extension-system76-power
-	sudo dnf install nodejs-typescript
-	make
-	make install
-	cd ..
-	rm -rf gnome-shell-extension-system76-power
-
 	#TODO ---- Intall ffmpeg ----
 	PROMPT_COMMAND="Installing ffmpeg..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing ffmpeg"
 	sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 	sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 	sudo dnf -y install ffmpeg
@@ -183,8 +123,6 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install VS Code ----
 	PROMPT_COMMAND="Installing VS Code..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing VS Code"
 	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 	sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 	#TODO ---- Install Minecraft launcher ----
@@ -192,23 +130,17 @@ elif [ `which rpm 2>/dev/null` ]; then
 	# sudo dnf copr enable stenstorp/Minecraft -y
 	#TODO ---- Install Balena Etcher ----
 	PROMPT_COMMAND="Installing Balena Etcher..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Balena Etcher"
 	sudo dnf install dnf-plugins-core dnf-utils dnf-plugin-config-manager -y
 	curl -1sLf \
    'https://dl.cloudsmith.io/public/balena/etcher/setup.rpm.sh' \
    | sudo -E bash
    	#TODO ---- Install Lotion (notion.so) ----
 	PROMPT_COMMAND="Installing Lotion..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Lotion"
    	wget https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh
    	chmod +x setup.sh
    	sudo ./setup.sh web
 	#TODO ---- Install OnlyOffice ----
 	PROMPT_COMMAND="Installing OnlyOffice..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing OnlyOffice"
 	wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
 	sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
 	rm onlyoffice-desktopeditors.x86_64.rpm
@@ -230,8 +162,6 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Update system ----
 	PROMPT_COMMAND="Updating System..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Updating System"
 	sudo dnf update --assumeyes
 	
 
@@ -240,19 +170,12 @@ elif [ `which rpm 2>/dev/null` ]; then
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 
 elif [ `which pacman 2>/dev/null` ]; then
-	((scriptSize+=50))
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Updating System"
 	sudo pacman -Syu --noconfirm
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing base-devel"
 	sudo pacman -S base-devel
 
 	#TODO ---- Install yay ----
 	PROMPT_COMMAND="Installing yay..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing yay"
 	cd ~/Downloads
 	git clone https://aur.archlinux.org/yay.git
 	cd yay
@@ -267,22 +190,16 @@ elif [ `which pacman 2>/dev/null` ]; then
 	pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm ranger)
 	for i in ${!yayApps[@]}
 	do
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${yayApps[$i]}"
 		yay -S --noconfirm ${yayApps[$i]}
 	done
 	
 	for i in ${!pacApps[@]}
 	do
-		((scriptProg+=1))
-		update_progress "$scriptProg" "Installing ${pacApps[$i]}"
 		sudo pacman -S --noconfirm ${pacApps[$i]}
 	done
 
 	#TODO ---- Install Rust ----
 	PROMPT_COMMAND="Installing Rust..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Rust"
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh
 	chmod +x rust.sh
 	./rust.sh
@@ -299,8 +216,6 @@ elif [ `which pacman 2>/dev/null` ]; then
 	# fi
 	
 	cp user_configs/init.lua ~/.config/lua
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Setting up Neovim"
 	nvim --headless +PlugInstall +qall	
 		
 	#TODO ---- Change from hardware clock to local clock ----
@@ -324,8 +239,6 @@ fi
 if [ `which gsettings` ]; then
 	#TODO ---- Gnome configuration ----
 	PROMPT_COMMAND="Restoring GNOME settings..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Restoring GNOME settings"
 	cd $scriptLoc
 	dconf load -f / < user_config/saved_settings.dconf
 	# Force alt + tab to switch only on current workspace in GNOME
@@ -388,8 +301,6 @@ if [ `which gsettings` ]; then
 	done
 	#TODO ---- Theme installation ----
 	PROMPT_COMMAND="Installing Graphite Theme For GNOME..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Graphite Theme For GNOME"
 	git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
 	sudo Graphite-gtk-theme/install.sh -t $themeColor
 	sudo rm -r Graphite-gtk-theme/
@@ -398,8 +309,6 @@ if [ `which gsettings` ]; then
 
 	#TODO ---- Icon pack installation ----
 	PROMPT_COMMAND="Installing Tela Circle Icon Pack..."
-	((scriptProg+=1))
-	update_progress "$scriptProg" "Installing Tela Circle Icon Pack"
 	git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
 	Tela-circle-icon-theme/install.sh $themeColor
 	sudo rm -r Tela-circle-icon-theme/
@@ -435,8 +344,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 #TODO ---- Setup One Dark Pro for terminal ----
 PROMPT_COMMAND="Setting up One Dark Pro for terminal..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Setting up One Dark Pro for terminal"
 cd ~
 git clone https://github.com/denysdovhan/one-gnome-terminal.git
 cd one-gnome-terminal/
@@ -447,8 +354,6 @@ rm -rf one-gnome-terminal/
 
 #TODO ---- Setup ranger ----
 PROMPT_COMMAND="Setting up ranger..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Setting up ranger"
 ranger --copy-config=rifle
 ranger --copy-config=rc
 echo "" >> ~/.config/ranger/rc.config
@@ -461,8 +366,6 @@ git clone https://github.com/maximtrp/ranger-archives.git
 
 #TODO ---- Setup NeoVIM ----
 PROMPT_COMMAND="Setting up NeoVIM..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Setting up NeoVIM"
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 mkdir ~/.vim
 cd ~/.vim
@@ -474,8 +377,6 @@ set clipboard=unnamedplus
 
 #TODO ---- Install AT Launcher ----
 PROMPT_COMMAND="Installing AT Launcher..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Installing AT Launcher"
 cd ~
 wget https://raw.githubusercontent.com/DavidoTek/linux-install-atlauncher/master/linux-install-atlauncher.sh
 chmod +x linux-install-atlauncher.sh
@@ -506,19 +407,13 @@ echo "Host *" >> ~/.ssh/config >&3
 echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
 PROMPT_COMMAND="Downloading BackupFolder..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Downloading BackupFolder"
 cd ~/Documents
 git clone git@github.com:HubertasVin/BackupFolder.git
 
 PROMPT_COMMAND="Downloading CSGO Config Backup..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Downloading CSGO Config Backup"
 git clone git@github.com:HubertasVin/CSGO_Config.git
 
 PROMPT_COMMAND="Downloading Pictures Backup..."
-((scriptProg+=1))
-update_progress "$scriptProg" "Downloading Pictures Backup"
 git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
 cp -r PictureBackup/.git ~/Pictures/
