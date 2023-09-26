@@ -333,6 +333,9 @@ if [ `which gsettings` ]; then
 	# Screen time-out
 	gsettings set org.gnome.desktop.session idle-delay 4500
 	gsettings set org.gnome.desktop.screensaver lock-delay 900
+	# Keyboard shortcuts
+	gsettings set org.gnome.shell.keybindings toggle-application-view []
+	gsettings set org.gnome.settings-daemon.plugins.media-keys screenreader []
 
 	PS3="Select your prefered color for the theme: " >&3
 
