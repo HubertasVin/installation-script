@@ -5,8 +5,27 @@ style-variant='dark'
 active-plugins=['recent', 'screensaver', 'autoload-subtitles', 'apple-trailers', 'screenshot', 'movie-properties', 'mpris', 'skipto', 'open-directory', 'save-file', 'rotation', 'variable-rate', 'vimeo']
 subtitle-encoding='UTF-8'
 
+[org/gnome/calculator]
+accuracy=9
+angle-units='degrees'
+base=10
+button-mode='basic'
+number-format='automatic'
+show-thousands=false
+show-zeroes=false
+source-currency=''
+source-units='degree'
+target-currency=''
+target-units='radian'
+word-size=64
+
 [org/gnome/cheese]
 burst-delay=1000
+camera='Integrated_Webcam_HD: Integrate'
+photo-x-resolution=1280
+photo-y-resolution=720
+video-x-resolution=1280
+video-y-resolution=720
 
 [org/gnome/clocks/state/window]
 maximized=false
@@ -14,7 +33,7 @@ panel-id='world'
 size=(870, 690)
 
 [org/gnome/control-center]
-last-panel='keyboard'
+last-panel='bluetooth'
 window-state=(896, 640, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -58,7 +77,7 @@ icon-theme='Tela-circle-orange'
 toolkit-accessibility=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions']
 show-banners=false
 
 [org/gnome/desktop/notifications/application/code]
@@ -160,6 +179,10 @@ secondary-color='#000000000000'
 [org/gnome/desktop/session]
 idle-delay=uint32 4500
 
+[org/gnome/desktop/sound]
+event-sounds=true
+theme-name='__custom'
+
 [org/gnome/desktop/wm/keybindings]
 close=['<Super>q']
 cycle-windows=['<Alt>Tab']
@@ -183,8 +206,8 @@ switch-to-workspace-5=['<Super>s']
 switch-to-workspace-6=['<Super>d']
 switch-to-workspace-7=['<Control><Super>d']
 switch-to-workspace-8=['<Control><Super>f']
-switch-to-workspace-left=['<Control><Super>Left']
-switch-to-workspace-right=['<Control><Super>Right']
+switch-to-workspace-left=['<Alt><Super>Left']
+switch-to-workspace-right=['<Alt><Super>Right']
 switch-windows=@as []
 switch-windows-backward=@as []
 toggle-fullscreen=['<Super>g']
@@ -211,8 +234,14 @@ notify-window-paned-position=62
 notify-window-width=325
 notify-window-x=0
 notify-window-y=32
-reminders-past=['485d1783939712e32a21c9663b9ee6082a92e242\n6bceebb1490d27262d6c3c439c198a6c076beda2\t20230926T180000\n1695738600\n1695740400\n1695747600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T180000\r\nDTEND;TZID=Europe/Vilnius:20230926T200000\r\nDTSTAMP:20230702T084403Z\r\nUID:6848653\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nVieslav \r\n Lapin\\, Lekt.\\n\\nGrupės: \\nPS (bak.) 2k. 3gr.\\, \\nES (kitos)  \r\n tvarkaraštis\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:319 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Programų sistemų inžinerija I/II d.\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6bceebb1490d27262d6c3c439c198a6c076beda2\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\t20230926T160000\n1695731400\n1695733200\n1695740400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T160000\r\nDTEND;TZID=Europe/Vilnius:20230926T180000\r\nDTSTAMP:20230702T084403Z\r\nUID:6987694\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nViačeslav \r\n Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, 3gr.\\, \r\n 4gr.\\, 5gr.\\, \\nES (kitos)  tvarkaraštis\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\r\nEND:VALARM\r\nEND:VEVENT\r\n']
+reminders-past=['485d1783939712e32a21c9663b9ee6082a92e242\nc1a3fc061853e7ac90c5bb4c1c938acb9113bc15\t20230929T120000\n1695976200\n1695978000\n1695985200\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230929T120000\r\nDTEND;TZID=Europe/Vilnius:20230929T140000\r\nDTSTAMP:20230702T084405Z\r\nUID:6987742\r\nCREATED:20230702T084405Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nEdvardas \r\n Dlugauskas\\, Lab.\\, \\nViačeslav Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \r\n \\nPS (bak.) 2k. 3gr.\r\nLAST-MODIFIED:20230702T084405Z\r\nLOCATION:Vyksta nuotoliniu būdu\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970645\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:c1a3fc061853e7ac90c5bb4c1c938acb9113bc15\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\ne132c661366b905b4e065f2e9cfaa767eaff9808\t20230928T170000\n1695907800\n1695909600\n1695920400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230907T170000\r\nDTEND;TZID=Europe/Vilnius:20230907T200000\r\nRRULE:FREQ=WEEKLY;UNTIL=20231227T215959Z;WKST=TU\r\nDTSTAMP:20230907T150707Z\r\nUID:\r\n 60p3go9j60rjab9j60omcb9k6kr3ebb260om8bb6ckq62phj64omce1o64@google.com\r\nCREATED:20230904T140306Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230907T150707Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Cheminių elementų pasaulis\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63829782427\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:e132c661366b905b4e065f2e9cfaa767eaff9808\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n16533052862ce7ace4a3e780539568ba88dd9c45\t20230928T083000\n1695877200\n1695879000\n1695884400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230928T083000\r\nDTEND;TZID=Europe/Vilnius:20230928T100000\r\nDTSTAMP:20230702T084404Z\r\nUID:7117832\r\nCREATED:20230702T084404Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nRomas \r\n Baronas\\, Prof.\\, Dr. (HP)\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, \r\n 3gr.\\, 4gr.\\, 5gr.\r\nLAST-MODIFIED:20230702T084404Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Duomenų bazių valdymo sistemos\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970644\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:16533052862ce7ace4a3e780539568ba88dd9c45\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n6451415fca5e8a81de2be5de653d635982ef0ec9\t20230927T160000\n1695817800\n1695819600\n1695826800\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230927T160000\r\nDTEND;TZID=Europe/Vilnius:20230927T180000\r\nDTSTAMP:20230702T084404Z\r\nUID:7117925\r\nCREATED:20230702T084404Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nElita \r\n Pakalnickienė\\, Partn. Prof.\\, Dr.\\n\\nGrupės: \\nPS (bak.) 2k. \r\n 3gr.\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084404Z\r\nLOCATION:317 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Duomenų bazių valdymo sistemos\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970644\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6451415fca5e8a81de2be5de653d635982ef0ec9\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n6bceebb1490d27262d6c3c439c198a6c076beda2\t20230926T180000\n1695738600\n1695740400\n1695747600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T180000\r\nDTEND;TZID=Europe/Vilnius:20230926T200000\r\nDTSTAMP:20230702T084403Z\r\nUID:6848653\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nVieslav \r\n Lapin\\, Lekt.\\n\\nGrupės: \\nPS (bak.) 2k. 3gr.\\, \\nES (kitos)  \r\n tvarkaraštis\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:319 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Programų sistemų inžinerija I/II d.\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6bceebb1490d27262d6c3c439c198a6c076beda2\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\t20230926T160000\n1695731400\n1695733200\n1695740400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T160000\r\nDTEND;TZID=Europe/Vilnius:20230926T180000\r\nDTSTAMP:20230702T084403Z\r\nUID:6987694\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nViačeslav \r\n Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, 3gr.\\, \r\n 4gr.\\, 5gr.\\, \\nES (kitos)  tvarkaraštis\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\r\nEND:VALARM\r\nEND:VEVENT\r\n']
 reminders-snoozed=@as []
+
+[org/gnome/libgnomekbd/preview]
+height=625
+width=1464
+x=240
+y=135
 
 [org/gnome/login-screen]
 enable-fingerprint-authentication=true
@@ -248,6 +277,14 @@ ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/80544ba5-9939-46dc-80dc-91aca060c56f]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/ac1eca16-17fa-444c-8fe0-e310c3a049d3]
+ignore-ca-cert=true
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/b091bce9-c535-41be-a36a-a7f40d174437]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -294,7 +331,7 @@ sleep-inactive-ac-type='nothing'
 [org/gnome/shell]
 app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'libreoffice-impress.desktop': <{'position': <9>}>, 'simple-scan.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'org.gnome.Terminal.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'org.gnome.TextEditor.desktop': <{'position': <20>}>, 'org.gnome.Tour.desktop': <{'position': <21>}>, 'balena-etcher-electron.desktop': <{'position': <22>}>, 'com.spotify.Client.desktop': <{'position': <23>}>}, {'com.discordapp.Discord.desktop': <{'position': <0>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'Counter-Strike Global Offensive.desktop': <{'position': <4>}>, 'It Takes Two.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'steam.desktop': <{'position': <8>}>, 'Steam Linux Runtime - Soldier.desktop': <{'position': <9>}>}]
 command-history=['xkill']
-enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx']
+enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'cronomix@zagortenay333', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com']
 favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop']
 last-selected-power-profile='power-saver'
 welcome-dialog-last-shown-version='43.0'
@@ -347,6 +384,9 @@ toggle-always-on-top=@as []
 toggle-tiling-popup=@as []
 window-gap=4
 
+[org/gnome/shell/extensions/user-theme]
+name='Graphite-orange-Dark'
+
 [org/gnome/shell/keybindings]
 toggle-application-view=@as []
 toggle-message-tray=@as []
@@ -355,12 +395,12 @@ toggle-message-tray=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1695733308
+check-timestamp=int64 1695971527
 first-run=false
 install-timestamp=int64 1695732366
-online-updates-timestamp=int64 1686471379
-security-timestamp=int64 8556483695
-update-notification-timestamp=int64 1695733301
+online-updates-timestamp=int64 1695972091
+security-timestamp=int64 0
+update-notification-timestamp=int64 1695884884
 upgrade-notification-timestamp=int64 1695733357
 
 [org/gnome/system/location]
