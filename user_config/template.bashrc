@@ -11,7 +11,7 @@ function set_win_title() {
     if [[ "$cmd" == " (starship_precmd)" || "$cmd" == " ()" ]]
     then
         cmd=""
-    fis
+    fi
     if [[ $PWD == $HOME ]]
     then
         if [[ $SSH_TTY ]]
@@ -29,7 +29,6 @@ function set_win_title() {
         echo -ne "\033]0;$BASEPWD $cmd\a" < /dev/null
         fi
     fi
-
 }
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"

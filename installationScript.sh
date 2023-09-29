@@ -55,7 +55,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 	PROMPT_COMMAND="Installing Necessary Applications..."
 	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm apt-transport-https code dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm dconf-editor ranger maven)
 	snapApps=(starship spotify mc-installer discord vlc)
-	
+
 	for i in ${!aptApps[@]}
 	do
 
@@ -74,7 +74,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 		systemctl enable sddm
 		sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
 		sudo mv plasma-chili /usr/share/sddm/themes/
-	fi	
+	fi
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
@@ -83,41 +83,35 @@ elif [ `which rpm 2>/dev/null` ]; then
 	((scriptSize+=45))
 	#TODO ---- Post-installation necessary commands ----
 	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	dnf check-update
-	yes | sudo dnf update --assumeyes
-	yes | sudo dnf upgrade --refresh --assumeyes
+	sudo dnf update -y
+	sudo dnf upgrade --refresh -y
 
 	#TODO ---- Add repos ----
-	sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-	sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 	sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo
 	sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
-	
+	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+	sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+	sudo dnf copr enable t0xic0der/nvidia-auto-installer-for-fedora -y
+
+	#TODO ---- Install nvidia drivers ----
+	sudo dnf install nvautoinstall -y
+	sudo nvautoinstall rpmadd
+	sudo nvautoinstall driver
+	sudo nvautoinstall nvrepo
+	sudo nvautoinstall plcuda
+
 	#TODO ---- Setup Flatpak ----
 	PROMPT_COMMAND="Setting Up Flatpak..."
 	sudo dnf install --assumeyes flatpak
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-	#TODO ---- Install the PostgreSQL repository ----
-	sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-38-x86_64/pgdg-fedora-repo-latest.noarch.rpm
-
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
-	dnfApps=(xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks balena-etcher-electron 7z vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty ghc-compiler postgresql15-server)
-	flatApps=(com.spotify.Client com.github.IsmaelMartinez.teams_for_linux)
-	for i in ${!dnfApps[@]}
-	do
-		sudo dnf install -y --assumeyes ${dnfApps[$i]}
-	done
-	for i in ${!flatApps[@]}
-	do
-		flatpak install flathub -y ${flatApps[$i]}
-	done
+ 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty ghc-compiler
+	flatpak install flathub -y com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
 	PROMPT_COMMAND="Installing ffmpeg..."
-	sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-	sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 	sudo dnf -y install ffmpeg
 	sudo dnf -y install ffmpeg-devel
 
@@ -128,42 +122,22 @@ elif [ `which rpm 2>/dev/null` ]; then
 	#TODO ---- Install Minecraft launcher ----
 	# PROMPT_COMMAND="Setting Up Minecraft..."
 	# sudo dnf copr enable stenstorp/Minecraft -y
-	#TODO ---- Install Balena Etcher ----
-	PROMPT_COMMAND="Installing Balena Etcher..."
-	sudo dnf install dnf-plugins-core dnf-utils dnf-plugin-config-manager -y
-	curl -1sLf \
-   'https://dl.cloudsmith.io/public/balena/etcher/setup.rpm.sh' \
-   | sudo -E bash
-   	#TODO ---- Install Lotion (notion.so) ----
-	PROMPT_COMMAND="Installing Lotion..."
-   	wget https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh
-   	chmod +x setup.sh
-   	sudo ./setup.sh web
 	#TODO ---- Install OnlyOffice ----
 	PROMPT_COMMAND="Installing OnlyOffice..."
 	wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
 	sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
 	rm onlyoffice-desktopeditors.x86_64.rpm
 	#TODO ---- Install Starship ----
-	dnf copr enable atim/starship
+	sudo dnf copr enable -y atim/starship
 	#TODO ---- Enable H.264 decoder ----
 	sudo dnf config-manager --set-enabled fedora-cisco-openh264
-	#TODO ---- Install auto-cpufreq ----
-	git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-	cd auto-cpufreq && sudo ./auto-cpufreq-installer
-	#TODO ---- Configuring auto-cpufreq ----
-	sudo auto-cpufreq --install
-	sudo auto-cpufreq --force=powersave
 
 	#TODO ---- systemConfiguration ----
-	sudo /usr/pgsql-15/bin/postgresql-15-setup initdb
-	sudo systemctl enable postgresql-15
-	sudo systemctl start postgresql-15
 
 	#TODO ---- Update system ----
 	PROMPT_COMMAND="Updating System..."
-	sudo dnf update --assumeyes
-	
+	sudo dnf update -y
+
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
@@ -183,7 +157,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	cd ..
 	sudo rm -r yay
 	cd ${scriptLoc}
-	
+
 	#TODO ---- Install applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
 	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams bookworm neovim-plug bashdb)
@@ -192,7 +166,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	do
 		yay -S --noconfirm ${yayApps[$i]}
 	done
-	
+
 	for i in ${!pacApps[@]}
 	do
 		sudo pacman -S --noconfirm ${pacApps[$i]}
@@ -205,7 +179,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	./rust.sh
 	source ~/.cargo/env
 	cd ${scriptLoc}
-	
+
 	#TODO ---- Setup SDDM ----
 	# PROMPT_COMMAND="Setting Up SDDM..."
 	# if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
@@ -214,19 +188,19 @@ elif [ `which pacman 2>/dev/null` ]; then
 	# 	sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
 	# 	sudo mv plasma-chili /usr/share/sddm/themes/
 	# fi
-	
+
 	cp user_configs/init.lua ~/.config/lua
-	nvim --headless +PlugInstall +qall	
-		
+	nvim --headless +PlugInstall +qall
+
 	#TODO ---- Change from hardware clock to local clock ----
 	PROMPT_COMMAND="Changing from hardware to local clock..."
 	timedatectl set-local-rtc 1 --adjust-system-clock
-	
+
 	#TODO ---- Setup .zshrc ----
-		
+
 	#TODO ---- Update mimeapps.list to change from VSCode home directory launch to Nautilus ----
 	echo "inode/directory=org.gnome.Nautilus.desktop" >> ~/.config/mimeapps.list
-	
+
 	echo '------------------------------------------------------------------------------------------------'
 	echo '-------------------- Switch on auto start on startup for optimus-manager-qt --------------------'
 	echo '------------------------------------------------------------------------------------------------'
@@ -249,51 +223,52 @@ if [ `which gsettings` ]; then
 	# Keyboard shortcuts
 	gsettings set org.gnome.shell.keybindings toggle-application-view []
 	gsettings set org.gnome.settings-daemon.plugins.media-keys screenreader []
+	gsettings set org.gnome.shell.keybindings toggle-overview []
 
-	PS3="Select your prefered color for the theme: " >&3
+	PS3="Select your prefered color for the theme: "
 
 
-	select themeColor in default purple pink red orange yellow green teal blue all >&3
+	select themeColor in default purple pink red orange yellow green teal blue all
 	do
 		case $themeColor in
 			"default")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#FB8C00"
 				break;;
 			"purple")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#AB47BC"
 				break;;
 			"pink")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#EC407A"
 				break;;
 			"red")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#E53935"
 				break;;
 			"orange")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#FB8C00"
 				break;;
 			"yellow")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#FBC02D"
 				break;;
 			"green")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#4CAF50"
 				break;;
 			"teal")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#009688"
 				break;;
 			"blue")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#3684DD"
 				break;;
 			"all")
-				echo "Selected the $themeColor color" >&3
+				echo "Selected the $themeColor color"
 				colorCode="#FB8C00"
 				break;;
 			*)
@@ -322,21 +297,21 @@ if [ `which gsettings` ]; then
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
-if [ "$SHELL" = "/bin/bash" ]; then
-	#TODO ---- Setup .bashrc ----
-	PROMPT_COMMAND="Updating .bashrc..."
-	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
-	cat user_configs/template.bashrc >> ~/.bashrc
-elif [ "$SHELL" = "/bin/zsh" ]
-	#TODO ---- Setup .zshrc ----
-	PROMPT_COMMAND="Updating .zshrc..."
-	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
-	cat user_configs/template.zshrc >> ~/.zshrc
-fi
+#if [ "$SHELL" = "/bin/bash" ]; then
+#	#TODO ---- Setup .bashrc ----
+#	PROMPT_COMMAND="Updating .bashrc..."
+#	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
+#	cat user_config/template.bashrc >> ~/.bashrc
+#elif [ "$SHELL" = "/bin/zsh" ]; then
+#	#TODO ---- Setup .zshrc ----
+#	PROMPT_COMMAND="Updating .zshrc..."
+#	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
+#	cat user_config/template.zshrc >> ~/.zshrc
+#fi
 
 #TODO ---- Install Gradle ----"
 PROMPT_COMMAND="Installing Gradle..."
-sdk install gradle
+# sdk install gradle
 
 #TODO ---- Install GHCup ----
 PROMPT_COMMAND="Installing GHCup..."
@@ -360,16 +335,22 @@ echo "" >> ~/.config/ranger/rc.config
 echo "# Archives" >> ~/.config/ranger/rc.config
 echo "map ex extract" >> ~/.config/ranger/rc.config
 echo "map ec compress" >> ~/.config/ranger/rc.config
-mkdir ~/.config/ranger/plugins
+mkdir -p ~/.config/ranger/plugins
 cd ~/.config/ranger/plugins
-git clone https://github.com/maximtrp/ranger-archives.git
+if [ ! -d "ranger-archives" ] ; then
+    git clone https://github.com/maximtrp/ranger-archives.git
+fi
 
 #TODO ---- Setup NeoVIM ----
 PROMPT_COMMAND="Setting up NeoVIM..."
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-mkdir ~/.vim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+mkdir -p ~/.vim
 cd ~/.vim
-git clone --depth=1 https://github.com/venjiang/nvimrc.git ~/.vim
+mkdir -p ~/.config/nvim/
+if [ ! -d "nvimrc" ] ; then
+	git clone --depth=1 https://github.com/venjiang/nvimrc.git ~/.vim
+fi
 sh ~/.vim/install.sh
 nvim +PlugInstall
 #TODO Allow NeoVIM to access the clipboard
@@ -385,25 +366,25 @@ rm linux-install-atlauncher.sh
 
 #TODO ---- Setup SSH ----
 PROMPT_COMMAND="Setting Up SSH With Github..."
-echo 'Setting up ssh' >&3
-echo 'Enter git email:' >&3
-read gitEmail >&3
+echo 'Setting up ssh'
+echo 'Enter git email:'
+read gitEmail
 ssh-keygen -t rsa -b 4096 -C $gitEmail
 cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-echo 'SSH key copied to clipboard, go to Github:' >&3
-echo '1. Go to user settings' >&3
-echo '2. Press "SSH and GPG keys"' >&3
-echo '3. Paste in the copied text in to the text box' >&3
-read -n 1 -p '(Press any key to continue)' input >&3
+echo 'SSH key copied to clipboard, go to Github:'
+echo '1. Go to user settings'
+echo '2. Press "SSH and GPG keys"'
+echo '3. Paste in the copied text in to the text box'
+read -n 1 -p '(Press any key to continue)' input
 
 #TODO ---- Setup git ----
 PROMPT_COMMAND="Setting Up Git..."
-echo 'Setting up git' >&3
-echo 'Enter git username:' >&3
-read gitName >&3
+echo 'Setting up git'
+echo 'Enter git username:'
+read gitName
 git config --global user.name "$gitName"
 git config --global user.email "$gitEmail"
-echo "Host *" >> ~/.ssh/config >&3
+echo "Host *" >> ~/.ssh/config
 echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
 PROMPT_COMMAND="Downloading BackupFolder..."
@@ -423,12 +404,12 @@ sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applicat
 cp "$scriptLoc"/desktop_shortcuts/terminal-autostart.desktop ~/.config/autostart/
 
 cd $scriptLoc
-chmod +x Backup.sh
+chmod +x backup.sh
 
 #TODO ---- Change Installation script remote origin to ssh ----
 git remote remove origin
 git remote add origin git@github.com:HubertasVin/Installation_Script.git
 git push --set-upstream origin master
 
-echo >&3
-echo Done >&3
+echo
+echo Done
