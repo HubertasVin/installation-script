@@ -57,10 +57,10 @@ cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/autoexec.cfg ~/Document
 cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/config.cfg ~/Documents/CSGO_Config/
 
 echo -e "${YELLOW}Backing up CSGO_Config${NC}"
-cd ~/Documents/CSGO_Config
-git add . 1> /dev/null
-git commit -m "Backup" 1> /dev/null
-git push 1> /dev/null 2> /dev/null
+# cd ~/Documents/CSGO_Config
+# git add . 1> /dev/null
+# git commit -m "Backup" 1> /dev/null
+# git push 1> /dev/null 2> /dev/null
 
 Backup_Success
 
