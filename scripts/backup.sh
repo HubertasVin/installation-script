@@ -50,19 +50,21 @@ git push 1> /dev/null 2> /dev/null
 
 Backup_Success
 
+<<CSGO_Config
 # Backup CS:GO settings
-# cp ~/.local/share/Steam/steamapps/common/Counter-Strike\ Global\ Offensive/csgo/cfg/practice.cfg ~/Documents/CSGO_Config/
-# cp ~/.local/share/Steam/steamapps/common/Counter-Strike\ Global\ Offensive/csgo/cfg/setup.cfg ~/Documents/CSGO_Config/
-# cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/autoexec.cfg ~/Documents/CSGO_Config/
-# cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/config.cfg ~/Documents/CSGO_Config/
+cp ~/.local/share/Steam/steamapps/common/Counter-Strike\ Global\ Offensive/csgo/cfg/practice.cfg ~/Documents/CSGO_Config/
+cp ~/.local/share/Steam/steamapps/common/Counter-Strike\ Global\ Offensive/csgo/cfg/setup.cfg ~/Documents/CSGO_Config/
+cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/autoexec.cfg ~/Documents/CSGO_Config/
+cp ~/.local/share/Steam/userdata/289706552/730/local/cfg/config.cfg ~/Documents/CSGO_Config/
 
-# echo -e "${YELLOW}Backing up CSGO_Config${NC}"
-# cd ~/Documents/CSGO_Config
-# git add . 1> /dev/null
-# git commit -m "Backup" 1> /dev/null
-# git push 1> /dev/null 2> /dev/null
+echo -e "${YELLOW}Backing up CSGO_Config${NC}"
+cd ~/Documents/CSGO_Config
+git add . 1> /dev/null
+git commit -m "Backup" 1> /dev/null
+git push 1> /dev/null 2> /dev/null
 
-# Backup_Success
+Backup_Success
+CSGO_Config
 
 PROMPT_COMMAND="Completed backup."
 echo "Completed backup."
