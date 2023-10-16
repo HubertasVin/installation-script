@@ -178,6 +178,7 @@ elif [ `which pacman 2>/dev/null` ]; then
 	chmod +x rust.sh
 	./rust.sh
 	source ~/.cargo/env
+    rm rust.sh
 	cd ${scriptLoc}
 
 	#TODO ---- Setup SDDM ----
