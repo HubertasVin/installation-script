@@ -21,7 +21,7 @@ word-size=64
 
 [org/gnome/cheese]
 burst-delay=1000
-camera='Integrated_Webcam_HD: Integrate'
+camera='Integrated_Webcam_HD (V4L2)'
 photo-x-resolution=1280
 photo-y-resolution=720
 video-x-resolution=1280
@@ -33,7 +33,7 @@ panel-id='world'
 size=(870, 690)
 
 [org/gnome/control-center]
-last-panel='bluetooth'
+last-panel='screen'
 window-state=(896, 640, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -54,12 +54,8 @@ name='suse-yast.directory'
 translate=true
 
 [org/gnome/desktop/background]
-color-shading-type='solid'
-picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/f37/default/f37.xml'
-picture-uri-dark='file:///usr/share/backgrounds/f37/default/f37.xml'
-primary-color='#000000000000'
-secondary-color='#000000000000'
+primary-color='#51a2da'
+secondary-color='#294172'
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
@@ -68,16 +64,16 @@ sources=[('xkb', 'gb'), ('xkb', 'lt')]
 xkb-options=@as []
 
 [org/gnome/desktop/interface]
-color-scheme='default'
+color-scheme='prefer-dark'
 enable-hot-corners=false
 font-antialiasing='grayscale'
 font-hinting='slight'
-gtk-theme='Graphite-orange-Light'
-icon-theme='Tela-circle-orange'
+gtk-theme='Graphite-red-Dark'
+icon-theme='Tela-circle-red-dark'
 toolkit-accessibility=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90']
 show-banners=false
 
 [org/gnome/desktop/notifications/application/code]
@@ -107,6 +103,9 @@ application-id='google-chrome-unstable.desktop'
 [org/gnome/desktop/notifications/application/jetbrains-idea]
 application-id='jetbrains-idea.desktop'
 
+[org/gnome/desktop/notifications/application/jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90]
+application-id='jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90.desktop'
+
 [org/gnome/desktop/notifications/application/jetbrains-toolbox]
 application-id='jetbrains-toolbox.desktop'
 
@@ -118,6 +117,9 @@ application-id='libreoffice-writer.desktop'
 
 [org/gnome/desktop/notifications/application/org-freedesktop-problems-applet]
 application-id='org.freedesktop.problems.applet.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-characters]
+application-id='org.gnome.Characters.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-eog]
 application-id='org.gnome.eog.desktop'
@@ -146,6 +148,9 @@ application-id='org.gnome.Software.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-terminal]
 application-id='org.gnome.Terminal.desktop'
 
+[org/gnome/desktop/notifications/application/org-gnome-totem]
+application-id='org.gnome.Totem.desktop'
+
 [org/gnome/desktop/notifications/application/org-qbittorrent-qbittorrent]
 application-id='org.qbittorrent.qBittorrent.desktop'
 
@@ -159,7 +164,8 @@ application-id='wine-Programs-Roblox-Roblox Studio.desktop'
 application-id='xdg-desktop-portal-gnome.desktop'
 
 [org/gnome/desktop/peripherals/mouse]
-speed=-0.65486725663716816
+accel-profile='flat'
+speed=0.0
 
 [org/gnome/desktop/peripherals/touchpad]
 tap-to-click=true
@@ -169,12 +175,10 @@ two-finger-scrolling-enabled=true
 report-technical-problems=true
 
 [org/gnome/desktop/screensaver]
-color-shading-type='solid'
 lock-delay=uint32 900
-picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/f37/default/f37.xml'
-primary-color='#000000000000'
-secondary-color='#000000000000'
+lock-enabled=true
+primary-color='#51a2da'
+secondary-color='#294172'
 
 [org/gnome/desktop/session]
 idle-delay=uint32 4500
@@ -185,8 +189,6 @@ theme-name='__custom'
 
 [org/gnome/desktop/wm/keybindings]
 close=['<Super>q']
-cycle-windows=['<Alt>Tab']
-cycle-windows-backward=['<Shift><Alt>Tab']
 minimize=['<Super>e']
 move-to-workspace-1=['<Alt><Super>z']
 move-to-workspace-2=['<Alt><Super>x']
@@ -208,14 +210,14 @@ switch-to-workspace-7=['<Control><Super>d']
 switch-to-workspace-8=['<Control><Super>f']
 switch-to-workspace-left=['<Alt><Super>Left']
 switch-to-workspace-right=['<Alt><Super>Right']
-switch-windows=@as []
-switch-windows-backward=@as []
+switch-windows=['<Alt>Tab']
+switch-windows-backward=['<Shift><Alt>Tab']
 toggle-fullscreen=['<Super>g']
 toggle-maximized=['<Super>w']
 
 [org/gnome/desktop/wm/preferences]
 num-workspaces=6
-theme='Graphite-orange-Dark'
+theme='Graphite-red-Dark'
 
 [org/gnome/eog/ui]
 sidebar=false
@@ -234,7 +236,7 @@ notify-window-paned-position=62
 notify-window-width=325
 notify-window-x=0
 notify-window-y=32
-reminders-past=['485d1783939712e32a21c9663b9ee6082a92e242\nc1a3fc061853e7ac90c5bb4c1c938acb9113bc15\t20230929T120000\n1695976200\n1695978000\n1695985200\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230929T120000\r\nDTEND;TZID=Europe/Vilnius:20230929T140000\r\nDTSTAMP:20230702T084405Z\r\nUID:6987742\r\nCREATED:20230702T084405Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nEdvardas \r\n Dlugauskas\\, Lab.\\, \\nViačeslav Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \r\n \\nPS (bak.) 2k. 3gr.\r\nLAST-MODIFIED:20230702T084405Z\r\nLOCATION:Vyksta nuotoliniu būdu\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970645\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:c1a3fc061853e7ac90c5bb4c1c938acb9113bc15\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\ne132c661366b905b4e065f2e9cfaa767eaff9808\t20230928T170000\n1695907800\n1695909600\n1695920400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230907T170000\r\nDTEND;TZID=Europe/Vilnius:20230907T200000\r\nRRULE:FREQ=WEEKLY;UNTIL=20231227T215959Z;WKST=TU\r\nDTSTAMP:20230907T150707Z\r\nUID:\r\n 60p3go9j60rjab9j60omcb9k6kr3ebb260om8bb6ckq62phj64omce1o64@google.com\r\nCREATED:20230904T140306Z\r\nDESCRIPTION:\r\nLAST-MODIFIED:20230907T150707Z\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Cheminių elementų pasaulis\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63829782427\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:e132c661366b905b4e065f2e9cfaa767eaff9808\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n16533052862ce7ace4a3e780539568ba88dd9c45\t20230928T083000\n1695877200\n1695879000\n1695884400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230928T083000\r\nDTEND;TZID=Europe/Vilnius:20230928T100000\r\nDTSTAMP:20230702T084404Z\r\nUID:7117832\r\nCREATED:20230702T084404Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nRomas \r\n Baronas\\, Prof.\\, Dr. (HP)\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, \r\n 3gr.\\, 4gr.\\, 5gr.\r\nLAST-MODIFIED:20230702T084404Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Duomenų bazių valdymo sistemos\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970644\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:16533052862ce7ace4a3e780539568ba88dd9c45\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n6451415fca5e8a81de2be5de653d635982ef0ec9\t20230927T160000\n1695817800\n1695819600\n1695826800\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230927T160000\r\nDTEND;TZID=Europe/Vilnius:20230927T180000\r\nDTSTAMP:20230702T084404Z\r\nUID:7117925\r\nCREATED:20230702T084404Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nElita \r\n Pakalnickienė\\, Partn. Prof.\\, Dr.\\n\\nGrupės: \\nPS (bak.) 2k. \r\n 3gr.\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084404Z\r\nLOCATION:317 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Duomenų bazių valdymo sistemos\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970644\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6451415fca5e8a81de2be5de653d635982ef0ec9\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n6bceebb1490d27262d6c3c439c198a6c076beda2\t20230926T180000\n1695738600\n1695740400\n1695747600\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T180000\r\nDTEND;TZID=Europe/Vilnius:20230926T200000\r\nDTSTAMP:20230702T084403Z\r\nUID:6848653\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Pratybos\\, Privalomasis\\n\\nDėstytojai: \\nVieslav \r\n Lapin\\, Lekt.\\n\\nGrupės: \\nPS (bak.) 2k. 3gr.\\, \\nES (kitos)  \r\n tvarkaraštis\\n\\nPogrupiai: 2\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:319 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Programų sistemų inžinerija I/II d.\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:6bceebb1490d27262d6c3c439c198a6c076beda2\r\nEND:VALARM\r\nEND:VEVENT\r\n', '485d1783939712e32a21c9663b9ee6082a92e242\n8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\t20230926T160000\n1695731400\n1695733200\n1695740400\nBEGIN:VEVENT\r\nDTSTART;TZID=Europe/Vilnius:20230926T160000\r\nDTEND;TZID=Europe/Vilnius:20230926T180000\r\nDTSTAMP:20230702T084403Z\r\nUID:6987694\r\nCREATED:20230702T084403Z\r\nDESCRIPTION:Tipas: Paskaita\\, Privalomasis\\n\\nDėstytojai: \\nViačeslav \r\n Pozdniakov\\, Partn. Doc.\\n\\nGrupės: \\nPS (bak.) 2k. 1gr.\\, 2gr.\\, 3gr.\\, \r\n 4gr.\\, 5gr.\\, \\nES (kitos)  tvarkaraštis\r\nLAST-MODIFIED:20230702T084403Z\r\nLOCATION:103 (MIF-Didl.)\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Funkcinis programavimas\r\nTRANSP:OPAQUE\r\nX-EVOLUTION-CALDAV-ETAG:63823970643\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:This is an event reminder\r\nTRIGGER:-PT30M\r\nX-EVOLUTION-ALARM-UID:8a66b7261fc3cb58361331683e7a9cfcdf63a5c4\r\nEND:VALARM\r\nEND:VEVENT\r\n']
+reminders-past=@as []
 reminders-snoozed=@as []
 
 [org/gnome/libgnomekbd/preview]
@@ -272,12 +274,24 @@ maximized=false
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/3aa10290-baac-4510-bf0e-d782c8be8e43]
+ignore-ca-cert=true
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/601703e4-e4cc-4ca3-873b-34202ac6a31f]
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/6525ca11-af4e-32c8-939d-1d756b726263]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/80544ba5-9939-46dc-80dc-91aca060c56f]
 ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/aa2cc88d-d3d3-42ea-a701-961f41a32c58]
+ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/ac1eca16-17fa-444c-8fe0-e310c3a049d3]
@@ -301,6 +315,15 @@ last-folder-path='/home/hubertas/Downloads'
 
 [org/gnome/portal/filechooser/com.github.IsmaelMartinez.teams_for_linux]
 last-folder-path='/home/hubertas/Downloads'
+
+[org/gnome/portal/filechooser/com.obsproject.Studio]
+last-folder-path='/home/hubertas/Video'
+
+[org/gnome/portal/filechooser/org.bunkus.mkvtoolnix-gui]
+last-folder-path='/home/hubertas/Downloads/movies'
+
+[org/gnome/portal/filechooser/org.qbittorrent.qBittorrent]
+last-folder-path='/home/hubertas/Downloads/The Walking Dead'
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=true
@@ -330,17 +353,17 @@ sleep-inactive-ac-type='nothing'
 
 [org/gnome/shell]
 app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'libreoffice-impress.desktop': <{'position': <9>}>, 'simple-scan.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'org.gnome.Terminal.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'org.gnome.TextEditor.desktop': <{'position': <20>}>, 'org.gnome.Tour.desktop': <{'position': <21>}>, 'balena-etcher-electron.desktop': <{'position': <22>}>, 'com.spotify.Client.desktop': <{'position': <23>}>}, {'com.discordapp.Discord.desktop': <{'position': <0>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'Counter-Strike Global Offensive.desktop': <{'position': <4>}>, 'It Takes Two.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'steam.desktop': <{'position': <8>}>, 'Steam Linux Runtime - Soldier.desktop': <{'position': <9>}>}]
-command-history=['xkill']
-enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'cronomix@zagortenay333', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com']
+command-history=['xkill', 'reboot']
+enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'cronomix@zagortenay333', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
 favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop']
-last-selected-power-profile='power-saver'
+last-selected-power-profile='performance'
 welcome-dialog-last-shown-version='43.0'
 
 [org/gnome/shell/app-switcher]
 current-workspace-only=true
 
 [org/gnome/shell/extensions/auto-move-windows]
-application-list=['code.desktop:2', 'com.spotify.Client.desktop:5', 'com.discordapp.Discord.desktop:5', 'com.github.IsmaelMartinez.teams_for_linux.desktop:5', 'jetbrains-idea.desktop:2', 'org.gnome.Evince.desktop:5', 'ATLauncher.desktop:4', 'onlyoffice-desktopeditors.desktop:5', 'libreoffice-calc.desktop:5', 'libreoffice-impress.desktop:5', 'libreoffice-startcenter.desktop:5', 'libreoffice-writer.desktop:5', 'org.gnome.Terminal.desktop:3']
+application-list=['code.desktop:2', 'com.spotify.Client.desktop:5', 'com.github.IsmaelMartinez.teams_for_linux.desktop:5', 'org.gnome.Evince.desktop:5', 'ATLauncher.desktop:4', 'onlyoffice-desktopeditors.desktop:5', 'libreoffice-calc.desktop:5', 'libreoffice-impress.desktop:5', 'libreoffice-startcenter.desktop:5', 'libreoffice-writer.desktop:5', 'org.gnome.Terminal.desktop:3', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90.desktop:2']
 
 [org/gnome/shell/extensions/tiling-assistant]
 activate-layout0=@as []
@@ -390,17 +413,19 @@ name='Graphite-orange-Dark'
 [org/gnome/shell/keybindings]
 toggle-application-view=@as []
 toggle-message-tray=@as []
+toggle-overview=@as []
 
 [org/gnome/shell/world-clocks]
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1695971527
+check-timestamp=int64 1697444030
 first-run=false
-install-timestamp=int64 1695732366
+flatpak-purge-timestamp=int64 1697451134
+install-timestamp=int64 1697263971
 online-updates-timestamp=int64 1695972091
 security-timestamp=int64 0
-update-notification-timestamp=int64 1695884884
+update-notification-timestamp=int64 1697291467
 upgrade-notification-timestamp=int64 1695733357
 
 [org/gnome/system/location]
@@ -413,9 +438,69 @@ menu-accelerator-enabled=true
 mnemonics-enabled=false
 
 [org/gnome/terminal/legacy/profiles:]
-list=['58fc2b6d-56e7-4133-99d5-2a3451fb8d84']
+list=['58fc2b6d-56e7-4133-99d5-2a3451fb8d84', '3f3448fe-b120-4184-a12d-c9c818e5154e']
+
+[org/gnome/terminal/legacy/profiles:/:0f4b7436-af86-4fd1-a362-b55498f371e2]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:2afaed8b-4f07-4b73-911b-73085c6130f9]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:3f3448fe-b120-4184-a12d-c9c818e5154e]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:4b766c85-e273-4d16-ba2e-6b9434a5ab61]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
 
 [org/gnome/terminal/legacy/profiles:/:58fc2b6d-56e7-4133-99d5-2a3451fb8d84]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=false
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:82d6d7e6-74ad-4572-a6f5-83bf680c6f8b]
 background-color='#282c34'
 background-transparency-percent=18
 bold-color='#ABB2BF'
@@ -435,6 +520,54 @@ palette=['rgb(23,20,33)', 'rgb(192,28,40)', 'rgb(38,162,105)', 'rgb(162,115,76)'
 use-theme-colors=false
 use-transparent-background=false
 
+[org/gnome/terminal/legacy/profiles:/:ce9053a3-12d8-4182-bd1e-993f782210ec]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:d4f20f13-ca05-4dd0-baf4-6d0d0c9c8c73]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:f1375d66-8311-40b5-9789-292276829a72]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:ff2c58eb-1855-4390-af3c-fefec232ca5c]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
 [org/gnome/tweaks]
 show-extensions-notice=false
 
@@ -452,6 +585,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
+view-type='list'
 window-size=(888, 374)
 
 [org/gtk/settings/color-chooser]
@@ -465,9 +599,12 @@ show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=166
-sort-column='name'
+sort-column='size'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
 window-position=(0, 32)
 window-size=(1207, 906)
+
+[system/proxy]
+mode='auto'
