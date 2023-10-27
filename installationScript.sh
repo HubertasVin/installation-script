@@ -107,7 +107,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty ghc-compiler
+ 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon ghc-compiler
 	flatpak install flathub -y net.nokyan.Resources com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
@@ -297,6 +297,11 @@ if [ `which gsettings` ]; then
 	cat user_config/starship_template.toml > ~/.config/starship.toml
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
+
+#TODO ---- Configuring alacritty ----
+mkdir -p ~/.config/alacritty/themes
+git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 
 #if [ "$SHELL" = "/bin/bash" ]; then
 #	#TODO ---- Setup .bashrc ----

@@ -1,1 +1,1 @@
-gnome-terminal --full-screen
+alacritty
