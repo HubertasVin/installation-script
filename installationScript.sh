@@ -7,6 +7,15 @@ curl -s "https://get.sdkman.io" | bash
 
 set -e # Crash program on error
 
+FDIR="$HOME/.local/share/fonts"
+
+# Install Fonts
+install_fonts() {
+y	echo -e "\n[*] Installing fonts..."
+	[[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
+	cp -rf $DIR/fonts/* "$FDIR"
+}
+
 clear
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
@@ -107,7 +116,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon ghc-compiler
+ 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler
 	flatpak install flathub -y net.nokyan.Resources com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
@@ -302,6 +311,14 @@ fi
 mkdir -p ~/.config/alacritty/themes
 git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
 cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
+
+#TODO ---- Install fonts for Polybar ----
+STYLE='simple'
+[[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
+cp -rf "$scriptLoc"/fonts/* "$FDIR"
+
+#TODO ---- Setup Polybar ----
+cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
 
 #if [ "$SHELL" = "/bin/bash" ]; then
 #	#TODO ---- Setup .bashrc ----

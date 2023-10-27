@@ -1,5 +1,6 @@
 export VISUAL=nvim;
 export EDITOR=nvim;
+MONITOR=$(polybar -m|tail -1|sed -e 's/:.*$//g')
 xrandr --output DP-1-1 --mode 1920x1080 --rate 144 2>/dev/null
 alias backupDevice="~/Installation_Script/scripts/backup.sh"
 alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"
