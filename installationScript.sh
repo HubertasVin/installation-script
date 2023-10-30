@@ -375,7 +375,9 @@ if [ ! -d "nvimrc" ] ; then
 	git clone --depth=1 https://github.com/venjiang/nvimrc.git ~/.vim
 fi
 sh ~/.vim/install.sh
+sed -i "83i Plug 'wakatime/vim-wakatime'" ~/.vim/vimrcs/plugins.vim
 nvim +PlugInstall
+nvim +WakaTimeApiKey
 #TODO Allow NeoVIM to access the clipboard
 set clipboard=unnamedplus
 
