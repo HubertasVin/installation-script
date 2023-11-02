@@ -28,7 +28,7 @@ with urllib.request.urlopen("https://wakatime.com/share/@35061e46-e6ae-4c54-9981
     sumM = int(round(sumS % 3600 / 60, 0))
 
     print("%{F#F0C674}7 days%{F-}: %{F" + getClockColor(sumH, 3) + "}"  + str(sumH) + ":" + str(sumM), end="%{F-}")
-    print(" %{F#707880}|%{F-} %{F#F0C674}today%{F-}: %{F" + getClockColor(data[6]['grand_total']['hours'], 1) + "}" + data[6]['grand_total']['digital'], end="%{F-}")
+    print(" %{F#707880}|%{F-} %{F#F0C674}today%{F-}: %{F" + getClockColor(data[len(data) - 1]['grand_total']['hours'], 1) + "}" + data[6]['grand_total']['digital'], end="%{F-}")
 
 with urllib.request.urlopen("https://wakatime.com/share/@35061e46-e6ae-4c54-9981-c98a50bfab17/bec79df7-baae-4ff6-afee-f47571162cf9.json") as url:
     data = json.load(url);

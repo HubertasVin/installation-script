@@ -45,6 +45,8 @@ dconf dump / > saved_settings.dconf
 echo -e "${YELLOW}Backing up Installation_Script${NC}"
 cd ~/Installation_Script/
 cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar
+cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile
+cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
 git push 1> /dev/null 2> /dev/null

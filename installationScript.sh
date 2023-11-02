@@ -116,7 +116,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler
+ 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler xcompmgr lpf-spotify-client qtile rofi
 	flatpak install flathub -y net.nokyan.Resources com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
@@ -320,6 +320,10 @@ cp -rf "$scriptLoc"/fonts/* "$FDIR"
 #TODO ---- Setup Polybar ----
 cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
 
+#TODO ---- Setup qtile and rofi ----
+cp -r "$scriptLoc"/user_config/qtile/* ~/.config/qtile
+cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
+
 #if [ "$SHELL" = "/bin/bash" ]; then
 #	#TODO ---- Setup .bashrc ----
 #	PROMPT_COMMAND="Updating .bashrc..."
@@ -335,6 +339,9 @@ cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
 #TODO ---- Install Gradle ----"
 PROMPT_COMMAND="Installing Gradle..."
 # sdk install gradle
+
+# TODO ---- Add the user to pkg-build group ----
+sudo usermod -a -G pkg-build hubertas
 
 #TODO ---- Install GHCup ----
 PROMPT_COMMAND="Installing GHCup..."
