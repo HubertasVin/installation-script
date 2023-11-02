@@ -116,7 +116,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler xcompmgr lpf-spotify-client qtile rofi
+ 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler xcompmgr lpf-spotify-client qtile rofi bash-completion
 	flatpak install flathub -y net.nokyan.Resources com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
@@ -323,6 +323,9 @@ cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
 #TODO ---- Setup qtile and rofi ----
 cp -r "$scriptLoc"/user_config/qtile/* ~/.config/qtile
 cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
+
+#TODO ---- Setup ctrl-backspace and ctrl-delete for terminal ----
+cp ~/Installation_Script/user_config/.inputrc ~
 
 #if [ "$SHELL" = "/bin/bash" ]; then
 #	#TODO ---- Setup .bashrc ----

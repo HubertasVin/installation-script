@@ -47,6 +47,7 @@ cd ~/Installation_Script/
 sudo cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar
 sudo cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile
 sudo cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi
+cp ~/.inputrc ~/Installation_Script/user_config/
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
 git push 1> /dev/null 2> /dev/null

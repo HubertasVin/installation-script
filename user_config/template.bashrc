@@ -1,5 +1,10 @@
 export VISUAL=nvim;
 export EDITOR=nvim;
+
+#TODO ---- auto completion ----
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
 MONITOR=$(polybar -m|tail -1|sed -e 's/:.*$//g')
 xrandr --output DP-1-1 --mode 1920x1080 --rate 144 2>/dev/null
 alias qtile_conf="cd ~/.config/qtile"
