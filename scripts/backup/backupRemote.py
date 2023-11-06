@@ -9,14 +9,14 @@ import paramiko
 from scp import SCPClient
 
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
+    HEADER='\033[95m'
+    OKBLUE='\033[94m'
+    OKCYAN='\033[96m'
+    OKGREEN='\033[92m'
+    WARNING='\033[93m'
+    FAIL='\033[91m'
+    ENDC='\033[0m'
+    BOLD='\033[1m'
     UNDERLINE = '\033[4m'
 
 class arguments:
@@ -78,6 +78,8 @@ def remove_contents(folder):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+os.system("~/Installation_Script/scripts/backup.sh")
+
 if not os.path.exists(tmpBackupLoc):
     os.makedirs(tmpBackupLoc.absolute())
     os.makedirs(tmpBackupLoc)
@@ -85,7 +87,7 @@ if not os.path.exists(tmpBackupLoc):
 if len(os.listdir(tmpBackupLoc)) != 0:
     remove_contents(tmpBackupLoc)
 
-os.system("~/Installation_Script/scripts/backup.sh")
+print("Starting backup to remote")
 
 # Copy all the backup files to temporary folder
 print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)#
