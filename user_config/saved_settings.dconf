@@ -257,7 +257,7 @@ workspace-names=['web', 'code1', 'code2', 'game', 'comm', 'misc']
 sidebar=false
 
 [org/gnome/evince/default]
-window-ratio=(1.6125781092521672, 1.2447738502470544)
+window-ratio=(0.98947368421052628, 0.48590864917395532)
 
 [org/gnome/evolution-data-server]
 migrated=true
@@ -306,8 +306,8 @@ search-filter-time-type='last_modified'
 search-view='list-view'
 
 [org/gnome/nautilus/window-state]
-initial-size=(950, 1114)
-maximized=false
+initial-size=(1914, 1194)
+maximized=true
 
 [org/gnome/nm-applet/eap/133f9c18-991a-43a7-a3d9-794a84fcb970]
 ignore-ca-cert=true
@@ -761,7 +761,7 @@ sort-column='size'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(0, 42)
+window-position=(356, 108)
 window-size=(1207, 906)
 
 [system/proxy]

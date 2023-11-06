@@ -1,0 +1,1 @@
+python backupRemote.py -g --src ~/Documents ~/Pictures --dst=~/Backup --ip=10.15.5.176 --user=hubertas --password=1LNLT5X9
