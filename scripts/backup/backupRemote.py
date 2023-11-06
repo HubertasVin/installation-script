@@ -87,7 +87,7 @@ if not os.path.exists(tmpBackupLoc):
 if len(os.listdir(tmpBackupLoc)) != 0:
     remove_contents(tmpBackupLoc)
 
-print("Starting backup to remote")
+print("  Starting backup to remote")
 
 # Copy all the backup files to temporary folder
 print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)#
