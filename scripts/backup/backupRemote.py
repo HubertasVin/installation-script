@@ -105,9 +105,8 @@ for src_dir in arguments.config["src"]:
 # Delete git projects and turn them into their own scripts to clone them
 print(bcolors.OKBLUE + "Deleting git projects and turning them into their own scripts to clone them" + bcolors.ENDC)
 # folder=home_dir + "/Documents"
-f=open("/home/hubertas/Installation_Script/scripts/backup/.gitignoreremote")
+f=open(".gitignoreremote")
 gitignoreremote=f.read().splitlines()
-print(gitignoreremote)
 
 if arguments.config["exclude_git"]:
     for root, subdirs, files in os.walk(tmpBackupLoc):
