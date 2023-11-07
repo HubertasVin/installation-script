@@ -42,7 +42,7 @@ def create_ssh_client(server, user, password):
     client.connect(server, username=user, password=password)
     return client
 
-def getGITRemote(path):
+def get_git_remote(path):
     repo=Repo(path)
     remote=repo.config_reader().get_value("remote \"origin\"", "url")
     return remote
@@ -60,6 +60,14 @@ def generate_git_clone_script(script_loc, parent_path, remote):
     
     f.write("git clone " + remote + " " + parent_path + "\n")
 
+def add_move_to_git_clone_script(src, dst):
+    script_loc=Path(script_loc)
+    path_to_script=os.path.join(script_loc, "gitClone.sh")
+
+    f=open(path_to_script, "a")
+    
+    f.write("mv " + src + " " + dst + "\n")
+
 def make_tarfile(output_filename, source_dirs):
     with tarfile.open(output_filename, "w:gz") as tar:
         for source_dir in source_dirs:
@@ -76,7 +84,7 @@ def remove_contents(folder):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
         except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
+            print("Failed to delete %s\n%s" % (file_path, e))
 
 os.system("~/Installation_Script/scripts/backup.sh")
 
@@ -90,7 +98,7 @@ if len(os.listdir(tmpBackupLoc)) != 0:
 print("Starting backup to remote")
 
 # Copy all the backup files to temporary folder
-print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)#
+print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)
 for src_dir in arguments.config["src"]:
     shutil.copytree(src_dir, tmpBackupLoc + "/" + os.path.basename(src_dir), dirs_exist_ok=True)
 
@@ -103,9 +111,12 @@ gitignoreremote=f.read().splitlines()
 if arguments.config["exclude_git"]:
     for root, subdirs, files in os.walk(tmpBackupLoc):
         for d in subdirs:
-            if d == ".git" and getGITRemote(os.path.join(root, d)) not in gitignoreremote:
-                generate_git_clone_script(tmpBackupLoc, root, getGITRemote(os.path.join(root, d)))
+            if d == ".git" and get_git_remote(os.path.join(root, d)) not in gitignoreremote:
+                generate_git_clone_script(tmpBackupLoc, root, get_git_remote(os.path.join(root, d)))
                 shutil.rmtree(root)
+
+for src_dir in arguments.config["src"]:
+    add_move_to_git_clone_script(os.path.basename(src_dir), src_dir)
 
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
