@@ -115,7 +115,7 @@ if arguments.config["exclude_git"]:
                 shutil.rmtree(root)
 
 for src_dir in arguments.config["src"]:
-    add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), os.path.abspath(src_dir))
+    add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), os.path.dirname(src_dir))
 
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
