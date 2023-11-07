@@ -99,6 +99,7 @@ print("Starting backup to remote")
 
 # Copy all the backup files to temporary folder
 print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)
+print(arguments.config["src"])
 for src_dir in arguments.config["src"]:
     shutil.copytree(src_dir, tmpBackupLoc + "/" + os.path.basename(src_dir), dirs_exist_ok=True)
 
