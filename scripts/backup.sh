@@ -30,7 +30,7 @@ git push 1> /dev/null 2> /dev/null
 Backup_Success
 
 # Backup Pictures
-echo -e "${OKBLUE}BBacking up Pictures${NC}"
+echo -e "${OKBLUE}Backing up Pictures${NC}"
 cd ~/Pictures
 git add . 1> /dev/null
 git commit -m "Backup" 1> /dev/null
