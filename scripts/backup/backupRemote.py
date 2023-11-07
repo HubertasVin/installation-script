@@ -107,8 +107,6 @@ print(bcolors.OKBLUE + "Deleting git projects and turning them into their own sc
 f=open(home_dir + "/Installation_Script/scripts/backup/.gitignoreremote")
 gitignoreremote=f.read().splitlines()
 
-print(gitignoreremote)
-
 if arguments.config["exclude_git"]:
     for root, subdirs, files in os.walk(tmpBackupLoc):
         for d in subdirs:
