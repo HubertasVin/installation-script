@@ -60,7 +60,7 @@ def generate_git_clone_script(script_loc, parent_path, remote):
     
     f.write("git clone " + remote + " " + parent_path + "\n")
 
-def add_move_to_git_clone_script(src, dst):
+def add_move_to_git_clone_script(script_loc, src, dst):
     script_loc=Path(script_loc)
     path_to_script=os.path.join(script_loc, "gitClone.sh")
 
@@ -116,7 +116,7 @@ if arguments.config["exclude_git"]:
                 shutil.rmtree(root)
 
 for src_dir in arguments.config["src"]:
-    add_move_to_git_clone_script(os.path.basename(src_dir), src_dir)
+    add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), src_dir)
 
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
