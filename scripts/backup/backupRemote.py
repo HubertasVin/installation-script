@@ -99,7 +99,6 @@ print("Starting backup to remote")
 
 # Copy all the backup files to temporary folder
 print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)
-print(arguments.config["src"])
 for src_dir in arguments.config["src"]:
     shutil.copytree(src_dir, tmpBackupLoc + "/" + os.path.basename(src_dir), dirs_exist_ok=True)
 
@@ -115,9 +114,9 @@ if arguments.config["exclude_git"]:
                 generate_git_clone_script(tmpBackupLoc, root, get_git_remote(os.path.join(root, d)))
                 shutil.rmtree(root)
 
-# for src_dir in arguments.config["src"]:
-#     add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), src_dir)
-exit()
+for src_dir in arguments.config["src"]:
+    add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), src_dir)
+
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
 timeNow=datetime.now()
