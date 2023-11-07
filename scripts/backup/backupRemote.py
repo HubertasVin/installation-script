@@ -115,9 +115,9 @@ if arguments.config["exclude_git"]:
                 generate_git_clone_script(tmpBackupLoc, root, get_git_remote(os.path.join(root, d)))
                 shutil.rmtree(root)
 
-for src_dir in arguments.config["src"]:
-    add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), src_dir)
-
+# for src_dir in arguments.config["src"]:
+#     add_move_to_git_clone_script(tmpBackupLoc, os.path.basename(src_dir), src_dir)
+exit()
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
 timeNow=datetime.now()
