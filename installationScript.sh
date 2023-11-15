@@ -100,14 +100,6 @@ elif [ `which rpm 2>/dev/null` ]; then
 	sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
 	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 	sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-	sudo dnf copr enable t0xic0der/nvidia-auto-installer-for-fedora -y
-
-	#TODO ---- Install nvidia drivers ----
-	sudo dnf install nvautoinstall -y
-	sudo nvautoinstall rpmadd
-	sudo nvautoinstall driver
-	sudo nvautoinstall nvrepo
-	sudo nvautoinstall plcuda
 
 	#TODO ---- Setup Flatpak ----
 	PROMPT_COMMAND="Setting Up Flatpak..."
@@ -116,8 +108,8 @@ elif [ `which rpm 2>/dev/null` ]; then
 
 	#TODO ---- Install necessary applications ----
 	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr nvautoinstall ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 flatpak neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty redshift tldr flameshot brightnessctl gnetwork-manager-applet udiskie ntfs-3g notification-daemon polybar bdftopcf xset intel-gpu-tools aha nvtop ghc-compiler xcompmgr lpf-spotify-client qtile rofi bash-completion nitrogen
-	flatpak install flathub -y net.nokyan.Resources com.spotify.Client com.github.IsmaelMartinez.teams_for_linux
+ 	sudo dnf install -y --allowerasing xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler lpf-spotify-client bash-completion gnome-shell-extension-pop-shell xprop
+	flatpak install flathub -y net.nokyan.Resources com.github.IsmaelMartinez.teams_for_linux
 
 	#TODO ---- Intall ffmpeg ----
 	PROMPT_COMMAND="Installing ffmpeg..."
@@ -313,16 +305,16 @@ git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/theme
 cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 
 #TODO ---- Install fonts for Polybar ----
-STYLE='simple'
-[[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
-cp -rf "$scriptLoc"/fonts/* "$FDIR"
+# STYLE='simple'
+# [[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
+# cp -rf "$scriptLoc"/fonts/* "$FDIR"
 
 #TODO ---- Setup Polybar ----
-cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
+# cp -r "$scriptLoc"/user_config/polybar/* ~/.config/polybar
 
 #TODO ---- Setup qtile and rofi ----
-cp -r "$scriptLoc"/user_config/qtile/* ~/.config/qtile
-cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
+# cp -r "$scriptLoc"/user_config/qtile/* ~/.config/qtile
+# cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
 
 #TODO ---- Setup ctrl-backspace and ctrl-delete for terminal ----
 cp ~/Installation_Script/user_config/.inputrc ~
