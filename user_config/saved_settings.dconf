@@ -79,7 +79,7 @@ secondary-color='#294172'
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'lt'), ('xkb', 'us'), ('xkb', 'gb')]
+mru-sources=[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'gb')]
 sources=[('xkb', 'gb'), ('xkb', 'lt'), ('xkb', 'us')]
 xkb-options=@as []
 
