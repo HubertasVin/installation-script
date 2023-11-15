@@ -1,10 +1,10 @@
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/desktop/wm/preferences/workspace-names'
-saved-view='/org/gnome/desktop/wm/preferences/workspace-names'
+saved-pathbar-path='/org/gnome/desktop/wm/keybindings/switch-input-source-backward'
+saved-view='/org/gnome/desktop/wm/keybindings/switch-input-source-backward'
 show-warning=false
-window-height=500
+window-height=987
 window-is-maximized=false
-window-width=540
+window-width=938
 
 [desktop/ibus/general]
 preload-engines=['xkb:gb::eng', 'xkb:lt::lit']
@@ -79,7 +79,7 @@ secondary-color='#294172'
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'us'), ('xkb', 'lt'), ('xkb', 'gb')]
+mru-sources=[('xkb', 'lt'), ('xkb', 'us'), ('xkb', 'gb')]
 sources=[('xkb', 'gb'), ('xkb', 'lt'), ('xkb', 'us')]
 xkb-options=@as []
 
@@ -250,8 +250,6 @@ switch-applications=@as []
 switch-applications-backward=@as []
 switch-group=@as []
 switch-group-backward=@as []
-switch-input-source=['']
-switch-input-source-backward=['']
 switch-to-workspace-1=['']
 switch-to-workspace-2=['']
 switch-to-workspace-3=['']
