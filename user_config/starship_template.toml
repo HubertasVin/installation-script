@@ -1,10 +1,44 @@
 # Use custom format
-format = '''
-[┌](%COLORCODE)$directory$rust$package
-[└─>](%COLORCODE) '''
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$git_metrics\
+$line_break\
+$character"""
 
-# Wait 10 milliseconds for starship to check files under the current directory.
-scan_timeout = 10
+#format = '''
+#[┌](#E53935)$directory\$git_state
+#[└─>](#E53935) '''
 
-# Disable the blank line at the start of the prompt
-add_newline = false
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[directory]
+style = "%COLORCODE"
+read_only = " ᖇ"
+truncation_length = 4
+truncate_to_repo = false
+
+[character]
+success_symbol = "[❯](#3684DD)"
+error_symbol = "[❯](#E53935)"
+vicmd_symbol = "[❮](#4CAF50)"
+
+[git_branch]
+symbol = "⎇  "
+format = "[$symbol$branch]($style) "
+style = "bright-black"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "cyan"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[git_metrics]
+disabled = false
+
