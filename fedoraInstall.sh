@@ -1,0 +1,50 @@
+
+((scriptSize+=45))
+#TODO ---- Post-installation necessary commands ----
+PROMPT_COMMAND="Running Post-Installation System Updates..."
+sudo dnf update -y
+sudo dnf upgrade --refresh -y
+
+#TODO ---- Add repos ----
+sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo
+sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+#TODO ---- Setup Flatpak ----
+PROMPT_COMMAND="Setting Up Flatpak..."
+sudo dnf install --assumeyes flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+#TODO ---- Install necessary applications ----
+PROMPT_COMMAND="Installing Necessary Applications..."
+sudo dnf install -y --allowerasing xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler lpf-spotify-client bash-completion gnome-shell-extension-pop-shell xprop
+flatpak install flathub -y net.nokyan.Resources com.github.IsmaelMartinez.teams_for_linux
+
+#TODO ---- Intall ffmpeg ----
+PROMPT_COMMAND="Installing ffmpeg..."
+sudo dnf -y install ffmpeg
+sudo dnf -y install ffmpeg-devel
+
+#TODO ---- Install VS Code ----
+PROMPT_COMMAND="Installing VS Code..."
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+#TODO ---- Install OnlyOffice ----
+PROMPT_COMMAND="Installing OnlyOffice..."
+wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
+sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
+rm onlyoffice-desktopeditors.x86_64.rpm
+
+#TODO ---- Install Starship ----
+sudo dnf copr enable -y atim/starship
+
+#TODO ---- systemConfiguration ----
+
+#TODO ---- Enable H.264 decoder ----
+sudo dnf config-manager --set-enabled fedora-cisco-openh264
+
+#TODO ---- Update system ----
+PROMPT_COMMAND="Updating System..."
+sudo dnf update -y

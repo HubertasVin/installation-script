@@ -22,191 +22,19 @@ clear
 # ?│                   DEBIAN                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
-	#TODO ---- Post-installation necessary commands ----
-	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	yes | sudo apt update
-	yes | sudo apt upgrade
-
-	#TODO ---- Setup flatpak ----
-	PROMPT_COMMAND="Setting Up Flatpak..."
-	sudo apt install -y flatpak wget
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-	sudo apt clean
-	sudo apt autoremove
-
-	#TODO ---- Install Microsoft packages for VSCode ----
-	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-	sudo dpkg -i packages-microsoft-prod.deb
-	rm packages-microsoft-prod.deb
-
-	#TODO ---- Add VSCode, so that it can be installed using apt install ----
-	PROMPT_COMMAND="Setting Up VS Code..."
-	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-	rm -f packages.microsoft.gpg
-
-	#TODO ---- Install MS Teams ----
-	PROMPT_COMMAND="Setting Up MS Teams..."
-	curl https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg
-	sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/ms-teams stable main" > /etc/apt/sources.list.d/teams.list'
-	sudo apt update
-
-	#TODO ---- Install TrueType fonts ----
-	PROMPT_COMMAND="Installing TrueType Fonts..."
-	update_progress "$scriptProg" "Installing TrueType fonts"
-	wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb
-	sudo dpkg -i ttf-mscorefonts-installer_3.6_all.deb
-	sudo fc-cache -f -v 	# Refresh fonts cache
-	rm ttf-mscorefonts-installer_3.6_all.deb
-
-	#TODO ---- Install necessary applications ----
-	PROMPT_COMMAND="Installing Necessary Applications..."
-	aptApps=(ubuntu-restricted-extras snapd gpg vim xclip gdb gnome-common steam-installer code piper npm apt-transport-https code dosbox gnome-tweaks balena-etcher-electron qbittorrent lutris gimp xdotool dotnet-sdk-7.0 aspnetcore-runtime-7.0 dotnet-runtime-7.0 neofetch docbook-xml teams intltool autoconf-archive itstool docbook-xsl yelp-tools glib2-docs python-pygments gtk-doc-tools sddm dconf-editor ranger maven)
-	snapApps=(starship spotify mc-installer discord vlc)
-
-	for i in ${!aptApps[@]}
-	do
-
-		sudo apt install -y ${aptApps[$i]}
-	done
-	for i in ${!snapApps[@]}
-	do
-		yes | sudo snap install ${snapApps[$i]}
-	done
-
-	PROMPT_COMMAND="Setting Up SDDM..."
-	#TODO ---- Setup sddm ----
-	if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
-		echo 'Pakeičiamas display manager į sddm'
-		systemctl disable `systemctl status display-manager | head -n1 | awk '{print $2;}'`
-		systemctl enable sddm
-		sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
-		sudo mv plasma-chili /usr/share/sddm/themes/
-	fi
-
+    debianInstall.sh
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
-	((scriptSize+=45))
-	#TODO ---- Post-installation necessary commands ----
-	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	sudo dnf update -y
-	sudo dnf upgrade --refresh -y
-
-	#TODO ---- Add repos ----
-	sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo
-	sudo dnf config-manager --add-repo https://terra.fyralabs.com/terra.repo
-	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-	sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-
-	#TODO ---- Setup Flatpak ----
-	PROMPT_COMMAND="Setting Up Flatpak..."
-	sudo dnf install --assumeyes flatpak
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-	#TODO ---- Install necessary applications ----
-	PROMPT_COMMAND="Installing Necessary Applications..."
- 	sudo dnf install -y --allowerasing xrandr ffmpeg ffmpeg-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 neovim gnome-tweaks vlc starship xclip valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler lpf-spotify-client bash-completion gnome-shell-extension-pop-shell xprop
-	flatpak install flathub -y net.nokyan.Resources com.github.IsmaelMartinez.teams_for_linux
-
-	#TODO ---- Intall ffmpeg ----
-	PROMPT_COMMAND="Installing ffmpeg..."
-	sudo dnf -y install ffmpeg
-	sudo dnf -y install ffmpeg-devel
-
-	#TODO ---- Install VS Code ----
-	PROMPT_COMMAND="Installing VS Code..."
-	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-	sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-	#TODO ---- Install Minecraft launcher ----
-	# PROMPT_COMMAND="Setting Up Minecraft..."
-	# sudo dnf copr enable stenstorp/Minecraft -y
-	#TODO ---- Install OnlyOffice ----
-	PROMPT_COMMAND="Installing OnlyOffice..."
-	wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
-	sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
-	rm onlyoffice-desktopeditors.x86_64.rpm
-	#TODO ---- Install Starship ----
-	sudo dnf copr enable -y atim/starship
-	#TODO ---- Enable H.264 decoder ----
-	sudo dnf config-manager --set-enabled fedora-cisco-openh264
-
-	#TODO ---- systemConfiguration ----
-
-	#TODO ---- Update system ----
-	PROMPT_COMMAND="Updating System..."
-	sudo dnf update -y
-
+    fedoraInstall.sh
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 
 elif [ `which pacman 2>/dev/null` ]; then
-	PROMPT_COMMAND="Running Post-Installation System Updates..."
-	sudo pacman -Syu --noconfirm
-	sudo pacman -S base-devel
-
-	#TODO ---- Install yay ----
-	PROMPT_COMMAND="Installing yay..."
-	cd ~/Downloads
-	git clone https://aur.archlinux.org/yay.git
-	cd yay
-	makepkg -si
-	cd ..
-	sudo rm -r yay
-	cd ${scriptLoc}
-
-	#TODO ---- Install applications ----
-	PROMPT_COMMAND="Installing Necessary Applications..."
-	yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams bookworm neovim-plug bashdb)
-	pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm ranger)
-	for i in ${!yayApps[@]}
-	do
-		yay -S --noconfirm ${yayApps[$i]}
-	done
-
-	for i in ${!pacApps[@]}
-	do
-		sudo pacman -S --noconfirm ${pacApps[$i]}
-	done
-
-	#TODO ---- Install Rust ----
-	PROMPT_COMMAND="Installing Rust..."
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh
-	chmod +x rust.sh
-	./rust.sh
-	source ~/.cargo/env
-    rm rust.sh
-	cd ${scriptLoc}
-
-	#TODO ---- Setup SDDM ----
-	# PROMPT_COMMAND="Setting Up SDDM..."
-	# if [ `systemctl status display-manager | head -n1 | awk '{print $2;}'` != 'sddm.service' ]; then
-	# 	systemctl disable `systemctl status display-manager | head -n1 | awk '{print $2;}'`
-	# 	systemctl enable sddm
-	# 	sddm --example-config | sed 's/^DisplayCommand/# &/' | sed 's/^DisplayStopCommand/# &/' | sed '/Current=/s/$/plasma-chili/' | sudo tee /etc/sddm.conf > /dev/null
-	# 	sudo mv plasma-chili /usr/share/sddm/themes/
-	# fi
-
-	cp user_configs/init.lua ~/.config/lua
-	nvim --headless +PlugInstall +qall
-
-	#TODO ---- Change from hardware clock to local clock ----
-	PROMPT_COMMAND="Changing from hardware to local clock..."
-	timedatectl set-local-rtc 1 --adjust-system-clock
-
-	#TODO ---- Setup .zshrc ----
-
-	#TODO ---- Update mimeapps.list to change from VSCode home directory launch to Nautilus ----
-	echo "inode/directory=org.gnome.Nautilus.desktop" >> ~/.config/mimeapps.list
-
-	echo '------------------------------------------------------------------------------------------------'
-	echo '-------------------- Switch on auto start on startup for optimus-manager-qt --------------------'
-	echo '------------------------------------------------------------------------------------------------'
-
+    archInstall.sh
 
 else
 	echo "Unknown distribution"
