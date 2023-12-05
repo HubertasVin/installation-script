@@ -1,3 +1,4 @@
+import os
 import paramiko
 import argparse
 
@@ -11,12 +12,21 @@ class bcolors:
     ENDC='\033[0m'
     BOLD='\033[1m'
     UNDERLINE = '\033[4m'
-    
+
+home_dir = os.path.expanduser('~')
+
 def add_git_to_backup(input):
-    with open("gitlocations.txt", "a") as f:
+    failed = False
+    with open(home_dir + "/tools/backup/" + "gitlocations.txt", "a") as f:
         for i in range(len(input)):
-            f.write(input[i] + "\n")
+            if os.path.exists(input[i]):
+                f.write(input[i] + "\n")
+                print(bcolors.OKGREEN + "Path " + input[i] + " added to backupable git projects list" + bcolors.ENDC)
+            else:
+                print(bcolors.FAIL + "Path " + input[i] + " does not exist" + bcolors.ENDC)
+                failed = True
         f.close()
+    return failed
 
 class arguments:
     parser = argparse.ArgumentParser(
@@ -28,5 +38,7 @@ class arguments:
     args = parser.parse_args()
 
     if args.add_git:
-        add_git_to_backup(args.add_git)
-        print(bcolors.OKGREEN + "Git repositories added to backupable git projects list" + bcolors.ENDC)
+        if add_git_to_backup(args.add_git):
+            print(bcolors.FAIL + "One or more paths failed to be added to the backupable git projects list" + bcolors.ENDC)
+        else:
+            print(bcolors.OKGREEN + "All paths added to backupable git projects list" + bcolors.ENDC)
