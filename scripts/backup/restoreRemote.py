@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import paramiko
+import subprocess
 from whaaaaat import prompt, print_json, Separator
 
 class bcolors:
@@ -89,9 +90,9 @@ sftp.close()
 ssh.close()
 
 print(bcolors.OKBLUE + "Extracting backup" + bcolors.ENDC)
-os.system("tar -xzf " + local_file_path + " -C " + answers["dst"])
+subprocess.run(["tar", "-xzf", local_file_path, "-C", answers["dst"]])
 
 print(bcolors.OKBLUE + "Cloning Git repositories" + bcolors.ENDC)
 os.chdir(answers["dst"])
-os.system("chmod +x " + os.path.dirname(local_file_path) + "/gitClone.sh")
-os.system(os.path.dirname(local_file_path) + "/gitClone.sh")
+subprocess.run(["chmod", "+x", os.path.dirname(local_file_path) + "/gitClone.sh"], cwd=answers["dst"])
+subprocess.run([os.path.dirname(local_file_path) + "/gitClone.sh"], cwd=answers["dst"])

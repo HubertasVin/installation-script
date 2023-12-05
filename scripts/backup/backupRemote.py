@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 import tarfile
 import argparse
+import subprocess
 from git import Repo
 import paramiko
 from scp import SCPClient
@@ -20,8 +21,10 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 class arguments:
-    parser = argparse.ArgumentParser(description="This Python program is designed to facilitate the backup and transfer of files from a local source to a remote destination using Secure Copy Protocol (SCP) over SSH. The program includes features for archiving, excluding Git repositories, and copying files to a remote server. It is primarily intended for use on a Linux system.",
-                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description="This Python program is designed to facilitate the backup and transfer of files from a local source to a remote destination using Secure Copy Protocol (SCP) over SSH. The program includes features for archiving, excluding Git repositories, and copying files to a remote server. It is primarily intended for use on a Linux system.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument("-g", "--exclude-git", action="store_true", help="Exclude Git repositories from backup")
     parser.add_argument("--src", nargs='+', required=True, help="Source directories to be backedup")
     parser.add_argument("--dst", required=True, help="Destination in remote directory for backup")
@@ -86,7 +89,15 @@ def remove_contents(folder):
         except Exception as e:
             print("Failed to delete %s\n%s" % (file_path, e))
 
-os.system("~/Installation_Script/scripts/backup.sh")
+
+#TODO Add git repositories to backup
+if arguments.config["add_git"]:
+    for git in arguments.config["add_git"]:
+        Path("gitlocations.txt").append(git)
+
+# Run backup script
+
+subprocess.run(["backup.sh"], shell=True)
 
 if not os.path.exists(tmpBackupLoc):
     os.makedirs(tmpBackupLoc.absolute())
@@ -121,7 +132,8 @@ for src_dir in arguments.config["src"]:
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
 timeNow=datetime.now()
 source_dirs = [tmpBackupLoc + "/" + dir for dir in os.listdir(tmpBackupLoc)]
-make_tarfile(tmpBackupLoc + "/" + timeNow.strftime('%Y-%m-%d_%H-%M-%S') + ".tar.gz", source_dirs)
+tarfile_name = tmpBackupLoc + "/" + timeNow.strftime('%Y-%m-%d_%H-%M-%S') + ".tar.gz"
+make_tarfile(tarfile_name, source_dirs)
 
 # SCPCLient takes a paramiko transport as an argument
 try :
@@ -130,7 +142,7 @@ try :
     print(bcolors.OKBLUE + "Copying backup to remote" + bcolors.ENDC)
     scp = SCPClient(ssh.get_transport())
 
-    scp.put(tmpBackupLoc + "/" + timeNow.strftime('%Y-%m-%d_%H-%M-%S') + ".tar.gz", remote_path=arguments.config["dst"])
+    scp.put(tarfile_name, remote_path=arguments.config["dst"])
 
     # Close SSH and SCP client
     ssh.close()
