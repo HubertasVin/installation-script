@@ -1,3 +1,5 @@
+scriptLoc=$(pwd)
+
 #TODO ---- Post-installation necessary commands ----
 PROMPT_COMMAND="Running Post-Installation System Updates..."
 yes | sudo apt update

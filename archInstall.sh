@@ -1,3 +1,5 @@
+scriptLoc=$(pwd)
+
 PROMPT_COMMAND="Running Post-Installation System Updates..."
 sudo pacman -Syu --noconfirm
 sudo pacman -S base-devel

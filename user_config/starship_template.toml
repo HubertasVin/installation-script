@@ -17,7 +17,7 @@ format = "[$symbol($version )]($style)"
 
 [directory]
 style = "%COLORCODE"
-read_only = " ᖇ"
+read_only = " 𝑟𝑒𝑎𝑑 𝑜𝑛𝑙𝑦"
 truncation_length = 4
 truncate_to_repo = false
 

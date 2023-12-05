@@ -1,21 +1,23 @@
-export VISUAL=nvim;
-export EDITOR=nvim;
-
-#TODO ---- auto completion ----
+# Configure bash auto-completion
 bind 'set show-all-if-ambiguous on'
 bind 'TAB:menu-complete'
 
-MONITOR=$(polybar -m|tail -1|sed -e 's/:.*$//g')
-xrandr --output DP-1-1 --mode 1920x1080 --rate 144 2>/dev/null
+# Set the aliases
+INSTSCRIPT=/home/hubertas/Installation_Script
+export VISUAL=nvim;
+export EDITOR=nvim;
 alias qtile_conf="cd ~/.config/qtile"
 alias qtile_log="cd ~/.local/share/qtile"
 alias sound_reload="systemctl --user restart pipewire.service"
-alias backupDevice="~/Installation_Script/scripts/backup.sh"
+alias sound_reset="systemctl --user unmask pulseaudio; systemctl --user --now disable pipewire.socket; systemctl --user --now enable pulseaudio.service pulseaudio.socket"
+alias backupDevice="python ~/Installation_Script/scripts/backup/backupRemote.py"
 alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"
+alias prime-run="__NV_PRIME_RENDER_OFFLOAD __GLX_VENDOR_LIBRARY_NAME=nvidia"
 alias ..="cd .."
 alias sshopi="ssh orangepi@10.15.5.176"
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
+# Start Starship
 function set_win_title() {
     local cmd=" ($@)"
     if [[ "$cmd" == " (starship_precmd)" || "$cmd" == " ()" ]]
@@ -43,3 +45,14 @@ function set_win_title() {
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
 trap "$(trap -p DEBUG |  awk -F"'" '{print $2}');set_win_title \${BASH_COMMAND}" DEBUG
+
+# Set Ghcup environment variables
+[ -f "/home/hubertas/.ghcup/env" ] && source "/home/hubertas/.ghcup/env"
+
+
+# Set Rust environment variables
+. "$HOME/.cargo/env"
+
+# This must be at the end to start Sdkman
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

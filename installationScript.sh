@@ -22,20 +22,19 @@ clear
 # ?│                   DEBIAN                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
-    debianInstall.sh
+    sh debianInstall.sh
+
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
-    fedoraInstall.sh
-
+    sh fedoraInstall.sh
+	
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-
 elif [ `which pacman 2>/dev/null` ]; then
-    archInstall.sh
-
+    sh archInstall.sh
 else
 	echo "Unknown distribution"
 fi
@@ -208,16 +207,12 @@ sh ~/.vim/install.sh
 sed -i "83i Plug 'wakatime/vim-wakatime'" ~/.vim/vimrcs/plugins.vim
 nvim +PlugInstall
 nvim +WakaTimeApiKey
-#TODO Allow NeoVIM to access the clipboard
+#TODO ---- Allow NeoVIM to access the clipboard ----
 set clipboard=unnamedplus
 
-#TODO ---- Install AT Launcher ----
-PROMPT_COMMAND="Installing AT Launcher..."
-cd ~
-wget https://raw.githubusercontent.com/DavidoTek/linux-install-atlauncher/master/linux-install-atlauncher.sh
-chmod +x linux-install-atlauncher.sh
-./linux-install-atlauncher.sh
-rm linux-install-atlauncher.sh
+#     ---- Moving scripts to ~/tools ----
+mkdir ~/tools
+cp -r "$scriptLoc"/scripts/* ~/tools
 
 #TODO ---- Setup SSH ----
 PROMPT_COMMAND="Setting Up SSH With Github..."
@@ -252,14 +247,12 @@ git clone git@github.com:HubertasVin/CSGO_Config.git
 PROMPT_COMMAND="Downloading Pictures Backup..."
 git clone git@github.com:HubertasVin/PictureBackup.git
 cp -r PictureBackup/* ~/Pictures/
-cp -r PictureBackup/.git ~/Pictures/
 sudo rm -r PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
-cp "$scriptLoc"/desktop_shortcuts/terminal-autostart.desktop ~/.config/autostart/
+cp "$scriptLoc"/desktop_shortcuts/custom-script-autostart.desktop ~/.config/autostart/
 
 cd $scriptLoc
-chmod +x backup.sh
 
 #TODO ---- Change Installation script remote origin to ssh ----
 git remote remove origin
@@ -267,4 +260,4 @@ git remote add origin git@github.com:HubertasVin/Installation_Script.git
 git push --set-upstream origin master
 
 echo
-echo Done
+echo Done!
