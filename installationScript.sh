@@ -29,7 +29,7 @@ if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
     sh fedoraInstall.sh
-	
+
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
@@ -192,6 +192,11 @@ cd ~/.config/ranger/plugins
 if [ ! -d "ranger-archives" ] ; then
     git clone https://github.com/maximtrp/ranger-archives.git
 fi
+#     ---- Install disk mountingf plugin ----
+cd ~/.config/ranger/plugins
+git clone https://github.com/SL-RU/ranger_udisk_menu
+touch ../commands.py
+echo "from plugins.ranger_udisk_menu.mounter import mount" >> ../commands.py
 
 #TODO ---- Setup NeoVIM ----
 PROMPT_COMMAND="Setting up NeoVIM..."
