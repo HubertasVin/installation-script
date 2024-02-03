@@ -2,7 +2,7 @@
 Name=Terminal Auto-Start
 GenericName=Terminal Auto-start
 Comment=A script that automatically launches the terminal in full-screen mode when the system boots
-Exec=/home/hubertas/tools/startTerminal.sh
+Exec=/home/hubertas/tools/customStartup.sh
 Terminal=false
 Type=Application
 X-GNOME-Autostart-enabled=true

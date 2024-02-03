@@ -12,7 +12,7 @@ alias sound_reload="systemctl --user restart pipewire.service"
 alias sound_reset="systemctl --user unmask pulseaudio; systemctl --user --now disable pipewire.socket; systemctl --user --now enable pulseaudio.service pulseaudio.socket"
 alias backupDevice="python ~/Installation_Script/scripts/backup/backupRemote.py"
 alias xr144="xrandr --output DP-1 --mode 1920x1080 --rate 144"
-alias prime-run="__NV_PRIME_RENDER_OFFLOAD __GLX_VENDOR_LIBRARY_NAME=nvidia"
+alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 alias ..="cd .."
 alias sshopi="ssh orangepi@10.15.5.176"
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
