@@ -39,6 +39,8 @@ else
 	echo "Unknown distribution"
 fi
 
+python -m pip install konsave
+
 if [ `which gsettings` ]; then
 	#TODO ---- Gnome configuration ----
 	PROMPT_COMMAND="Restoring GNOME settings..."
@@ -124,6 +126,13 @@ if [ `which gsettings` ]; then
 	search=%COLORCODE
 	cat user_config/starship_template.toml > ~/.config/starship.toml
 	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
+fi
+
+if [ XDG_CURRENT_DESKTOP="KDE" ]; then
+	#TODO ---- KDE configuration ----
+	PROMPT_COMMAND="Restoring KDE settings..."
+	cd $scriptLoc
+	konsave -i user_config/saved_settings_kde.knsv
 fi
 
 #TODO ---- Configuring alacritty ----
