@@ -16,6 +16,7 @@ alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 alias ..="cd .."
 alias sshopi="ssh orangepi@10.15.5.176"
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+alias time="env time"
 
 # Start Starship
 function set_win_title() {
