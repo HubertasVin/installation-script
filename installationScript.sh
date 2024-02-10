@@ -133,6 +133,7 @@ if [ XDG_CURRENT_DESKTOP="KDE" ]; then
 	PROMPT_COMMAND="Restoring KDE settings..."
 	cd $scriptLoc
 	konsave -i user_config/saved_settings_kde.knsv
+    konsave -a saved_settings_kde
 fi
 
 #TODO ---- Configuring alacritty ----
@@ -167,9 +168,12 @@ cp ~/Installation_Script/user_config/.inputrc ~
 #	cat user_config/template.zshrc >> ~/.zshrc
 #fi
 
-#TODO ---- Install Gradle ----"
+#TODO ---- Install Gradle ----
 PROMPT_COMMAND="Installing Gradle..."
 # sdk install gradle
+
+#TODO ---- Install dotnet script for running .cs files ----
+dotnet tool install -g dotnet-script
 
 # TODO ---- Add the user to pkg-build group ----
 sudo usermod -a -G pkg-build hubertas
