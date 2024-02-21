@@ -36,11 +36,11 @@ cp ~/.inputrc ~/Installation_Script/user_config/
 # backup GNOME settings
 cd ~/Installation_Script/user_config
 dconf dump / > saved_settings.dconf
-if [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
+#if [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
 	# Backup KDE settings
-	konsave -f -s saved_settings_kde
-	konsave -f -e saved_settings_kde
-fi
+#	konsave -f -s saved_settings_kde
+#	konsave -f -e saved_settings_kde
+#fi
 
 echo "Starting backup to git"
 

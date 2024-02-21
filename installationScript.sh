@@ -39,9 +39,9 @@ else
 	echo "Unknown distribution"
 fi
 
-python -m pip install konsave
+pip install konsave
 
-if [ `which gsettings` ]; then
+if [ `which gnome-shell` ]; then
 	#TODO ---- Gnome configuration ----
 	PROMPT_COMMAND="Restoring GNOME settings..."
 	cd $scriptLoc
@@ -55,90 +55,94 @@ if [ `which gsettings` ]; then
 	gsettings set org.gnome.shell.keybindings toggle-application-view []
 	gsettings set org.gnome.settings-daemon.plugins.media-keys screenreader []
 	gsettings set org.gnome.shell.keybindings toggle-overview []
-
-	PS3="Select your prefered color for the theme: "
-
-
-	select themeColor in default purple pink red orange yellow green teal blue all
-	do
-		case $themeColor in
-			"default")
-				echo "Selected the $themeColor color"
-				colorCode="#FB8C00"
-				break;;
-			"purple")
-				echo "Selected the $themeColor color"
-				colorCode="#AB47BC"
-				break;;
-			"pink")
-				echo "Selected the $themeColor color"
-				colorCode="#EC407A"
-				break;;
-			"red")
-				echo "Selected the $themeColor color"
-				colorCode="#E53935"
-				break;;
-			"orange")
-				echo "Selected the $themeColor color"
-				colorCode="#FB8C00"
-				break;;
-			"yellow")
-				echo "Selected the $themeColor color"
-				colorCode="#FBC02D"
-				break;;
-			"green")
-				echo "Selected the $themeColor color"
-				colorCode="#4CAF50"
-				break;;
-			"teal")
-				echo "Selected the $themeColor color"
-				colorCode="#009688"
-				break;;
-			"blue")
-				echo "Selected the $themeColor color"
-				colorCode="#3684DD"
-				break;;
-			"all")
-				echo "Selected the $themeColor color"
-				colorCode="#FB8C00"
-				break;;
-			*)
-		esac
-	done
-	#TODO ---- Theme installation ----
-	PROMPT_COMMAND="Installing Graphite Theme For GNOME..."
-	git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
-	sudo Graphite-gtk-theme/install.sh -t $themeColor
-	sudo rm -r Graphite-gtk-theme/
-	gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
-	gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
-
-	#TODO ---- Icon pack installation ----
-	PROMPT_COMMAND="Installing Tela Circle Icon Pack..."
-	git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
-	Tela-circle-icon-theme/install.sh $themeColor
-	sudo rm -r Tela-circle-icon-theme/
-	gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
-
-	#TODO ---- Configuring Starship ----
-	PROMPT_COMMAND="Configuring Starship..."
-	mkdir -p ~/.config && touch ~/.config/starship.toml
-	search=%COLORCODE
-	cat user_config/starship_template.toml > ~/.config/starship.toml
-	sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 fi
 
-if [ XDG_CURRENT_DESKTOP="KDE" ]; then
+if [ `which plasmashell` ]; then
 	#TODO ---- KDE configuration ----
 	PROMPT_COMMAND="Restoring KDE settings..."
 	cd $scriptLoc
-	konsave -i user_config/saved_settings_kde.knsv
-    konsave -a saved_settings_kde
+	# konsave -i user_config/saved_settings_kde.knsv
+    	# konsave -a saved_settings_kde
 fi
+
+PS3="Select your prefered color for the theme: "
+
+
+select themeColor in default purple pink red orange yellow green teal blue all
+do
+        case $themeColor in
+                "default")
+                        echo "Selected the $themeColor color"
+                        colorCode="#FB8C00"
+                        break;;
+                "purple")
+                        echo "Selected the $themeColor color"
+                        colorCode="#AB47BC"
+                        break;;
+                "pink")
+                        echo "Selected the $themeColor color"
+                        colorCode="#EC407A"
+                        break;;
+                "red")
+                        echo "Selected the $themeColor color"
+                        colorCode="#E53935"
+                        break;;
+                "orange")
+                        echo "Selected the $themeColor color"
+                        colorCode="#FB8C00"
+                        break;;
+                "yellow")
+                        echo "Selected the $themeColor color"
+                        colorCode="#FBC02D"
+                        break;;
+                "green")
+                        echo "Selected the $themeColor color"
+                        colorCode="#4CAF50"
+                        break;;
+                "teal")
+                        echo "Selected the $themeColor color"
+                        colorCode="#009688"
+                        break;;
+                "blue")
+                        echo "Selected the $themeColor color"
+                        colorCode="#3684DD"
+                        break;;
+                "all")
+                        echo "Selected the $themeColor color"
+                        colorCode="#FB8C00"
+                        break;;
+                *)
+        esac
+done
+
+#TODO ---- Theme installation ----
+PROMPT_COMMAND="Installing Graphite Theme For GNOME..."
+git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
+sudo Graphite-gtk-theme/install.sh -t $themeColor
+sudo rm -r Graphite-gtk-theme/
+gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
+gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
+
+#TODO ---- Icon pack installation ----
+PROMPT_COMMAND="Installing Tela Circle Icon Pack..."
+git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
+Tela-circle-icon-theme/install.sh $themeColor
+sudo rm -r Tela-circle-icon-theme/
+gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
+
+#TODO ---- Configuring Starship ----
+PROMPT_COMMAND="Configuring Starship..."
+mkdir -p ~/.config && touch ~/.config/starship.toml
+search=%COLORCODE
+cat user_config/starship_template.toml > ~/.config/starship.toml
+sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 
 #TODO ---- Configuring alacritty ----
 mkdir -p ~/.config/alacritty/themes
-git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+cd ~/.config/alacritty/themes
+if [ ! -d "alacritty-theme" ]; then
+	git clone https://github.com/alacritty/alacritty-theme
+fi
 cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 
 #TODO ---- Install fonts for Polybar ----
@@ -154,33 +158,36 @@ cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 # cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
 
 #TODO ---- Setup ctrl-backspace and ctrl-delete for terminal ----
-cp ~/Installation_Script/user_config/.inputrc ~
+cp "$scriptLoc"/user_config/.inputrc ~
 
-#if [ "$SHELL" = "/bin/bash" ]; then
-#	#TODO ---- Setup .bashrc ----
-#	PROMPT_COMMAND="Updating .bashrc..."
-#	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
-#	cat user_config/template.bashrc >> ~/.bashrc
-#elif [ "$SHELL" = "/bin/zsh" ]; then
-#	#TODO ---- Setup .zshrc ----
-#	PROMPT_COMMAND="Updating .zshrc..."
-#	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
-#	cat user_config/template.zshrc >> ~/.zshrc
-#fi
+if [ "$SHELL" = "/bin/bash" ]; then
+	#TODO ---- Setup .bashrc ----
+	PROMPT_COMMAND="Updating .bashrc..."
+	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
+	cat user_config/template.bashrc >> ~/.bashrc
+elif [ "$SHELL" = "/bin/zsh" ]; then
+	#TODO ---- Setup .zshrc ----
+	PROMPT_COMMAND="Updating .zshrc..."
+	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
+	cat user_config/template.zshrc >> ~/.zshrc
+fi
+
+#TODO ---- Install Spotify ----
+snap install spotify
 
 #TODO ---- Install Gradle ----
 PROMPT_COMMAND="Installing Gradle..."
 # sdk install gradle
 
 #TODO ---- Install dotnet script for running .cs files ----
-dotnet tool install -g dotnet-script
+dotnet tool update -g dotnet-script
 
 # TODO ---- Add the user to pkg-build group ----
 sudo usermod -a -G pkg-build hubertas
 
 #TODO ---- Install GHCup ----
-PROMPT_COMMAND="Installing GHCup..."
-curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+# PROMPT_COMMAND="Installing GHCup..."
+# curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 #TODO ---- Setup One Dark Pro for terminal ----
 PROMPT_COMMAND="Setting up One Dark Pro for terminal..."
@@ -239,6 +246,7 @@ echo 'Enter git email:'
 read gitEmail
 ssh-keygen -t rsa -b 4096 -C $gitEmail
 cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+cat ~/.ssh/id_rsa.pub | wl-copy
 echo 'SSH key copied to clipboard, go to Github:'
 echo '1. Go to user settings'
 echo '2. Press "SSH and GPG keys"'

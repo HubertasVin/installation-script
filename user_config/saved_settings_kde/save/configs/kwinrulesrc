@@ -1,0 +1,62 @@
+[$Version]
+update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
+
+[1]
+Description=Apllication settings for Steam
+desktops=993ba348-ee7c-46ae-960b-42cc85df63d5
+desktopsrule=3
+wmclass=Steam
+wmclassmatch=1
+
+[2]
+Description=Application settings for Spotify
+desktops=29bb0b4b-e672-412d-b3e2-b38272b0d9e5
+desktopsrule=3
+wmclass=Spotify
+wmclassmatch=1
+
+[3]
+Description=Application settings for Discord
+desktops=29bb0b4b-e672-412d-b3e2-b38272b0d9e5
+desktopsrule=3
+wmclass=Discord
+wmclassmatch=1
+
+[3b5b1395-2e02-4a47-a789-dad4d867aaa2]
+Description=Apllication settings for Steam
+desktops=2014d4e7-aa2f-4415-b65f-3a4e47e71f54
+desktopsrule=3
+wmclass=Steam
+wmclassmatch=1
+
+[7b73591e-4983-4a29-aa4f-7036a0545abe]
+Description=Application settings for VS Code
+desktops=21c91c68-b275-41b8-baae-b904a1bd5c0c
+desktopsrule=3
+wmclass=code
+wmclassmatch=1
+
+[General]
+count=3
+rules=1,2,3
+
+[b39c1626-614f-487e-95e7-31dc5a645007]
+Description=Application settings for Discord
+desktops=29bb0b4b-e672-412d-b3e2-b38272b0d9e5
+desktopsrule=3
+wmclass=Discord
+wmclassmatch=1
+
+[cc7584e4-0d98-4c3e-928f-01518905b9eb]
+Description=Application settings for Discord
+desktops=29bb0b4b-e672-412d-b3e2-b38272b0d9e5
+desktopsrule=3
+wmclass=Discord
+wmclassmatch=1
+
+[d07172be-570d-4d4c-b3a8-5793ca74f9b3]
+Description=Application settings for Spotify
+desktops=29bb0b4b-e672-412d-b3e2-b38272b0d9e5
+desktopsrule=3
+wmclass=Spotify
+wmclassmatch=1

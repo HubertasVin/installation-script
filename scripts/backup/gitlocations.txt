@@ -1,3 +1,2 @@
 /home/hubertas/Documents/BackupFolder/
-/home/hubertas/Pictures/
 /home/hubertas/Installation_Script/
