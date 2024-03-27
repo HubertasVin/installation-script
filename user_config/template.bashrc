@@ -6,6 +6,8 @@ bind 'TAB:menu-complete'
 INSTSCRIPT=/home/hubertas/Installation_Script
 export VISUAL=nvim;
 export EDITOR=nvim;
+alias rm='rm -i'; alias cp='cp -i'; alias mv='mv -i'
+alias cls='clear'
 alias qtile_conf="cd ~/.config/qtile"
 alias qtile_log="cd ~/.local/share/qtile"
 alias sound_reload="systemctl --user restart pipewire.service"
