@@ -18,6 +18,15 @@ alias sshopi="ssh orangepi@10.15.5.176"
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 alias time="env time"
 
+# Create new directory and change the current directory to it
+mkcd() {
+    if [ -d "$1" ]; then
+        echo "Error: Directory '$1' already exists."
+    else
+        mkdir "$1" && cd "$1"
+    fi
+}
+
 # Start Starship
 function set_win_title() {
     local cmd=" ($@)"
@@ -45,15 +54,15 @@ function set_win_title() {
 }
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
-trap "$(trap -p DEBUG |  awk -F"'" '{print $2}');set_win_title \${BASH_COMMAND}" DEBUG
+# trap "$(trap -p DEBUG |  awk -F"'" '{print $2}');set_win_title \${BASH_COMMAND}" DEBUG
 
 # Set Ghcup environment variables
-[ -f "/home/hubertas/.ghcup/env" ] && source "/home/hubertas/.ghcup/env"
+ [ -f "/home/hubertas/.ghcup/env" ] && source "/home/hubertas/.ghcup/env"
 
 
 # Set Rust environment variables
 . "$HOME/.cargo/env"
 
 # This must be at the end to start Sdkman
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+ export SDKMAN_DIR="$HOME/.sdkman"
+ [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

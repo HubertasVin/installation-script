@@ -157,9 +157,9 @@ cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 # cp -r "$scriptLoc"/user_config/qtile/* ~/.config/qtile
 # cp -r "$scriptLoc"/user_config/rofi/* ~/.config/rofi
 
-#TODO ---- Setup ctrl-backspace and ctrl-delete for terminal ----
+#TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
 cp "$scriptLoc"/user_config/.inputrc ~
-
+cp "$scriptLoc"/user_config/.tmux.conf ~
 if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
@@ -177,7 +177,10 @@ snap install spotify
 
 #TODO ---- Install Gradle ----
 PROMPT_COMMAND="Installing Gradle..."
-# sdk install gradle
+sdk install gradle
+
+#TODO ---- Install Rustc ----
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 #TODO ---- Install dotnet script for running .cs files ----
 dotnet tool update -g dotnet-script

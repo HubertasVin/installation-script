@@ -33,14 +33,11 @@ cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
 cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
 # Backup inputrc
 cp ~/.inputrc ~/Installation_Script/user_config/
-# backup GNOME settings
+# Backup TMUX configuration
+cp -r ~/.tmux.conf ~/Installation_Script/user_config 2>/dev/null || :
+# Backup GNOME settings
 cd ~/Installation_Script/user_config
 dconf dump / > saved_settings.dconf
-#if [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
-	# Backup KDE settings
-#	konsave -f -s saved_settings_kde
-#	konsave -f -e saved_settings_kde
-#fi
 
 echo "Starting backup to git"
 
