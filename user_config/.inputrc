@@ -2,13 +2,3 @@
 "\e[3;5~": kill-word
 "\e[A": history-search-backward
 "\e[B": history-search-forward
-
-set editing-mode vi
-$if mode=vi
-
-set keymap vi-command
-Control-q: clear-screen
-
-set keymap vi-insert
-Control-q: clear-screen 
-$endif
