@@ -228,11 +228,8 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 mkdir -p ~/.vim
 cd ~/.vim
 mkdir -p ~/.config/nvim/
-if [ ! -d "nvimrc" ] ; then
-	git clone --depth=1 https://github.com/venjiang/nvimrc.git ~/.vim
-fi
-sh ~/.vim/install.sh
-sed -i "83i Plug 'wakatime/vim-wakatime'" ~/.vim/vimrcs/plugins.vim
+cp -r ~/Installation_Script/user_config/nvim ~/.config/
+cp -r ~/Installation_Script/user_config/vimrcs ~/.vim/
 nvim +PlugInstall
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
@@ -245,7 +242,7 @@ cp -r "$scriptLoc"/scripts/* ~/tools
 #TODO ---- Setup SSH ----
 PROMPT_COMMAND="Setting Up SSH With Github..."
 echo 'Setting up ssh'
-echo 'Enter git email:'
+echo -n 'Enter git email: '
 read gitEmail
 ssh-keygen -t rsa -b 4096 -C $gitEmail
 cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
@@ -259,7 +256,7 @@ read -n 1 -p '(Press any key to continue)' input
 #TODO ---- Setup git ----
 PROMPT_COMMAND="Setting Up Git..."
 echo 'Setting up git'
-echo 'Enter git username:'
+echo -n 'Enter git username: '
 read gitName
 git config --global user.name "$gitName"
 git config --global user.email "$gitEmail"

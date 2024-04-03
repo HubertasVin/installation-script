@@ -31,6 +31,8 @@ cp ~/.config/nvim/init.lua ~/Installation_Script/user_config/init.lua 2>/dev/nul
 cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar 2>/dev/null || :
 cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
 cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
+cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
+cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
 # Backup inputrc
 cp ~/.inputrc ~/Installation_Script/user_config/
 # Backup TMUX configuration
