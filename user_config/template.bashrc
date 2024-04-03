@@ -1,11 +1,19 @@
+# Changing bash history size
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+
+# Changing default editor to nvim
+export VISUAL=nvim;
+export EDITOR=nvim;
+
 # Configure bash auto-completion
 bind 'set show-all-if-ambiguous on'
 bind 'TAB:menu-complete'
 
-# Set the aliases
+# Adding short path names
 INSTSCRIPT=/home/hubertas/Installation_Script
-export VISUAL=nvim;
-export EDITOR=nvim;
+
+# Set the aliases
 alias rm='rm -i'; alias cp='cp -i'; alias mv='mv -i'
 alias cls='clear'
 alias qtile_conf="cd ~/.config/qtile"
