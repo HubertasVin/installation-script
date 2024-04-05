@@ -194,9 +194,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 dotnet tool update -g dotnet-script
 
 # TODO ---- Add the user to pkg-build group ----
-if ! command -v pacman &> /dev/null
+if command -v pacman &> /dev/null
 then
-	sudo usermod -a -G pkg-build hubertas
+    local user=$(whoami)
+	sudo usermod -a -G pkg-build $user
 fi
 
 #TODO ---- Install GHCup ----

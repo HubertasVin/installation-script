@@ -20,7 +20,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 #TODO ---- Install necessary applications ----
 PROMPT_COMMAND="Installing Necessary Applications..."
-sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable glfw glfw-devel glew glew-devel dotnet-sdk-6.0 lm_sensors neovim gnome-tweaks vlc starship xclip wl-clipboard valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler bash-completion gnome-shell-extension-pop-shell xprop peek
+sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel java-17-openjdk java-17-openjdk-devel dotnet-sdk-7.0 aspnetcore-runtime-7.0 winehq-stable sassc glfw glfw-devel glew glew-devel dotnet-sdk-6.0 lm_sensors snapd neovim gnome-tweaks vlc starship xclip wl-clipboard valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler bash-completion gnome-shell-extension-pop-shell xprop peek
 flatpak install flathub -y net.nokyan.Resources com.github.IsmaelMartinez.teams_for_linux
 
 #TODO ---- Intall ffmpeg ----
@@ -36,7 +36,7 @@ sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.m
 #TODO ---- Install OnlyOffice ----
 PROMPT_COMMAND="Installing OnlyOffice..."
 wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
-sudo dnf install onlyoffice-desktopeditors.x86_64.rpm
+sudo dnf install -y onlyoffice-desktopeditors.x86_64.rpm
 rm onlyoffice-desktopeditors.x86_64.rpm
 
 #TODO ---- Install Starship ----
