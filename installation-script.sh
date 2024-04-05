@@ -22,19 +22,19 @@ clear
 # ?│                   DEBIAN                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then	# App DEBIAN
-    sh debianInstall.sh
+    sh debian-install.sh
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                   FEDORA                   │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
-    sh fedoraInstall.sh
+    sh fedora-install.sh
 
 # ?┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # ?│                    ARCH                    │
 # ?┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which pacman 2>/dev/null` ]; then
-    sh archInstall.sh
+    sh arch-install.sh
 else
 	echo "Unknown distribution"
 fi
