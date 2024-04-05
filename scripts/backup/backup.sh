@@ -8,7 +8,7 @@ exec 2>/tmp/error
 handle_error() {
     local ERROR=$(cat /tmp/error)
     echo $ERROR
-    echo "$0 at line $1 with command $ERROR" >> /home/hubertas/tools/tool_errors.log
+    echo "$0 at line $1 with command $ERROR" >> /home/hubertas/tools/tool-errors.log
 }
 
 trap 'handle_error $LINENO' ERR
@@ -35,8 +35,6 @@ PROMPT_COMMAND="Backing up..."
 
 echo -e "${OKBLUE}Backing up...${NC}"
 echo -e "${OKBLUE}Copying config files${NC}"
-# Backup nvim settings
-cp ~/.config/nvim/init.lua ~/Installation_Script/user_config/init.lua 2>/dev/null || :
 # Backup polybar, qtile, rofi configs
 cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar 2>/dev/null || :
 cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :

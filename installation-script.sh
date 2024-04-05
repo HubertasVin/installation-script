@@ -2,14 +2,25 @@
 # Basic commands after linux install
 scriptLoc=$(pwd)
 
-#TODO ---- Install SDKMAN ----
-curl -s "https://get.sdkman.io" | bash
+touch /tmp/error
 
-set -e # Crash program on error
+#TODO ---- Script error handling ----
+set -e
+
+exec 2>/tmp/error
+
+handle_error() {
+    local ERROR=$(cat /tmp/error)
+    echo $ERROR
+    echo "$0 at line $1 with command $ERROR"
+}
+
+trap 'handle_error $LINENO' ERR
+
 
 FDIR="$HOME/.local/share/fonts"
 
-# Install Fonts
+#TODO ---- Install Fonts ----
 install_fonts() {
 y	echo -e "\n[*] Installing fonts..."
 	[[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
@@ -38,6 +49,9 @@ elif [ `which pacman 2>/dev/null` ]; then
 else
 	echo "Unknown distribution"
 fi
+
+
+
 #TODO ---------------------
 #TODO Package manager setup
 #TODO ---- Snapd setup ----
@@ -55,6 +69,9 @@ case "$answer" in
         echo 'Skipping confirmation'
         ;;
 esac
+
+#TODO ---- Install SDKMAN ----
+curl -s "https://get.sdkman.io" | bash
 #TODO ---- Load sdk function to the script ----
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
