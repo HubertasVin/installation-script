@@ -39,7 +39,24 @@ else
 	echo "Unknown distribution"
 fi
 
-pip install konsave
+#TODO ---- Snapd setup ----
+sudo systemctl enable --now snapd.service
+echo 'Reboot your computer to enable snapd to function fully'
+read -p 'Confirm to reboot your computer (yn)' answer
+
+case "$answer" in
+    [yY]|[yY][eE][sS])
+        reboot
+        ;;
+    [nN]|[nN][oO])
+        ;;
+    *)
+        echo 'Skipping confirmation'
+        ;;
+esac
+
+#TODO ---- Load sdk function to the script ----
+source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 if [ `which gnome-shell` ]; then
 	#TODO ---- Gnome configuration ----
@@ -57,16 +74,7 @@ if [ `which gnome-shell` ]; then
 	gsettings set org.gnome.shell.keybindings toggle-overview []
 fi
 
-if [ `which plasmashell` ]; then
-	#TODO ---- KDE configuration ----
-	PROMPT_COMMAND="Restoring KDE settings..."
-	cd $scriptLoc
-	# konsave -i user_config/saved_settings_kde.knsv
-    	# konsave -a saved_settings_kde
-fi
-
 PS3="Select your prefered color for the theme: "
-
 
 select themeColor in default purple pink red orange yellow green teal blue all
 do
@@ -164,12 +172,12 @@ if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
 	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
-	cat user_config/template.bashrc >> ~/.bashrc
+	cat "$scriptLoc"/user_config/template.bashrc >> ~/.bashrc
 elif [ "$SHELL" = "/bin/zsh" ]; then
 	#TODO ---- Setup .zshrc ----
 	PROMPT_COMMAND="Updating .zshrc..."
 	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
-	cat user_config/template.zshrc >> ~/.zshrc
+	cat "$scriptLoc"/user_config/template.zshrc >> ~/.zshrc
 fi
 
 #TODO ---- Install Spotify ----
@@ -186,7 +194,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 dotnet tool update -g dotnet-script
 
 # TODO ---- Add the user to pkg-build group ----
-sudo usermod -a -G pkg-build hubertas
+if ! command -v pacman &> /dev/null
+then
+	sudo usermod -a -G pkg-build hubertas
+fi
 
 #TODO ---- Install GHCup ----
 # PROMPT_COMMAND="Installing GHCup..."
@@ -251,7 +262,7 @@ echo 'SSH key copied to clipboard, go to Github:'
 echo '1. Go to user settings'
 echo '2. Press "SSH and GPG keys"'
 echo '3. Paste in the copied text in to the text box'
-read -n 1 -p '(Press any key to continue)' input
+read -n 1 -p '(Press any key to continue)' answer
 
 #TODO ---- Setup git ----
 PROMPT_COMMAND="Setting Up Git..."

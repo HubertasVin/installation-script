@@ -1,8 +1,8 @@
 scriptLoc=$(pwd)
 
 PROMPT_COMMAND="Running Post-Installation System Updates..."
-sudo pacman -Syu --noconfirm
-sudo pacman -S base-devel
+sudo pacman -Syu --noconfirm pacman-contrib
+sudo pacman -S --noconfirm base-devel
 
 #TODO ---- Install yay ----
 PROMPT_COMMAND="Installing yay..."
@@ -16,17 +16,9 @@ cd ${scriptLoc}
 
 #TODO ---- Install applications ----
 PROMPT_COMMAND="Installing Necessary Applications..."
-yayApps=(optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin dotnet-sdk-bin eclipse-java teams bookworm neovim-plug bashdb)
-pacApps=(nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree gtk-doc sddm ranger)
-for i in ${!yayApps[@]}
-do
-	yay -S --noconfirm ${yayApps[$i]}
-done
+yay -S --noconfirm optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin eclipse-java teams bookworm neovim-plug bashdb
 
-for i in ${!pacApps[@]}
-do
-	sudo pacman -S --noconfirm ${pacApps[$i]}
-done
+sudo pacman -S --noconfirm snapd nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime dosbox starship neofetch xclip dotnet-sdk spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree python-pip gtk-doc sddm ranger
 
 #TODO ---- Install Rust ----
 PROMPT_COMMAND="Installing Rust..."
