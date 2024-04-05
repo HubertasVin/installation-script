@@ -226,11 +226,15 @@ cd ~/.config/ranger/plugins
 if [ ! -d "ranger-archives" ] ; then
     git clone https://github.com/maximtrp/ranger-archives.git
 fi
-#     ---- Install disk mountingf plugin ----
+#TODO ---- Install disk mountingf plugin ----
 cd ~/.config/ranger/plugins
-git clone https://github.com/SL-RU/ranger_udisk_menu
+if [ ! -d "ranger_udisk_menu" ]; then
+	git clone https://github.com/SL-RU/ranger_udisk_menu
+fi
 touch ../commands.py
-echo "from plugins.ranger_udisk_menu.mounter import mount" >> ../commands.py
+if [ $(grep -Fxq "from plugins.ranger_udisk_menu.mounter import mount" commands.py) ]; then
+	echo "from plugins.ranger_udisk_menu.mounter import mount" >> ../commands.py
+fi
 
 #TODO ---- Setup NeoVIM ----
 PROMPT_COMMAND="Setting up NeoVIM..."
@@ -247,7 +251,7 @@ nvim +WakaTimeApiKey
 set clipboard=unnamedplus
 
 #     ---- Moving scripts to ~/tools ----
-mkdir ~/tools
+mkdir -p ~/tools
 cp -r "$scriptLoc"/scripts/* ~/tools
 
 #TODO ---- Setup SSH ----
