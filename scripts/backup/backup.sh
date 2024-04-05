@@ -3,6 +3,16 @@ scriptLoc="$(cd $(dirname "$0"); pwd)"
 
 set -e
 
+exec 2>/tmp/error
+
+handle_error() {
+    local ERROR=$(cat /tmp/error)
+    echo $ERROR
+    echo "$0 at line $1 with command $ERROR" >> /home/hubertas/tools/tool_errors.log
+}
+
+trap 'handle_error $LINENO' ERR
+
 # Backup script
 currentLoc=$(pwd)
 YELLOW='\033[1;33m'
@@ -56,3 +66,4 @@ done < gitlocations.txt
 
 echo -e "${OKGREEN}Backup complete${NC}"
 PROMPT_COMMAND="Completed backup."
+
