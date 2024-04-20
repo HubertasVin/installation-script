@@ -3,8 +3,11 @@ export HISTSIZE=10000
 export HISTFILESIZE=10000
 
 # Changing default editor to nvim
-export VISUAL=nvim;
-export EDITOR=nvim;
+export VISUAL=nvim
+export EDITOR=nvim
+
+# Disable Starship warnings
+export STARSHIP_LOG=error
 
 # Configure bash auto-completion
 bind 'set show-all-if-ambiguous on'
