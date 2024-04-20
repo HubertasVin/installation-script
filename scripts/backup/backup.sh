@@ -3,7 +3,7 @@ scriptLoc="$(cd $(dirname "$0"); pwd)"
 
 set -e
 
-exec 2>/tmp/error
+#exec 2>/tmp/error
 
 handle_error() {
     local ERROR=$(cat /tmp/error)
@@ -57,8 +57,8 @@ do
 	echo -e "${OKBLUE}Backing up ${p}${NC}"
 	cd $p
 	git add . 1> /dev/null
-	git commit -m "Backup" 1> /dev/null || :
-	git push 1> /dev/null 2> /dev/null
+	git commit -m "Backup"
+	git push
 	Backup_Success
 done < gitlocations.txt
 

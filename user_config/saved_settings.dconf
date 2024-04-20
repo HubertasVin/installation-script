@@ -17,7 +17,8 @@ display-mode='list'
 
 [com/uploadedlobster/peek]
 persist-save-folder='/home/hubertas/Documents/BackupFolder/Programming/spaceAppDemo'
-persist-window-geometry=(6, 107, 1870, 917)
+persist-window-geometry=(0, 32, 1919, 1120)
+recording-output-format='mp4'
 
 [desktop/ibus/general]
 preload-engines=['xkb:gb::eng', 'xkb:lt::lit']
@@ -73,7 +74,7 @@ panel-id='world'
 size=(870, 690)
 
 [org/gnome/control-center]
-last-panel='background'
+last-panel='power'
 window-state=(930, 608, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -100,8 +101,8 @@ translate=true
 [org/gnome/desktop/background]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Amsterdam_3.jpg'
-picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Amsterdam_3.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
+picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -128,7 +129,7 @@ toolbar-style='text'
 toolkit-accessibility=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark']
 show-banners=false
 
 [org/gnome/desktop/notifications/application/alacritty]
@@ -209,6 +210,9 @@ application-id='org.gnome.Evince.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-evolution-alarm-notify]
 application-id='org.gnome.Evolution-alarm-notify.desktop'
 
+[org/gnome/desktop/notifications/application/org-gnome-extensions-desktop]
+application-id='org.gnome.Extensions.desktop.desktop'
+
 [org/gnome/desktop/notifications/application/org-gnome-extensions]
 application-id='org.gnome.Extensions.desktop'
 
@@ -241,6 +245,9 @@ application-id='org.kde.drkonqi.desktop'
 
 [org/gnome/desktop/notifications/application/org-qbittorrent-qbittorrent]
 application-id='org.qbittorrent.qBittorrent.desktop'
+
+[org/gnome/desktop/notifications/application/org-wireshark-wireshark]
+application-id='org.wireshark.Wireshark.desktop'
 
 [org/gnome/desktop/notifications/application/pgadmin4]
 application-id='pgadmin4.desktop'
@@ -281,7 +288,7 @@ color-shading-type='solid'
 lock-delay=uint32 900
 lock-enabled=true
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Amsterdam_3.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -500,7 +507,7 @@ last-folder-path='/home/hubertas/Downloads/The Walking Dead'
 night-light-enabled=true
 
 [org/gnome/settings-daemon/plugins/media-keys]
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']
 email=@as []
 home=@as []
 screenreader=@as []
@@ -509,7 +516,7 @@ www=['<Super>b']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>t'
-command='alacritty -e tmux'
+command='terminator -e tmux'
 name='Launch terminal'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
@@ -524,7 +531,7 @@ name='Launch flameshot'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
 binding='<Super>f'
-command='alacritty -e ranger'
+command='terminator -e ranger'
 name='Launch Ranger'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
@@ -547,11 +554,11 @@ sleep-inactive-battery-timeout=1800
 
 [org/gnome/shell]
 app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'libreoffice-impress.desktop': <{'position': <9>}>, 'simple-scan.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'org.gnome.Terminal.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'org.gnome.TextEditor.desktop': <{'position': <20>}>, 'org.gnome.Tour.desktop': <{'position': <21>}>, 'balena-etcher-electron.desktop': <{'position': <22>}>, 'com.spotify.Client.desktop': <{'position': <23>}>}, {'com.discordapp.Discord.desktop': <{'position': <0>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'Counter-Strike Global Offensive.desktop': <{'position': <4>}>, 'It Takes Two.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'steam.desktop': <{'position': <8>}>, 'Steam Linux Runtime - Soldier.desktop': <{'position': <9>}>}]
-command-history=['reboot', 'polybar', 'poweroff', 'r', 'xkill']
+command-history=['reboot', 'polybar', 'poweroff', 'terminator -e tmux', 'xkill', 'r']
 disabled-extensions=['pop-shell@system76.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
-enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'cronomix@zagortenay333', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou']
+enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou', 'cronomix@zagortenay333']
 favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop']
-last-selected-power-profile='power-saver'
+last-selected-power-profile='performance'
 welcome-dialog-last-shown-version='43.0'
 
 [org/gnome/shell/app-switcher]
@@ -573,7 +580,7 @@ gap=6
 application-list=['code.desktop:2', 'com.spotify.Client.desktop:5', 'com.github.IsmaelMartinez.teams_for_linux.desktop:5', 'org.gnome.Evince.desktop:5', 'ATLauncher.desktop:4', 'onlyoffice-desktopeditors.desktop:5', 'libreoffice-calc.desktop:5', 'libreoffice-impress.desktop:5', 'libreoffice-startcenter.desktop:5', 'libreoffice-writer.desktop:5', 'org.gnome.Terminal.desktop:3', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90.desktop:2']
 
 [org/gnome/shell/extensions/awesome-tiles]
-gap-size=2
+gap-size=1
 gap-size-increments=2
 shortcut-align-window-to-center=@as []
 shortcut-decrease-gap-size=['<Super>minus']
@@ -920,13 +927,13 @@ toggle-quick-settings=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1707560798
+check-timestamp=int64 1713433180
 first-run=false
-flatpak-purge-timestamp=int64 1706919399
+flatpak-purge-timestamp=int64 1713435117
 install-timestamp=int64 1706613314
 online-updates-timestamp=int64 1695972091
-security-timestamp=int64 0
-update-notification-timestamp=int64 1707560714
+security-timestamp=int64 1713168142003445
+update-notification-timestamp=int64 1713433161
 upgrade-notification-timestamp=int64 1707081153
 
 [org/gnome/system/location]
@@ -1110,7 +1117,7 @@ window-size=(888, 374)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.011666666666666659, 0.11803030303030299, 0.25, 1.0), (0.13722222222222227, 0.26937098255280068, 0.43333333333333335, 1.0), (0.13722222222222222, 0.26937098255280068, 0.43333333333333335, 1.0), (0.029333333333333326, 0.21260606060606055, 0.44, 1.0), (0.070588235294117646, 0.28235294117647058, 0.54509803921568623, 1.0), (0.51372549019607838, 0.58039215686274515, 0.58823529411764708, 1.0)]
-selected-color=(true, 0.011666666666666659, 0.11803030303030299, 0.25, 1.0)
+selected-color=(true, 0.0, 0.0, 0.0, 1.0)
 
 [org/gtk/settings/file-chooser]
 date-format='regular'
@@ -1119,9 +1126,9 @@ show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=166
-sort-column='modified'
+sort-column='name'
 sort-directories-first=false
-sort-order='descending'
+sort-order='ascending'
 type-format='category'
 window-position=(356, 79)
 window-size=(1207, 906)
