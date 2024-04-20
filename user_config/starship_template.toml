@@ -5,25 +5,19 @@ $git_branch\
 $git_state\
 $git_status\
 $git_metrics\
+$all\
 $line_break\
 $character"""
-
-#format = '''
-#[┌](#E53935)$directory\$git_state
-#[└─>](#E53935) '''
-
-[nodejs]
-format = "[$symbol($version )]($style)"
 
 [directory]
 style = "%COLORCODE"
 read_only = " 𝑟𝑒𝑎𝑑 𝑜𝑛𝑙𝑦"
 truncation_length = 4
-truncate_to_repo = false
+truncate_to_repo = true
 
 [character]
 success_symbol = "[❯](#3684DD)"
-error_symbol = "[❯](#E53935)"
+error_symbol = "[✗](#E53935)"
 vicmd_symbol = "[❮](#4CAF50)"
 
 [git_branch]
@@ -42,3 +36,68 @@ style = "bright-black"
 [git_metrics]
 disabled = false
 
+[conda]
+symbol = "📦 "
+format = "[•](bold green) is [$symbol$version]($style) "
+
+[package]
+symbol = "📦 "
+format = "[•](bold green) is [$symbol$version]($style) "
+
+[docker_context]
+disabled = false
+symbol = "🐳 "
+format = "[•](bold green) via [$symbol$context]($style) "
+style = "bold blue"
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+
+[golang]
+symbol = "🐹 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[java]
+symbol = "☕ "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[perl]
+symbol = "🐪 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[php]
+symbol = "🐘 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[python]
+symbol = "🐍 "
+format = "[•](bold green) via [$symbol$version]($style) "
+style = "bold yellow"
+pyenv_prefix = "venv "
+python_binary = ["./venv/bin/python", "python", "python3", "python2"]
+detect_extensions = ["py"]
+version_format = "v${raw}"
+
+[ruby]
+symbol = "💎 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[rust]
+symbol = "🦀 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[scala]
+symbol = "🔺 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[swift]
+symbol = "🦅 "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[haskell]
+symbol = "λ "
+format = "[•](bold green) via [$symbol$version]($style) "
+
+[nodejs]
+format = "via [🟢 Node.js $version](bold green) "
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
