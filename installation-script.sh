@@ -218,7 +218,12 @@ set clipboard=unnamedplus
 
 #TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
 cp "$scriptLoc"/user_config/.inputrc ~
-cp "$scriptLoc"/user_config/.tmux.conf ~
+
+cat "$scriptLoc"/user_config/template.tmux.conf > ~/.tmux.conf.local
+search=%COLORCODE
+cat "$scriptLoc"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
+sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
+
 if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
