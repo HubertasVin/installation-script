@@ -9,6 +9,8 @@ $all\
 $line_break\
 $character"""
 
+command_timeout = 150
+
 [directory]
 style = "%COLORCODE"
 read_only = " 𝑟𝑒𝑎𝑑 𝑜𝑛𝑙𝑦"
