@@ -17,7 +17,7 @@ bind 'TAB:menu-complete'
 INSTSCRIPT=/home/hubertas/Installation_Script
 
 # Set the aliases
-alias rm='rm -i'; alias cp='cp -i'; alias mv='mv -i'
+alias rm='rm -i'
 alias cls='clear'
 alias qtile_conf="cd ~/.config/qtile"
 alias qtile_log="cd ~/.local/share/qtile"

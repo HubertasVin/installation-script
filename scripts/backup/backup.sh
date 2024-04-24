@@ -35,19 +35,22 @@ PROMPT_COMMAND="Backing up..."
 
 echo -e "${OKBLUE}Backing up...${NC}"
 echo -e "${OKBLUE}Copying config files${NC}"
-# Backup polybar, qtile, rofi configs
+# Copy polybar, qtile, rofi configs
 cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar 2>/dev/null || :
 cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
 cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
+# Copy Nvim configuration
 cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
 cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
-# Backup inputrc
+# Copy inputrc
 cp ~/.inputrc ~/Installation_Script/user_config/
-# Backup TMUX configuration
-cp -r ~/.tmux.conf ~/Installation_Script/user_config/template.tmux.conf 2>/dev/null || :
-cp -r ~/.tmux.conf.local ~/Installation_Script/user_config/template.tmux.conf.local 2>/dev/null || :
+# Copy TMUX configuration
+cp ~/.tmux.conf ~/Installation_Script/user_config/template.tmux.conf 2>/dev/null || :
+cp ~/.tmux.conf.local ~/Installation_Script/user_config/template.tmux.conf.local 2>/dev/null || :
 sed -i 's/^tmux_conf_theme_colour_6=.*/tmux_conf_theme_colour_6="%COLORCODE"    # default/' ~/Installation_Script/user_config/template.tmux.conf.local
-# Backup GNOME settings
+# Copy Terminator configuration
+cp -r ~/.config/terminator/* ~/Installation_Script/user_config/terminator 2>/dev/null || :
+# Copy GNOME settings
 cd ~/Installation_Script/user_config
 dconf dump / > saved_settings.dconf
 

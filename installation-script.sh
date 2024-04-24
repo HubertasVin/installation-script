@@ -170,7 +170,7 @@ rm -rf one-gnome-terminal/
 #TODO ---- Configuring Starship ----
 mkdir -p ~/.config && touch ~/.config/starship.toml
 search=%COLORCODE
-cat user_config/starship_template.toml > ~/.config/starship.toml
+cat "$scriptLoc"/user_config/starship_template.toml > ~/.config/starship.toml
 sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 
 #TODO ---- Configuring alacritty ----
@@ -209,8 +209,8 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 mkdir -p ~/.vim
 cd ~/.vim
 mkdir -p ~/.config/nvim/
-cp -r ~/Installation_Script/user_config/nvim ~/.config/
-cp -r ~/Installation_Script/user_config/vimrcs ~/.vim/
+cp -r "$scriptLoc"/nvim ~/.config/
+cp -r "$scriptLoc"/user_config/vimrcs ~/.vim/
 nvim +PlugInstall
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
@@ -218,7 +218,7 @@ set clipboard=unnamedplus
 
 #TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
 cp "$scriptLoc"/user_config/.inputrc ~
-
+cp -r "$scriptLoc"/user_config/terminator ~/.config
 cat "$scriptLoc"/user_config/template.tmux.conf > ~/.tmux.conf.local
 search=%COLORCODE
 cat "$scriptLoc"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
