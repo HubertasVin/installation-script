@@ -5,7 +5,7 @@ $git_branch\
 $git_state\
 $git_status\
 $git_metrics\
-$all\
+[cmd_duration]\
 $line_break\
 $character"""
 
@@ -38,68 +38,6 @@ style = "bright-black"
 [git_metrics]
 disabled = false
 
-[conda]
-symbol = "📦 "
-format = "[•](bold green) is [$symbol$version]($style) "
-
-[package]
-symbol = "📦 "
-format = "[•](bold green) is [$symbol$version]($style) "
-
-[docker_context]
-disabled = false
-symbol = "🐳 "
-format = "[•](bold green) via [$symbol$context]($style) "
-style = "bold blue"
-only_with_files = true
-detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
-
-[golang]
-symbol = "🐹 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[java]
-symbol = "☕ "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[perl]
-symbol = "🐪 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[php]
-symbol = "🐘 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[python]
-symbol = "🐍 "
-format = "[•](bold green) via [$symbol$version]($style) "
-style = "bold yellow"
-pyenv_prefix = "venv "
-python_binary = ["./venv/bin/python", "python", "python3", "python2"]
-detect_extensions = ["py"]
-version_format = "v${raw}"
-
-[ruby]
-symbol = "💎 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[rust]
-symbol = "🦀 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[scala]
-symbol = "🔺 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[swift]
-symbol = "🦅 "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[haskell]
-symbol = "λ "
-format = "[•](bold green) via [$symbol$version]($style) "
-
-[nodejs]
-format = "via [🟢 Node.js $version](bold green) "
-detect_files = ["package.json", ".node-version"]
-detect_folders = ["node_modules"]
+[cmd_duration]
+min_time = 2000
+format = "[•](bold green) took [$duration]($style)"
