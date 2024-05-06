@@ -18,7 +18,7 @@ INSTSCRIPT=/home/hubertas/Installation_Script
 
 # Set the aliases
 alias rm='rm -i'
-alias cls='clear'
+alias clr='clear'
 alias qtile_conf="cd ~/.config/qtile"
 alias qtile_log="cd ~/.local/share/qtile"
 alias sound_reload="systemctl --user restart pipewire.service"
