@@ -47,7 +47,7 @@ cp ~/.inputrc ~/Installation_Script/user_config/
 # Copy TMUX configuration
 cp ~/.tmux.conf ~/Installation_Script/user_config/template.tmux.conf 2>/dev/null || :
 cp ~/.tmux.conf.local ~/Installation_Script/user_config/template.tmux.conf.local 2>/dev/null || :
-sed -i 's/^tmux_conf_theme_colour_6=.*/tmux_conf_theme_colour_6="%COLORCODE"    # default/' ~/Installation_Script/user_config/template.tmux.conf.local
+sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/Installation_Script/user_config/template.tmux.conf.local
 # Copy Terminator configuration
 cp -r ~/.config/terminator/* ~/Installation_Script/user_config/terminator 2>/dev/null || :
 # Copy GNOME settings
