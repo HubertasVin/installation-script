@@ -7,7 +7,7 @@ touch /tmp/error
 #TODO ---- Script error handling ----
 set -e
 
-exec 2>/tmp/error
+# exec 2>/tmp/error
 
 handle_error() {
     local ERROR=$(cat /tmp/error)
@@ -17,12 +17,11 @@ handle_error() {
 
 trap 'handle_error $LINENO' ERR
 
-
 FDIR="$HOME/.local/share/fonts"
 
 #TODO ---- Install Fonts ----
 install_fonts() {
-y	echo -e "\n[*] Installing fonts..."
+	echo -e "\n[*] Installing fonts..."
 	[[ ! -d "$FDIR" ]] && mkdir -p "$FDIR"
 	cp -rf $DIR/fonts/* "$FDIR"
 }
@@ -47,7 +46,7 @@ elif [ `which rpm 2>/dev/null` ]; then
 elif [ `which pacman 2>/dev/null` ]; then
     sh arch-install.sh
 else
-	echo "Unknown distribution"
+    echo "Unknown distribution"
 fi
 
 
@@ -70,8 +69,10 @@ case "$answer" in
         ;;
 esac
 
-#TODO ---- Install SDKMAN ----
-curl -s "https://get.sdkman.io" | bash
+if [ ! -d "$HOME/.sdkman" ]; then
+    #TODO ---- Install SDKMAN ----
+    curl -s "https://get.sdkman.io" | bash
+fi
 #TODO ---- Load sdk function to the script ----
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
@@ -100,44 +101,56 @@ do
         "default")
             echo "Selected the $themeColor color"
             colorCode="#FB8C00"
+            break
             ;;
         "purple")
             echo "Selected the $themeColor color"
             colorCode="#AB47BC"
+            break
             ;;
         "pink")
             echo "Selected the $themeColor color"
             colorCode="#EC407A"
+            break
             ;;
         "red")
             echo "Selected the $themeColor color"
             colorCode="#E53935"
+            break
             ;;
         "orange")
             echo "Selected the $themeColor color"
             colorCode="#FB8C00"
+            break
             ;;
         "yellow")
             echo "Selected the $themeColor color"
             colorCode="#FBC02D"
+            break
             ;;
         "green")
             echo "Selected the $themeColor color"
             colorCode="#4CAF50"
+            break
             ;;
         "teal")
             echo "Selected the $themeColor color"
             colorCode="#009688"
+            break
             ;;
         "blue")
             echo "Selected the $themeColor color"
             colorCode="#3684DD"
+            break
             ;;
         "all")
-            echo "Selected the $themeColor color"
-            colorCode="#FB8C00"
+            echo "Selected all colors"
+            colorCode="#FB8C00"  # Assuming you have a default or special handling for 'all'
+            break
             ;;
         *)
+            echo "Invalid selection. Please select a valid color."
+            ;;
     esac
 done
 
@@ -209,7 +222,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 mkdir -p ~/.vim
 cd ~/.vim
 mkdir -p ~/.config/nvim/
-cp -r "$scriptLoc"/nvim ~/.config/
+cp -r "$scriptLoc"/user_config/nvim ~/.config/
 cp -r "$scriptLoc"/user_config/vimrcs ~/.vim/
 nvim +PlugInstall
 nvim +WakaTimeApiKey
@@ -219,10 +232,11 @@ set clipboard=unnamedplus
 #TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
 cp "$scriptLoc"/user_config/.inputrc ~
 cp -r "$scriptLoc"/user_config/terminator ~/.config
-cat "$scriptLoc"/user_config/template.tmux.conf > ~/.tmux.conf.local
+cat "$scriptLoc"/user_config/template.tmux.conf > ~/.tmux.conf
 search=%COLORCODE
 cat "$scriptLoc"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
 sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
+tmux source-file ~/.tmux.conf
 
 if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
@@ -246,28 +260,33 @@ snap install spotify
 #TODO ---- Install Gradle ----
 sdk install gradle
 #TODO ---- Install Rustc ----
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+if [ ! `which rustc` ]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
 #TODO ---- Install dotnet script for running .cs files ----
 dotnet tool update -g dotnet-script
 #TODO ---- Install GHCup ----
-curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-
-#     ---- Moving scripts to ~/tools ----
+if [ ! `which ghc` ]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+fi
+#TODO ---- Moving scripts to ~/tools ----
 mkdir -p ~/tools
 cp -r "$scriptLoc"/scripts/* ~/tools
 
 #TODO ---- Setup SSH ----
-echo 'Setting up ssh'
-echo -n 'Enter git email: '
-read gitEmail
-ssh-keygen -t rsa -b 4096 -C $gitEmail
-cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-cat ~/.ssh/id_rsa.pub | wl-copy
-echo 'SSH key copied to clipboard, go to Github:'
-echo '1. Go to user settings'
-echo '2. Press "SSH and GPG keys"'
-echo '3. Paste in the copied text in to the text box'
-read -n 1 -p '(Press any key to continue)' answer
+if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
+    echo 'Setting up ssh'
+    echo -n 'Enter git email: '
+    read gitEmail
+    ssh-keygen -t rsa -b 4096 -C $gitEmail
+    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+    cat ~/.ssh/id_rsa.pub | wl-copy
+    echo 'SSH key copied to clipboard, go to Github:'
+    echo '1. Go to user settings'
+    echo '2. Press "SSH and GPG keys"'
+    echo '3. Paste in the copied text in to the text box'
+    read -n 1 -p '(Press any key to continue)' answer
+fi
 
 #TODO ---- Setup git ----
 echo 'Setting up git'
@@ -279,13 +298,18 @@ echo "Host *" >> ~/.ssh/config
 echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
 cd ~/Documents
-git clone git@github.com:HubertasVin/BackupFolder.git
+if [ ! -d "BackupFolder" ]; then
+    git clone git@github.com:HubertasVin/BackupFolder.git
+fi
 cd ~/Pictures
-git clone git@github.com:HubertasVin/PictureBackup.git
-mv -r PictureBackup/* .
-sudo rm -r PictureBackup/
+if [ ! -d "PictureBackup" ]; then
+    git clone git@github.com:HubertasVin/PictureBackup.git
+fi
+rsync -av PictureBackup/* .
+rm -rf PictureBackup/
 
 sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
+mkdir -p ~/.config/autostart
 cp "$scriptLoc"/desktop_shortcuts/custom-script-autostart.desktop ~/.config/autostart/
 
 cd $scriptLoc

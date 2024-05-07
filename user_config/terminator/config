@@ -3,7 +3,11 @@
 [profiles]
   [[default]]
     show_titlebar = False
-    palette = "#fbf1c7:#cc241d:#98971a:#d79921:#458588:#b16286:#689d6a:#7c6f64:#928374:#9d0006:#79740e:#b57614:#076678:#8f3f71:#427b58:#3c3836"
+    background_color = "#1e2127"
+    background_image = None
+    cursor_color = "#676c76"
+    foreground_color = "#5c6370"
+    palette = "#000000:#e06c75:#98c379:#d19a66:#61afef:#c678dd:#56b6c2:#abb2bf:#5c6370:#e06c75:#98c379:#d19a66:#61afef:#c678dd:#56b6c2:#fffefe"
     use_theme_colors = True
 [layouts]
   [[default]]
