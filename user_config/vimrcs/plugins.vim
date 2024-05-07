@@ -81,6 +81,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'simeji/winresizer'
 Plug 'ianva/vim-youdao-translater'
 Plug 'wakatime/vim-wakatime'
+Plug 'colors/onedark.vim'
 " Plug 'mhinz/vim-startify'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " scheme
