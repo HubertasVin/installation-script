@@ -17,8 +17,8 @@ display-mode='list'
 
 [com/uploadedlobster/peek]
 persist-save-folder='/home/hubertas/Documents/BackupFolder/Programming/spaceAppDemo'
-persist-window-geometry=(0, 32, 1919, 1120)
-recording-output-format='mp4'
+persist-window-geometry=(1, 169, 1014, 838)
+recording-output-format='gif'
 
 [desktop/ibus/general]
 preload-engines=['xkb:gb::eng', 'xkb:lt::lit']
@@ -26,6 +26,11 @@ version='1.5.28'
 
 [desktop/ibus/panel/emoji]
 favorites=['€']
+
+[org/gnome/Snapshot]
+is-maximized=false
+window-height=640
+window-width=800
 
 [org/gnome/TextEditor]
 last-save-directory='file:///home/hubertas/Documents/BackupFolder/Programming/DBVS'
@@ -87,6 +92,11 @@ mag-factor=1.0
 [org/gnome/desktop/app-folders]
 folder-children=['Utilities', 'YaST']
 
+[org/gnome/desktop/app-folders/folders/Pardus]
+categories=['X-Pardus-Apps']
+name='X-Pardus-Apps.directory'
+translate=true
+
 [org/gnome/desktop/app-folders/folders/Utilities]
 apps=['gnome-abrt.desktop', 'gnome-system-log.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Connections.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.eog.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Usage.desktop', 'vinagre.desktop']
 categories=['X-GNOME-Utilities']
@@ -101,8 +111,8 @@ translate=true
 [org/gnome/desktop/background]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
-picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
+picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -132,7 +142,7 @@ toolkit-accessibility=false
 disable-lock-screen=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox', 'terminator', 'org-gnome-pomodoro', 'org-mozilla-firefox', 'org-gnome-loupe', 'com-uploadedlobster-peek', 'vlc']
 show-banners=true
 
 [org/gnome/desktop/notifications/application/alacritty]
@@ -152,6 +162,7 @@ application-id='com.spotify.Client.desktop'
 
 [org/gnome/desktop/notifications/application/com-uploadedlobster-peek]
 application-id='com.uploadedlobster.peek.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/discord]
 application-id='discord.desktop'
@@ -191,6 +202,7 @@ application-id='jetbrains-toolbox.desktop'
 
 [org/gnome/desktop/notifications/application/libreoffice-calc]
 application-id='libreoffice-calc.desktop'
+enable=true
 
 [org/gnome/desktop/notifications/application/libreoffice-impress]
 application-id='libreoffice-impress.desktop'
@@ -206,12 +218,14 @@ application-id='org.freedesktop.problems.applet.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-characters]
 application-id='org.gnome.Characters.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/org-gnome-eog]
 application-id='org.gnome.eog.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-evince]
 application-id='org.gnome.Evince.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/org-gnome-evolution-alarm-notify]
 application-id='org.gnome.Evolution-alarm-notify.desktop'
@@ -222,8 +236,17 @@ application-id='org.gnome.Extensions.desktop.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-extensions]
 application-id='org.gnome.Extensions.desktop'
 
+[org/gnome/desktop/notifications/application/org-gnome-loupe]
+application-id='org.gnome.Loupe.desktop'
+enable=false
+
 [org/gnome/desktop/notifications/application/org-gnome-nautilus]
 application-id='org.gnome.Nautilus.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-pomodoro]
+application-id='org.gnome.Pomodoro.desktop'
+enable=true
+show-banners=false
 
 [org/gnome/desktop/notifications/application/org-gnome-settings]
 application-id='org.gnome.Settings.desktop'
@@ -249,6 +272,9 @@ application-id='org.kde.dolphin.desktop'
 [org/gnome/desktop/notifications/application/org-kde-drkonqi]
 application-id='org.kde.drkonqi.desktop'
 
+[org/gnome/desktop/notifications/application/org-mozilla-firefox]
+application-id='org.mozilla.firefox.desktop'
+
 [org/gnome/desktop/notifications/application/org-qbittorrent-qbittorrent]
 application-id='org.qbittorrent.qBittorrent.desktop'
 
@@ -264,11 +290,17 @@ application-id='spotify_spotify.desktop'
 [org/gnome/desktop/notifications/application/steam]
 application-id='steam.desktop'
 
+[org/gnome/desktop/notifications/application/terminator]
+application-id='terminator.desktop'
+
 [org/gnome/desktop/notifications/application/thunar]
 application-id='thunar.desktop'
 
 [org/gnome/desktop/notifications/application/virtualbox]
 application-id='virtualbox.desktop'
+
+[org/gnome/desktop/notifications/application/vlc]
+application-id='vlc.desktop'
 
 [org/gnome/desktop/notifications/application/wine-programs-roblox-roblox-studio]
 application-id='wine-Programs-Roblox-Roblox Studio.desktop'
@@ -290,23 +322,27 @@ tap-to-click=true
 two-finger-scrolling-enabled=true
 
 [org/gnome/desktop/privacy]
+disable-camera=false
+old-files-age=uint32 30
+recent-files-max-age=-1
 report-technical-problems=true
 
 [org/gnome/desktop/screensaver]
 color-shading-type='solid'
 idle-activation-enabled=true
-lock-delay=uint32 900
+lock-delay=uint32 0
 lock-enabled=true
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-03-12-18-44-18-Bruges_2.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
 [org/gnome/desktop/search-providers]
-sort-order=['org.gnome.Contacts.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Nautilus.desktop']
+disabled=['org.gnome.Contacts.desktop', 'org.gnome.Software.desktop']
+sort-order=['org.gnome.Calculator.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Calendar.desktop', 'org.mozilla.firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Boxes.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Characters.desktop', 'org.gnome.clocks.desktop', 'org.gnome.Software.desktop', 'org.gnome.Weather.desktop', 'org.gnome.Contacts.desktop']
 
 [org/gnome/desktop/session]
-idle-delay=uint32 4500
+idle-delay=uint32 0
 
 [org/gnome/desktop/sound]
 allow-volume-above-100-percent=true
@@ -399,6 +435,13 @@ enable-fingerprint-authentication=true
 enable-password-authentication=true
 enable-smartcard-authentication=false
 
+[org/gnome/maps]
+last-viewed-location=[54.674587620315208, 25.286540885464518]
+map-type='MapsStreetSource'
+transportation-type='pedestrian'
+window-maximized=true
+zoom-level=17
+
 [org/gnome/mutter]
 attach-modal-dialogs=true
 center-new-windows=true
@@ -437,6 +480,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/2008abbb-0f7f-4726-a509-b5e0854f521b]
+ignore-ca-cert=true
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/3aa10290-baac-4510-bf0e-d782c8be8e43]
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
@@ -458,6 +505,10 @@ ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/6525ca11-af4e-32c8-939d-1d756b726263]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/6b4eaae6-1240-3da9-abea-f59f7316d52d]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -501,6 +552,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/afcd8bd3-884b-41d9-a83f-4b14e66102b9]
+ignore-ca-cert=true
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/b091bce9-c535-41be-a36a-a7f40d174437]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -533,6 +588,19 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/pomodoro/preferences]
+pomodoro-duration=1500.0
+short-break-duration=300.0
+
+[org/gnome/pomodoro/state]
+timer-date='2024-05-11T18:44:35+0000'
+timer-elapsed=0.0
+timer-paused=false
+timer-score=3.4939304641087849
+timer-state='null'
+timer-state-date='2024-05-11T18:44:35+0000'
+timer-state-duration=0.0
+
 [org/gnome/portal/filechooser/com.discordapp.Discord]
 last-folder-path='/home/hubertas/Downloads'
 
@@ -553,6 +621,9 @@ last-folder-path='/home/hubertas/Downloads'
 
 [org/gnome/portal/filechooser/org.qbittorrent.qBittorrent]
 last-folder-path='/home/hubertas/Downloads/The Walking Dead'
+
+[org/gnome/portal/filechooser/steam]
+last-folder-path='/mnt/games/Steam'
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=true
@@ -607,8 +678,8 @@ sleep-inactive-battery-timeout=1800
 app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'libreoffice-impress.desktop': <{'position': <9>}>, 'simple-scan.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'org.gnome.Terminal.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'org.gnome.TextEditor.desktop': <{'position': <20>}>, 'org.gnome.Tour.desktop': <{'position': <21>}>, 'balena-etcher-electron.desktop': <{'position': <22>}>, 'com.spotify.Client.desktop': <{'position': <23>}>}, {'com.discordapp.Discord.desktop': <{'position': <0>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'Counter-Strike Global Offensive.desktop': <{'position': <4>}>, 'It Takes Two.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'steam.desktop': <{'position': <8>}>, 'Steam Linux Runtime - Soldier.desktop': <{'position': <9>}>}]
 command-history=['reboot', 'polybar', 'poweroff', 'terminator -e tmux', 'r', 'xkill']
 disabled-extensions=['pop-shell@system76.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
-enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou', 'undecorate@sun.wxg@gmail.com', 'fancy-tiling@devroamer.zen', 'unite@hardpixel.eu', 'no-title-bar@franglais125.gmail.com', 'cronomix@zagortenay333', 'color-picker@tuberry']
-favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop']
+enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou', 'undecorate@sun.wxg@gmail.com', 'fancy-tiling@devroamer.zen', 'unite@hardpixel.eu', 'no-title-bar@franglais125.gmail.com', 'cronomix@zagortenay333', 'color-picker@tuberry', 'pomodoro@arun.codito.in']
+favorite-apps=['org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop']
 last-selected-power-profile='performance'
 welcome-dialog-last-shown-version='43.0'
 
@@ -981,9 +1052,9 @@ toggle-quick-settings=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1715075858
+check-timestamp=int64 1715505741
 first-run=false
-flatpak-purge-timestamp=int64 1715086899
+flatpak-purge-timestamp=int64 1715507172
 install-timestamp=int64 1715106374
 online-updates-timestamp=int64 1695972091
 packagekit-historical-updates-timestamp=uint64 1713462781
@@ -1001,7 +1072,31 @@ menu-accelerator-enabled=true
 mnemonics-enabled=false
 
 [org/gnome/terminal/legacy/profiles:]
-list=['58fc2b6d-56e7-4133-99d5-2a3451fb8d84', '3f3448fe-b120-4184-a12d-c9c818e5154e', '596a7b1f-4cea-463f-aa3c-7ef444ceb486']
+list=['58fc2b6d-56e7-4133-99d5-2a3451fb8d84', '3f3448fe-b120-4184-a12d-c9c818e5154e', '596a7b1f-4cea-463f-aa3c-7ef444ceb486', '671cced4-c4a0-43cd-944c-39cba730c0d1']
+
+[org/gnome/terminal/legacy/profiles:/:016c824a-94d0-4664-8a42-e2c13acbe56f]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:0f431f1b-e6f2-452d-9aff-dfd6381987a4]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
 
 [org/gnome/terminal/legacy/profiles:/:0f4b7436-af86-4fd1-a362-b55498f371e2]
 background-color='#282c34'
@@ -1015,7 +1110,55 @@ use-theme-colors=false
 use-transparent-background=true
 visible-name='One Dark'
 
+[org/gnome/terminal/legacy/profiles:/:116179db-8dc2-4d32-bc85-b2254d4e7c99]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:1d6cadd9-cfbd-42fd-a2bb-8eba944eca41]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
 [org/gnome/terminal/legacy/profiles:/:2afaed8b-4f07-4b73-911b-73085c6130f9]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:309fad8f-78e4-45b5-ae0b-3e35c0389506]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:36373005-2cc0-4f83-952b-b908262488b5]
 background-color='#282c34'
 background-transparency-percent=18
 bold-color='#ABB2BF'
@@ -1078,7 +1221,43 @@ use-theme-colors=false
 use-transparent-background=true
 visible-name='One Dark'
 
+[org/gnome/terminal/legacy/profiles:/:671cced4-c4a0-43cd-944c-39cba730c0d1]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
 [org/gnome/terminal/legacy/profiles:/:82d6d7e6-74ad-4572-a6f5-83bf680c6f8b]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:847587d5-de3a-4a0e-8a12-080f9541644f]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:9c04276b-37d3-4475-bf42-6767976f0c3f]
 background-color='#282c34'
 background-transparency-percent=18
 bold-color='#ABB2BF'
@@ -1097,6 +1276,42 @@ foreground-color='rgb(131,148,150)'
 palette=['rgb(23,20,33)', 'rgb(192,28,40)', 'rgb(38,162,105)', 'rgb(162,115,76)', 'rgb(3,30,64)', 'rgb(163,71,186)', 'rgb(42,161,179)', 'rgb(208,207,204)', 'rgb(94,92,100)', 'rgb(246,97,81)', 'rgb(51,218,122)', 'rgb(233,173,12)', 'rgb(42,123,222)', 'rgb(192,97,203)', 'rgb(51,199,222)', 'rgb(255,255,255)']
 use-theme-colors=false
 use-transparent-background=false
+
+[org/gnome/terminal/legacy/profiles:/:b2ca26e6-0a84-4e95-8bbc-3a7f1b371a09]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:b3783198-7b24-4464-947b-fdb20b07d524]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:c5a12ee6-4c9c-4f86-bbfe-a8eaa371f95b]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
 
 [org/gnome/terminal/legacy/profiles:/:ce9053a3-12d8-4182-bd1e-993f782210ec]
 background-color='#282c34'
@@ -1123,6 +1338,18 @@ use-transparent-background=true
 visible-name='One Dark'
 
 [org/gnome/terminal/legacy/profiles:/:f1375d66-8311-40b5-9789-292276829a72]
+background-color='#282c34'
+background-transparency-percent=18
+bold-color='#ABB2BF'
+bold-color-same-as-fg=true
+foreground-color='#abb2bf'
+palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
+use-theme-background=false
+use-theme-colors=false
+use-transparent-background=true
+visible-name='One Dark'
+
+[org/gnome/terminal/legacy/profiles:/:f720de20-37d7-4d10-8f1a-0f5d00224b30]
 background-color='#282c34'
 background-transparency-percent=18
 bold-color='#ABB2BF'
@@ -1165,14 +1392,14 @@ show-type-column=true
 sidebar-width=169
 sort-column='type'
 sort-directories-first=false
-sort-order='descending'
+sort-order='ascending'
 type-format='category'
 view-type='list'
 window-size=(888, 518)
 
 [org/gtk/settings/color-chooser]
-custom-colors=[(0.011666666666666659, 0.11803030303030299, 0.25, 1.0), (0.13722222222222227, 0.26937098255280068, 0.43333333333333335, 1.0), (0.13722222222222222, 0.26937098255280068, 0.43333333333333335, 1.0), (0.029333333333333326, 0.21260606060606055, 0.44, 1.0), (0.070588235294117646, 0.28235294117647058, 0.54509803921568623, 1.0), (0.51372549019607838, 0.58039215686274515, 0.58823529411764708, 1.0)]
-selected-color=(true, 0.0, 0.0, 0.0, 1.0)
+custom-colors=[(0.11764705882352941, 0.12941176470588237, 0.15294117647058825, 1.0), (0.93333333333333335, 0.93333333333333335, 0.92549019607843142, 1.0), (0.36078431372549019, 0.38823529411764707, 0.4392156862745098, 1.0), (0.011666666666666659, 0.11803030303030299, 0.25, 1.0), (0.13722222222222227, 0.26937098255280068, 0.43333333333333335, 1.0), (0.13722222222222222, 0.26937098255280068, 0.43333333333333335, 1.0), (0.029333333333333326, 0.21260606060606055, 0.44, 1.0), (0.070588235294117646, 0.28235294117647058, 0.54509803921568623, 1.0)]
+selected-color=(true, 0.11764705882352941, 0.12941176470588237, 0.15294117647058825, 1.0)
 
 [org/gtk/settings/file-chooser]
 date-format='regular'
@@ -1185,7 +1412,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(357, 79)
+window-position=(357, 77)
 window-size=(1207, 906)
 
 [system/proxy]
