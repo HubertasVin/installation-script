@@ -92,8 +92,6 @@ HANDLE_ERROR_SERIALIZED=$(declare -f handle_error)
 BACKUP_SUCCESS_SERIALIZED=$(declare -f backup_success)
 BACKUP_COMMANDS_SERIALIZED=$(declare -f backup_commands)
 
-echo 'Still here'
-
 tmux new-session -d -s backup-session bash -c "$BACKUP_COMMANDS_SERIALIZED; $HANDLE_ERROR_SERIALIZED; $BACKUP_SUCCESS_SERIALIZED; cd /home/hubertas/tools/backup; backup_commands"
 tmux set-option -t backup-session status off
 TMUX='' tmux attach -t backup-session > /dev/null
