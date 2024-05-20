@@ -186,14 +186,6 @@ search=%COLORCODE
 cat "$scriptLoc"/user_config/starship_template.toml > ~/.config/starship.toml
 sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 
-#TODO ---- Configuring alacritty ----
-mkdir -p ~/.config/alacritty/themes
-cd ~/.config/alacritty/themes
-if [ ! -d "alacritty-theme" ]; then
-	git clone https://github.com/alacritty/alacritty-theme
-fi
-cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
-
 #TODO ---- Setup ranger ----
 ranger --copy-config=rifle
 ranger --copy-config=rc
@@ -217,14 +209,29 @@ if [ $(grep -Fxq "from plugins.ranger_udisk_menu.mounter import mount" commands.
 fi
 
 #TODO ---- Setup NeoVIM ----
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-mkdir -p ~/.vim
-cd ~/.vim
-mkdir -p ~/.config/nvim/
-cp -r "$scriptLoc"/user_config/nvim ~/.config/
-cp -r "$scriptLoc"/user_config/vimrcs ~/.vim/
-nvim +PlugInstall
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+unzip JetBrainsMono.zip -d JetBrainsMono
+mkdir -p ~/.local/share/fonts
+mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-Regular.ttf ~/.local/share/fonts/
+mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
+fc-cache -f -v
+rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
+nvim +MasonInstallAll
+awk -v text='  {\n    "wakatime/vim-wakatime",\n    lazy = false\n  },\n' '
+/return \{/ {
+  print $0 "\n" text;
+  next
+}
+{ print }  # Print every other line
+' ~/.config/nvim/lua/plugins/init.lua > tmp_file && mv tmp_file ~/.config/nvim/lua/plugins/init.lua
+# sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+#        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+# mkdir -p ~/.vim
+# cd ~/.vim
+# mkdir -p ~/.config/nvim/
+# cp -r "$scriptLoc"/user_config/nvim ~/.config/
+# cp -r "$scriptLoc"/user_config/vimrcs ~/.vim/
+# nvim +PlugInstall
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
 set clipboard=unnamedplus
@@ -237,6 +244,14 @@ search=%COLORCODE
 cat "$scriptLoc"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
 sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
 tmux source-file ~/.tmux.conf
+
+#TODO ---- Configuring alacritty ----
+mkdir -p ~/.config/alacritty/themes
+cd ~/.config/alacritty/themes
+if [ ! -d "alacritty-theme" ]; then
+	git clone https://github.com/alacritty/alacritty-theme
+fi
+cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
 
 if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
