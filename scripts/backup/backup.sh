@@ -48,8 +48,8 @@ backup_commands() {
     cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
     cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
     # Copy Nvim configuration
-    cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
-    cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
+    # cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
+    # cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
     # Copy inputrc
     cp ~/.inputrc ~/Installation_Script/user_config/
     # Copy TMUX configuration
