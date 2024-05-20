@@ -28,6 +28,7 @@ version='1.5.28'
 favorites=['€']
 
 [org/gnome/Snapshot]
+capture-mode='picture'
 is-maximized=false
 window-height=640
 window-width=800
@@ -142,7 +143,7 @@ toolkit-accessibility=false
 disable-lock-screen=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox', 'terminator', 'org-gnome-pomodoro', 'org-mozilla-firefox', 'org-gnome-loupe', 'com-uploadedlobster-peek', 'vlc']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox', 'terminator', 'org-gnome-pomodoro', 'org-mozilla-firefox', 'org-gnome-loupe', 'com-uploadedlobster-peek', 'vlc', 'signal-desktop-signal-desktop', 'org-flameshot-flameshot']
 show-banners=true
 
 [org/gnome/desktop/notifications/application/alacritty]
@@ -212,6 +213,10 @@ application-id='libreoffice-writer.desktop'
 
 [org/gnome/desktop/notifications/application/org-fedoraproject-mediawriter]
 application-id='org.fedoraproject.MediaWriter.desktop'
+
+[org/gnome/desktop/notifications/application/org-flameshot-flameshot]
+application-id='org.flameshot.Flameshot.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/org-freedesktop-problems-applet]
 application-id='org.freedesktop.problems.applet.desktop'
@@ -284,6 +289,9 @@ application-id='org.wireshark.Wireshark.desktop'
 [org/gnome/desktop/notifications/application/pgadmin4]
 application-id='pgadmin4.desktop'
 
+[org/gnome/desktop/notifications/application/signal-desktop-signal-desktop]
+application-id='signal-desktop_signal-desktop.desktop'
+
 [org/gnome/desktop/notifications/application/spotify-spotify]
 application-id='spotify_spotify.desktop'
 
@@ -325,6 +333,7 @@ two-finger-scrolling-enabled=true
 disable-camera=false
 old-files-age=uint32 30
 recent-files-max-age=-1
+remove-old-trash-files=false
 report-technical-problems=true
 
 [org/gnome/desktop/screensaver]
@@ -365,6 +374,8 @@ move-to-workspace-5=['<Alt><Super>s']
 move-to-workspace-6=['<Alt><Super>d']
 move-to-workspace-7=['<Control><Alt>d']
 move-to-workspace-8=['<Control><Alt>f']
+move-to-workspace-left=['<Alt><Super>Left']
+move-to-workspace-right=['<Alt><Super>Right']
 switch-applications=@as []
 switch-applications-backward=@as []
 switch-group=['<Super>Above_Tab', '<Alt>Above_Tab']
@@ -378,8 +389,8 @@ switch-to-workspace-6=['<Super>d']
 switch-to-workspace-7=['<Control><Super>d']
 switch-to-workspace-8=['<Control><Super>f']
 switch-to-workspace-last=['<Super>End']
-switch-to-workspace-left=['<Alt><Super>Left']
-switch-to-workspace-right=['<Alt><Super>Right']
+switch-to-workspace-left=@as []
+switch-to-workspace-right=@as []
 switch-windows=['<Alt>Tab']
 switch-windows-backward=['<Shift><Alt>Tab']
 toggle-fullscreen=['<Super>g']
@@ -406,8 +417,9 @@ inverted-colors=false
 show-sidebar=false
 sidebar-page='thumbnails'
 sidebar-size=132
-sizing-mode='automatic'
-window-ratio=(0.9621212118692537, 0.98105820114255127)
+sizing-mode='free'
+window-ratio=(1.0640266469282014, 0.98184056632810102)
+zoom=0.90424264029720081
 
 [org/gnome/evolution-data-server]
 migrated=true
@@ -431,7 +443,7 @@ x=240
 y=135
 
 [org/gnome/login-screen]
-enable-fingerprint-authentication=true
+enable-fingerprint-authentication=false
 enable-password-authentication=true
 enable-smartcard-authentication=false
 
@@ -472,6 +484,14 @@ search-view='list-view'
 initial-size=(935, 518)
 maximized=false
 
+[org/gnome/nm-applet/eap/04b0f064-83d8-4e98-aa71-f76ded5d6c45]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/09f858e4-13e1-4954-bcbd-be427bbefc37]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/133f9c18-991a-43a7-a3d9-794a84fcb970]
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
@@ -484,12 +504,20 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/26297067-7a64-4901-8fce-784e7432a749]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/3aa10290-baac-4510-bf0e-d782c8be8e43]
 ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/41fc7ffa-5e30-4f6d-a750-405d1d456cee]
 ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/4c4a2623-5040-4248-866c-11ef89bf963c]
+ignore-ca-cert=true
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/4f4fa45c-787f-4e5d-8f3d-0afb31099c22]
@@ -593,12 +621,12 @@ pomodoro-duration=1500.0
 short-break-duration=300.0
 
 [org/gnome/pomodoro/state]
-timer-date='2024-05-11T18:44:35+0000'
+timer-date='2024-05-20T17:44:31+0000'
 timer-elapsed=0.0
 timer-paused=false
-timer-score=3.4939304641087849
+timer-score=0.0
 timer-state='null'
-timer-state-date='2024-05-11T18:44:35+0000'
+timer-state-date='2024-05-20T17:44:31+0000'
 timer-state-duration=0.0
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
@@ -675,12 +703,12 @@ sleep-inactive-ac-type='nothing'
 sleep-inactive-battery-timeout=1800
 
 [org/gnome/shell]
-app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Photos.desktop': <{'position': <6>}>, 'org.gnome.Totem.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'libreoffice-impress.desktop': <{'position': <9>}>, 'simple-scan.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'org.gnome.Boxes.desktop': <{'position': <13>}>, 'org.gnome.Terminal.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'libreoffice-writer.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <18>}>, 'org.gnome.Cheese.desktop': <{'position': <19>}>, 'org.gnome.TextEditor.desktop': <{'position': <20>}>, 'org.gnome.Tour.desktop': <{'position': <21>}>, 'balena-etcher-electron.desktop': <{'position': <22>}>, 'com.spotify.Client.desktop': <{'position': <23>}>}, {'com.discordapp.Discord.desktop': <{'position': <0>}>, 'com.github.IsmaelMartinez.teams_for_linux.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'Counter-Strike Global Offensive.desktop': <{'position': <4>}>, 'It Takes Two.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'steam.desktop': <{'position': <8>}>, 'Steam Linux Runtime - Soldier.desktop': <{'position': <9>}>}]
+app-picker-layout=[{'org.fedoraproject.MediaWriter.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'libreoffice-calc.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Calculator.desktop': <{'position': <7>}>, 'libreoffice-impress.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'org.gnome.Settings.desktop': <{'position': <10>}>, 'org.gnome.Boxes.desktop': <{'position': <11>}>, 'org.gnome.Terminal.desktop': <{'position': <12>}>, 'Utilities': <{'position': <13>}>, 'libreoffice-writer.desktop': <{'position': <14>}>, 'yelp.desktop': <{'position': <15>}>, 'org.gnome.Rhythmbox3.desktop': <{'position': <16>}>, 'org.gnome.TextEditor.desktop': <{'position': <17>}>, 'org.gnome.Tour.desktop': <{'position': <18>}>}, {"Baldur's Gate 3.desktop": <{'position': <0>}>, 'org.gnome.Calendar.desktop': <{'position': <1>}>, 'code.desktop': <{'position': <2>}>, 'nvim.desktop': <{'position': <3>}>, 'org.gnome.Snapshot.desktop': <{'position': <4>}>, 'discord.desktop': <{'position': <5>}>, 'onlyoffice-desktopeditors.desktop': <{'position': <6>}>, 'Proton Experimental.desktop': <{'position': <7>}>, 'dosbox-school.desktop': <{'position': <8>}>, 'dosbox-staging.desktop': <{'position': <9>}>, 'org.gnome.Extensions.desktop': <{'position': <10>}>, 'org.flameshot.Flameshot.desktop': <{'position': <11>}>, 'gparted.desktop': <{'position': <12>}>, 'htop.desktop': <{'position': <13>}>, 'org.gnome.Loupe.desktop': <{'position': <14>}>, 'minecraft-launcher.desktop': <{'position': <15>}>, 'mysql-workbench.desktop': <{'position': <16>}>, 'wine-notepad.desktop': <{'position': <17>}>, 'nvidia-settings.desktop': <{'position': <18>}>, 'nvtop.desktop': <{'position': <19>}>, 'java-17-openjdk-17.0.10.0.7-3.fc40.x86_64-jconsole.desktop': <{'position': <20>}>, 'java-21-openjdk-21.0.3.0.9-1.fc40.x86_64-jconsole.desktop': <{'position': <21>}>, 'com.uploadedlobster.peek.desktop': <{'position': <22>}>}, {'org.gnome.Pomodoro.desktop': <{'position': <0>}>, 'putty.desktop': <{'position': <1>}>, 'org.qbittorrent.qBittorrent.desktop': <{'position': <2>}>, 'ranger.desktop': <{'position': <3>}>, 'wine-regedit.desktop': <{'position': <4>}>, 'net.nokyan.Resources.desktop': <{'position': <5>}>, 'signal-desktop_signal-desktop.desktop': <{'position': <6>}>, 'org.gnome.Software.desktop': <{'position': <7>}>, 'spotify_spotify.desktop': <{'position': <8>}>, 'Steam Linux Runtime 3.0 (sniper).desktop': <{'position': <9>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <10>}>, 'terminator.desktop': <{'position': <11>}>, 'vlc.desktop': <{'position': <12>}>, 'wine-wineboot.desktop': <{'position': <13>}>, 'wine-winecfg.desktop': <{'position': <14>}>, 'wine-winefile.desktop': <{'position': <15>}>, 'wine-winhelp.desktop': <{'position': <16>}>, 'wine-oleview.desktop': <{'position': <17>}>, 'wine-uninstaller.desktop': <{'position': <18>}>, 'wine-wordpad.desktop': <{'position': <19>}>, 'wine-winemine.desktop': <{'position': <20>}>, 'Zoom.desktop': <{'position': <21>}>}]
 command-history=['reboot', 'polybar', 'poweroff', 'terminator -e tmux', 'r', 'xkill']
 disabled-extensions=['pop-shell@system76.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
 enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou', 'undecorate@sun.wxg@gmail.com', 'fancy-tiling@devroamer.zen', 'unite@hardpixel.eu', 'no-title-bar@franglais125.gmail.com', 'cronomix@zagortenay333', 'color-picker@tuberry', 'pomodoro@arun.codito.in']
 favorite-apps=['org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop']
-last-selected-power-profile='performance'
+last-selected-power-profile='power-saver'
 welcome-dialog-last-shown-version='43.0'
 
 [org/gnome/shell/app-switcher]
@@ -1052,14 +1080,14 @@ toggle-quick-settings=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1715505741
+check-timestamp=int64 1716195412
 first-run=false
-flatpak-purge-timestamp=int64 1715507172
-install-timestamp=int64 1715106374
+flatpak-purge-timestamp=int64 1716196969
+install-timestamp=int64 1716227022
 online-updates-timestamp=int64 1695972091
-packagekit-historical-updates-timestamp=uint64 1713462781
-security-timestamp=int64 1713168142003445
-update-notification-timestamp=int64 1715107342
+packagekit-historical-updates-timestamp=uint64 1716227022
+security-timestamp=int64 1716115304646210
+update-notification-timestamp=int64 1716227077
 upgrade-notification-timestamp=int64 1714577604
 
 [org/gnome/system/location]
@@ -1200,7 +1228,7 @@ background-transparency-percent=18
 bold-color='#ABB2BF'
 bold-color-same-as-fg=true
 default-size-columns=80
-font='Monospace 16'
+font='JetBrainsMonoNL Nerd Font 16'
 foreground-color='#abb2bf'
 palette=['#000000', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#abb2bf', '#5c6370', '#e06c75', '#98c379', '#d19a66', '#61afef', '#c678dd', '#56b6c2', '#ffffff']
 use-system-font=false
@@ -1408,11 +1436,11 @@ show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=166
-sort-column='name'
+sort-column='modified'
 sort-directories-first=false
-sort-order='ascending'
+sort-order='descending'
 type-format='category'
-window-position=(357, 77)
+window-position=(356, 77)
 window-size=(1207, 906)
 
 [system/proxy]
