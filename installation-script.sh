@@ -224,6 +224,8 @@ awk -v text='  {\n    "wakatime/vim-wakatime",\n    lazy = false\n  },\n' '
 }
 { print }  # Print every other line
 ' ~/.config/nvim/lua/plugins/init.lua > tmp_file && mv tmp_file ~/.config/nvim/lua/plugins/init.lua
+SED_REPLACEMENT='ensure_installed = { "asm", "awk", "bash", "c", "c_sharp", "cmake", "cpp", "css", "go", "haskell", "html", "json", "javascript", "lua", "luadoc", "make", "markdown", "php", "phpdoc", "python", "ruby", "rust", "sql", "toml", "tsx", "typescript", "xml", "yaml", "vim", "vimdoc" }'
+sed -i "s/ensure_installed = {[^}]*}/$SED_REPLACEMENT/" ~/.local/share/nvim/lazy/NvChad/lua/nvchad/configs/treesitter.lua
 # sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
 #        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 # mkdir -p ~/.vim
