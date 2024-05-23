@@ -217,23 +217,13 @@ mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
 fc-cache -f -v
 rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
 nvim +MasonInstallAll
-awk -v text='  {\n    "wakatime/vim-wakatime",\n    lazy = false\n  },\n' '
+awk -v text='  {\n    "wakatime/vim-wakatime",\n    lazy = false\n  },\n\n  {\n    "nvim-treesitter/nvim-treesitter",\n    opts = {\n      ensure_installed = { "asm", "awk", "bash", "c", "c_sharp", "cmake", "cpp", "css", "go", "haskell", "html", "json", "javascript", "lua", "luadoc", "make", "markdown", "php", "phpdoc", "python", "ruby", "rust", "sql", "toml", "tsx", "typescript", "xml", "yaml", "vim", "vimdoc" },\n    },\n  },\n' '
 /return \{/ {
   print $0 "\n" text;
   next
 }
 { print }  # Print every other line
 ' ~/.config/nvim/lua/plugins/init.lua > tmp_file && mv tmp_file ~/.config/nvim/lua/plugins/init.lua
-SED_REPLACEMENT='ensure_installed = { "asm", "awk", "bash", "c", "c_sharp", "cmake", "cpp", "css", "go", "haskell", "html", "json", "javascript", "lua", "luadoc", "make", "markdown", "php", "phpdoc", "python", "ruby", "rust", "sql", "toml", "tsx", "typescript", "xml", "yaml", "vim", "vimdoc" }'
-sed -i "s/ensure_installed = {[^}]*}/$SED_REPLACEMENT/" ~/.local/share/nvim/lazy/NvChad/lua/nvchad/configs/treesitter.lua
-# sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-#        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-# mkdir -p ~/.vim
-# cd ~/.vim
-# mkdir -p ~/.config/nvim/
-# cp -r "$scriptLoc"/user_config/nvim ~/.config/
-# cp -r "$scriptLoc"/user_config/vimrcs ~/.vim/
-# nvim +PlugInstall
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
 set clipboard=unnamedplus
