@@ -1,6 +1,6 @@
 #! /bin/bash
 # Basic commands after linux install
-scriptLoc=$(pwd)
+SCRIPT_LOC=$(pwd)
 
 touch /tmp/error
 
@@ -82,7 +82,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 #TODO Theme installation
 #TODO ---- Gnome configuration ----
 if [ `which gnome-shell` ]; then
-	cd $scriptLoc
+	cd $SCRIPT_LOC
 	dconf load -f / < user_config/saved_settings.dconf
 	# Force alt + tab to switch only on current workspace in GNOME
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
@@ -183,7 +183,7 @@ rm -rf one-gnome-terminal/
 #TODO ---- Configuring Starship ----
 mkdir -p ~/.config && touch ~/.config/starship.toml
 search=%COLORCODE
-cat "$scriptLoc"/user_config/starship_template.toml > ~/.config/starship.toml
+cat "$SCRIPT_LOC"/user_config/starship_template.toml > ~/.config/starship.toml
 sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 
 #TODO ---- Setup ranger ----
@@ -217,23 +217,29 @@ mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
 fc-cache -f -v
 rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
 nvim +MasonInstallAll
-awk -v text='  {\n    "wakatime/vim-wakatime",\n    lazy = false\n  },\n\n  {\n    "nvim-treesitter/nvim-treesitter",\n    opts = {\n      ensure_installed = { "asm", "awk", "bash", "c", "c_sharp", "cmake", "cpp", "css", "go", "haskell", "html", "json", "javascript", "lua", "luadoc", "make", "markdown", "php", "phpdoc", "python", "ruby", "rust", "sql", "toml", "tsx", "typescript", "xml", "yaml", "vim", "vimdoc" },\n    },\n  },\n' '
-/return \{/ {
-  print $0 "\n" text;
-  next
-}
-{ print }  # Print every other line
-' ~/.config/nvim/lua/plugins/init.lua > tmp_file && mv tmp_file ~/.config/nvim/lua/plugins/init.lua
+
+TEMP_FILE=$(mktemp)
+
+awk -v insert="$(<"$SCRIPT_LOC/user_config/nvim/PLUGINS_INSERTION")" '
+  /return {/ {
+    print $0
+    print insert
+    print ""
+    next
+  }
+  { print }
+' "$HOME/.config/nvim/lua/plugins/init.lua" > "$TEMP_FILE" && mv "$TEMP_FILE" "$HOME/.config/nvim/lua/plugins/init.lua"
+
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
 set clipboard=unnamedplus
 
 #TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
-cp "$scriptLoc"/user_config/.inputrc ~
-cp -r "$scriptLoc"/user_config/terminator ~/.config
-cat "$scriptLoc"/user_config/template.tmux.conf > ~/.tmux.conf
+cp "$SCRIPT_LOC"/user_config/.inputrc ~
+cp -r "$SCRIPT_LOC"/user_config/terminator ~/.config
+cat "$SCRIPT_LOC"/user_config/template.tmux.conf > ~/.tmux.conf
 search=%COLORCODE
-cat "$scriptLoc"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
+cat "$SCRIPT_LOC"/user_config/template.tmux.conf.local > ~/.tmux.conf.local
 sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
 tmux source-file ~/.tmux.conf
 
@@ -243,18 +249,18 @@ cd ~/.config/alacritty/themes
 if [ ! -d "alacritty-theme" ]; then
 	git clone https://github.com/alacritty/alacritty-theme
 fi
-cp "$scriptLoc"/user_config/alacritty.yml ~/.config/alacritty
+cp "$SCRIPT_LOC"/user_config/alacritty.yml ~/.config/alacritty
 
 if [ "$SHELL" = "/bin/bash" ]; then
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
-	echo "INSTSCRIPT=$scriptLoc" >> ~/.bashrc;
-	cat "$scriptLoc"/user_config/template.bashrc >> ~/.bashrc
+	echo "INSTSCRIPT=$SCRIPT_LOC" >> ~/.bashrc;
+	cat "$SCRIPT_LOC"/user_config/template.bashrc >> ~/.bashrc
 elif [ "$SHELL" = "/bin/zsh" ]; then
 	#TODO ---- Setup .zshrc ----
 	PROMPT_COMMAND="Updating .zshrc..."
-	echo "INSTSCRIPT=$scriptLoc" >> ~/.zshrc;
-	cat "$scriptLoc"/user_config/template.zshrc >> ~/.zshrc
+	echo "INSTSCRIPT=$SCRIPT_LOC" >> ~/.zshrc;
+	cat "$SCRIPT_LOC"/user_config/template.zshrc >> ~/.zshrc
 fi
 
 #TODO ---- Install Spotify ----
@@ -278,7 +284,7 @@ if [ ! `which ghc` ]; then
 fi
 #TODO ---- Moving scripts to ~/tools ----
 mkdir -p ~/tools
-cp -r "$scriptLoc"/scripts/* ~/tools
+cp -r "$SCRIPT_LOC"/scripts/* ~/tools
 
 #TODO ---- Setup SSH ----
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
@@ -315,11 +321,11 @@ fi
 rsync -av PictureBackup/* .
 rm -rf PictureBackup/
 
-sudo cp "$scriptLoc"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
+sudo cp "$SCRIPT_LOC"/desktop_shortcuts/dosbox-school.desktop /usr/share/applications/
 mkdir -p ~/.config/autostart
-cp "$scriptLoc"/desktop_shortcuts/custom-script-autostart.desktop ~/.config/autostart/
+cp "$SCRIPT_LOC"/desktop_shortcuts/custom-script-autostart.desktop ~/.config/autostart/
 
-cd $scriptLoc
+cd $SCRIPT_LOC
 
 #TODO ---- Change Installation script remote origin to ssh ----
 git remote remove origin
