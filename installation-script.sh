@@ -217,26 +217,15 @@ mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
 fc-cache -f -v
 rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
 nvim +MasonInstallAll
-
-TEMP_FILE=$(mktemp)
-
-awk -v insert="$(<"$SCRIPT_LOC/user_config/nvim/PLUGINS_INSERTION")" '
-  /return {/ {
-    print $0
-    print insert
-    print ""
-    next
-  }
-  { print }
-' "$HOME/.config/nvim/lua/plugins/init.lua" > "$TEMP_FILE" && mv "$TEMP_FILE" "$HOME/.config/nvim/lua/plugins/init.lua"
-
+sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
+cp -rf "$SCRIPT_LOC"/user_config/nvim/* ~/.config/nvim/lua
 nvim +WakaTimeApiKey
 #TODO ---- Allow NeoVIM to access the clipboard ----
 set clipboard=unnamedplus
 
 #TODO ---- Restore configuration for terminal, tmux and bash/zsh ----
 cp "$SCRIPT_LOC"/user_config/.inputrc ~
-cp -r "$SCRIPT_LOC"/user_config/terminator ~/.config
+cp -rf "$SCRIPT_LOC"/user_config/terminator ~/.config
 cat "$SCRIPT_LOC"/user_config/template.tmux.conf > ~/.tmux.conf
 search=%COLORCODE
 cat "$SCRIPT_LOC"/user_config/template.tmux.conf.local > ~/.tmux.conf.local

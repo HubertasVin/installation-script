@@ -1,5 +1,5 @@
 #! /bin/bash
-scriptLoc="$(pwd)"
+SCRIPT_LOC="$(pwd)"
 
 set -e
 
@@ -13,13 +13,13 @@ handle_error() {
 }
 
 backup_success() {
-	if git status | grep -q 'Your branch is up to date'; then
-		echo -e "${OKGREEN}Backup successful for ${PWD}${NC}"
-		echo "${OKGREEN}Backup successful for ${PWD}${NC}" >> "$1"
-	else
-		echo -e "${FAIL}Branch is up to date ${PWD}${NC}"
-		echo "${FAIL}Branch is up to date ${PWD}${NC}" >> "$1"
-	fi
+	  if git status | grep -q 'Your branch is up to date'; then
+        echo -e "${OKGREEN}Backup successful for ${PWD}${NC}"
+        echo "${OKGREEN}Backup successful for ${PWD}${NC}" >> "$1"
+	  else
+	      echo -e "${FAIL}Backup failed for ${PWD}${NC}"
+        echo "${FAIL}Backup failed for ${PWD}${NC}" >> "$1"
+	  fi
 }
 
 backup_commands() {
@@ -48,6 +48,7 @@ backup_commands() {
     cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
     cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
     # Copy Nvim configuration
+    cp -rf ~/.config/nvim/lua/* ~/Installation_Script/user_config/nvim
     # cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
     # cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
     # Copy inputrc
@@ -74,8 +75,17 @@ backup_commands() {
         if ! git diff-index --quiet HEAD --; then
             git commit -m "Backup"
             git push
+            backup_success "$TEMP_OUTPUT"
+        else
+            if git status | grep -q 'Your branch is up to date'; then
+                echo -e "${OKGREEN}The backup is up to date for ${PWD}${NC}"
+                echo "${OKGREEN}The backup is up to date for ${PWD}${NC}" >> "$1"
+            else
+                echo -e "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
+                echo "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}" >> "$1"
+                git status >> "$1"
+            fi
         fi
-        backup_success "$TEMP_OUTPUT"
         tput clear
         echo -e "$(cat "$TEMP_OUTPUT")"
     done < gitlocations.txt
