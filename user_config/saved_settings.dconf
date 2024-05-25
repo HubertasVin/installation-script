@@ -45,6 +45,11 @@ subtitle-encoding='UTF-8'
 is-maximized=false
 window-size=(960, 600)
 
+[org/gnome/boxes]
+first-run=false
+view='icon-view'
+window-maximized=true
+
 [org/gnome/calculator]
 accuracy=9
 angle-units='degrees'
@@ -80,7 +85,7 @@ panel-id='world'
 size=(870, 690)
 
 [org/gnome/control-center]
-last-panel='display'
+last-panel='wifi'
 window-state=(930, 608, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -112,8 +117,8 @@ translate=true
 [org/gnome/desktop/background]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
-picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Saint_Petersburg_1.jpg'
+picture-uri-dark='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Saint_Petersburg_1.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -143,7 +148,7 @@ toolkit-accessibility=false
 disable-lock-screen=false
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox', 'terminator', 'org-gnome-pomodoro', 'org-mozilla-firefox', 'org-gnome-loupe', 'com-uploadedlobster-peek', 'vlc', 'signal-desktop-signal-desktop', 'org-flameshot-flameshot']
+application-children=['org-gnome-software', 'firefox', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'steam', 'org-gnome-evolution-alarm-notify', 'org-gnome-eog', 'com-spotify-client', 'code', 'gnome-network-panel', 'libreoffice-calc', 'jetbrains-toolbox', 'org-qbittorrent-qbittorrent', 'gnome-power-panel', 'org-gnome-nautilus', 'org-gnome-settings', 'wine-programs-roblox-roblox-studio', 'xdg-desktop-portal-gnome', 'gimp', 'jetbrains-idea', 'org-gnome-evince', 'libreoffice-writer', 'org-gnome-shell-extensions', 'discord', 'org-gnome-totem', 'org-gnome-characters', 'jetbrains-rider-cd8072ed-4b54-4492-8354-2159d99d8b90', 'com-github-ismaelmartinez-teams-for-linux', 'alacritty', 'com-discordapp-discord', 'spotify-spotify', 'thunar', 'org-kde-drkonqi', 'flameshot', 'org-kde-dolphin', 'jetbrains-rider-d5961df4-e1ad-4122-bdd1-2a03751ba22f', 'org-gnome-shell-portalhelper', 'zoom', 'libreoffice-impress', 'org-gnome-extensions-desktop', 'org-wireshark-wireshark', 'org-fedoraproject-mediawriter', 'io-snapcraft-sessionagent', 'virtualbox', 'terminator', 'org-gnome-pomodoro', 'org-mozilla-firefox', 'org-gnome-loupe', 'com-uploadedlobster-peek', 'vlc', 'signal-desktop-signal-desktop', 'org-flameshot-flameshot', 'org-gnome-boxes']
 show-banners=true
 
 [org/gnome/desktop/notifications/application/alacritty]
@@ -167,6 +172,7 @@ enable=false
 
 [org/gnome/desktop/notifications/application/discord]
 application-id='discord.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/firefox]
 application-id='firefox.desktop'
@@ -220,6 +226,9 @@ enable=false
 
 [org/gnome/desktop/notifications/application/org-freedesktop-problems-applet]
 application-id='org.freedesktop.problems.applet.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-boxes]
+application-id='org.gnome.Boxes.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-characters]
 application-id='org.gnome.Characters.desktop'
@@ -291,6 +300,7 @@ application-id='pgadmin4.desktop'
 
 [org/gnome/desktop/notifications/application/signal-desktop-signal-desktop]
 application-id='signal-desktop_signal-desktop.desktop'
+enable=false
 
 [org/gnome/desktop/notifications/application/spotify-spotify]
 application-id='spotify_spotify.desktop'
@@ -342,7 +352,7 @@ idle-activation-enabled=true
 lock-delay=uint32 0
 lock-enabled=true
 picture-options='zoom'
-picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Vienna_4.jpg'
+picture-uri='file:///home/hubertas/.local/share/backgrounds/2024-05-08-01-48-57-Saint_Petersburg_1.jpg'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -418,8 +428,8 @@ show-sidebar=false
 sidebar-page='thumbnails'
 sidebar-size=132
 sizing-mode='free'
-window-ratio=(1.0640266469282014, 0.98184056632810102)
-zoom=0.90424264029720081
+window-ratio=(1.0633722844529259, 0.98231360391500078)
+zoom=0.62794627798416736
 
 [org/gnome/evolution-data-server]
 migrated=true
@@ -481,7 +491,7 @@ search-filter-time-type='last_modified'
 search-view='list-view'
 
 [org/gnome/nautilus/window-state]
-initial-size=(935, 518)
+initial-size=(935, 747)
 maximized=false
 
 [org/gnome/nm-applet/eap/04b0f064-83d8-4e98-aa71-f76ded5d6c45]
@@ -621,12 +631,12 @@ pomodoro-duration=1500.0
 short-break-duration=300.0
 
 [org/gnome/pomodoro/state]
-timer-date='2024-05-20T17:44:31+0000'
+timer-date='2024-05-24T07:40:21+0000'
 timer-elapsed=0.0
 timer-paused=false
 timer-score=0.0
 timer-state='null'
-timer-state-date='2024-05-20T17:44:31+0000'
+timer-state-date='2024-05-24T07:40:21+0000'
 timer-state-duration=0.0
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
@@ -649,6 +659,9 @@ last-folder-path='/home/hubertas/Downloads'
 
 [org/gnome/portal/filechooser/org.qbittorrent.qBittorrent]
 last-folder-path='/home/hubertas/Downloads/The Walking Dead'
+
+[org/gnome/portal/filechooser/snap.signal-desktop]
+last-folder-path='/home/hubertas'
 
 [org/gnome/portal/filechooser/steam]
 last-folder-path='/mnt/games/Steam'
@@ -708,7 +721,7 @@ command-history=['reboot', 'polybar', 'poweroff', 'terminator -e tmux', 'r', 'xk
 disabled-extensions=['pop-shell@system76.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
 enabled-extensions=['background-logo@fedorahosted.org', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'no-overview@fthx', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'paperwm@paperwm.github.com', 'awesome-tiles@velitasali.com', 'forge@jmmaranan.com', 'arrangeWindows@sun.wxg@gmail.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wintile@nowsci.com', 'hidetopbar@mathieu.bidon.ca', 'tiling-assistant@leleat-on-github', 'WallpaperSwitcher@Rishu', 'randomwallpaper@iflow.space', 'gTile@vibou', 'undecorate@sun.wxg@gmail.com', 'fancy-tiling@devroamer.zen', 'unite@hardpixel.eu', 'no-title-bar@franglais125.gmail.com', 'cronomix@zagortenay333', 'color-picker@tuberry', 'pomodoro@arun.codito.in']
 favorite-apps=['org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop']
-last-selected-power-profile='power-saver'
+last-selected-power-profile='performance'
 welcome-dialog-last-shown-version='43.0'
 
 [org/gnome/shell/app-switcher]
@@ -1080,9 +1093,9 @@ toggle-quick-settings=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1716195412
+check-timestamp=int64 1716622827
 first-run=false
-flatpak-purge-timestamp=int64 1716196969
+flatpak-purge-timestamp=int64 1716624825
 install-timestamp=int64 1716227022
 online-updates-timestamp=int64 1695972091
 packagekit-historical-updates-timestamp=uint64 1716227022
@@ -1418,7 +1431,7 @@ show-hidden=true
 show-size-column=true
 show-type-column=true
 sidebar-width=169
-sort-column='type'
+sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
