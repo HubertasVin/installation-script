@@ -1449,11 +1449,11 @@ show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=166
-sort-column='modified'
+sort-column='name'
 sort-directories-first=false
-sort-order='descending'
+sort-order='ascending'
 type-format='category'
-window-position=(356, 77)
+window-position=(357, 77)
 window-size=(1207, 906)
 
 [system/proxy]
