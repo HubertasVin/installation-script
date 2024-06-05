@@ -31,7 +31,7 @@ return {
   	"williamboman/mason.nvim",
   	opts = {
   		ensure_installed = {
-  			"angular-language-server", "lua-language-server", "stylua", "html-lsp", "css-lsp", "prettier", "typescript-language-server", "csharp-language-server", "haskell-language-server", "java-language-server", "tailwindcss-language-server", "yaml-language-server", "standardjs", "ast-grep", "html-lsp"
+  			"angular-language-server", "asm-lsp", "ansible-language-server", "ansible-lint", "lua-language-server", "ltex-ls", "markdown-oxide", "stylua", "html-lsp", "css-lsp", "prettier", "typescript-language-server", "csharp-language-server", "haskell-language-server", "java-language-server", "tailwindcss-language-server", "yaml-language-server", "standardjs", "ast-grep", "html-lsp"
   		},
   	},
   },

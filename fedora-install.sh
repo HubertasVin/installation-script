@@ -21,7 +21,8 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 #TODO ---- Install necessary applications ----
 PROMPT_COMMAND="Installing Necessary Applications..."
 sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpid dkms akmod-nvidia xorg-x11-drv-nvidia-cuda java-17-openjdk java-17-openjdk-devel dotnet-sdk-8.0 aspnetcore-runtime-8.0 wine sassc glfw glfw-devel glew glew-devel dotnet-sdk-6.0 lm_sensors snapd neovim gnome-tweaks vlc starship xclip wl-clipboard valgrind code steam htop qbittorrent minecraft-launcher discord xkill ranger maven putty alacritty tldr flameshot udiskie ntfs-3g xset ghc-compiler bash-completion gnome-shell-extension-pop-shell xprop peek terminator gnome-pomodoro s-tui
-flatpak install flathub -y net.nokyan.Resources
+sudo dnf groupinstall -y "Development Tools" "Development Libraries"
+flatpak install flathub -y net.nokyan.Resources one.ablaze.floorp
 
 #TODO ---- Install VS Code ----
 PROMPT_COMMAND="Installing VS Code..."

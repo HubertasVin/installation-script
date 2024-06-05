@@ -73,7 +73,7 @@ backup_commands() {
         echo "${OKBLUE}Backing up ${p}${NC}" >> "$TEMP_OUTPUT"
         git add . 1> /dev/null
         if ! git diff-index --quiet HEAD --; then
-            git commit -m "Backup"
+            git commit -ma "Backup"
             git push
             backup_success "$TEMP_OUTPUT"
         else
