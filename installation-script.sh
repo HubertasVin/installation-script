@@ -243,6 +243,7 @@ cp "$SCRIPT_LOC"/user_config/alacritty.yml ~/.config/alacritty
 if [ "$SHELL" = "/bin/bash" ]; then
   #TODO ---- Install oh-my-bash ----
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+  sed -i 's/  PS1="$ps_username in $python_venv$ps_path$(_omb_theme_half_way_prompt_scm) $ps_user_mark "/  PS1="$python_venv$ps_path$(_omb_theme_half_way_prompt_scm) $ps_user_mark "/' ~/.oh-my-bash/themes/half-life/half-life.theme.sh
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
 	cat "$SCRIPT_LOC"/user_config/template.bashrc > ~/.bashrc
