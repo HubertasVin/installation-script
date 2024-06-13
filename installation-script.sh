@@ -241,10 +241,11 @@ fi
 cp "$SCRIPT_LOC"/user_config/alacritty.yml ~/.config/alacritty
 
 if [ "$SHELL" = "/bin/bash" ]; then
+  #TODO ---- Install oh-my-bash ----
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 	#TODO ---- Setup .bashrc ----
 	PROMPT_COMMAND="Updating .bashrc..."
-	echo "INSTSCRIPT=$SCRIPT_LOC" >> ~/.bashrc;
-	cat "$SCRIPT_LOC"/user_config/template.bashrc >> ~/.bashrc
+	cat "$SCRIPT_LOC"/user_config/template.bashrc > ~/.bashrc
 elif [ "$SHELL" = "/bin/zsh" ]; then
 	#TODO ---- Setup .zshrc ----
 	PROMPT_COMMAND="Updating .zshrc..."
