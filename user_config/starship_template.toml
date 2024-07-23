@@ -1,15 +1,12 @@
-# Use custom format
-format = """
-$directory\
+format = """$directory\
 $git_branch\
-$git_state\
-$git_status\
 $git_metrics\
 $cmd_duration\
 $line_break\
 $character"""
 
-command_timeout = 150
+command_timeout = 200
+add_newline = false
 
 [directory]
 style = "%COLORCODE"
@@ -17,22 +14,9 @@ read_only = " 𝑟𝑒𝑎𝑑 𝑜𝑛𝑙𝑦"
 truncation_length = 4
 truncate_to_repo = true
 
-[character]
-success_symbol = "[❯](#3684DD)"
-error_symbol = "[✗](#E53935)"
-vicmd_symbol = "[❮](#4CAF50)"
-
 [git_branch]
 symbol = "⎇  "
 format = "[$symbol$branch]($style) "
-style = "bright-black"
-
-[git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-style = "cyan"
-
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
 [git_metrics]
@@ -41,3 +25,8 @@ disabled = false
 [cmd_duration]
 min_time = 2000
 format = "[•](bold green) took [$duration]($style)"
+
+[character]
+success_symbol = "[❯](#3684DD)"
+error_symbol = "[✗](#E53935)"
+vicmd_symbol = "[❮](#4CAF50)"
