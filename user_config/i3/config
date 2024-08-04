@@ -92,8 +92,8 @@ bindsym $mod+a focus parent
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# displays power menu
+bindsym $mod+Shift+e exec rofi -show power-menu -modi power-menu:~/.local/bin/rofi-power-menu
 
 # Name the workspaces
 set $workspace1 "1:  "
@@ -190,7 +190,6 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-bindsym $mod+Shift+e exec "~/.config/i3blocks/blocks/shutdown_menu/shutdown_menu"
 
 # class                 border  bground text    indicator child_border
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
