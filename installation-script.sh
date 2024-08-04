@@ -136,7 +136,7 @@ gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-da
 #            Configurations
 #--------    Configure Rofi --------
 mkdir -p ~/.local/share/rofi/themes/
-cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi
+cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi ~/.local/share/rofi/themes/
 #--------     Configure i3 --------
 cp -r ~/Installation_Script/user_config/i3/ ~/.config/
 cp -r ~/Installation_Script/user_config/i3blocks/ ~/.config/
