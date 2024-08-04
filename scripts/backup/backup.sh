@@ -53,8 +53,6 @@ backup_commands() {
     cp -r ~/.config/i3blocks/ ~/Installation_Script/user_config/ 2>/dev/null || :
     # Copy Nvim config
     cp -rf ~/.config/nvim/lua/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
-    # cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
-    # cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :
     # Copy inputrc
     cp ~/.inputrc ~/Installation_Script/user_config/
     # Copy TMUX configuration
