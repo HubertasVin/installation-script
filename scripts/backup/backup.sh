@@ -46,8 +46,11 @@ backup_commands() {
     # Copy polybar, qtile, rofi configs
     cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar 2>/dev/null || :
     cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
-    cp -r ~/.config/rofi/* ~/Installation_Script/user_config/rofi 2>/dev/null || :
-    # Copy Nvim configuration
+    cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/Installation_Script/user_config/rofi/themes 2>/dev/null || :
+    # Copy i3 and i3blocks configs
+    cp -r ~/.config/i3/ ~/Installation_Script/user_config/
+    cp -r ~/.config/i3blocks/ ~/Installation_Script/user_config/
+    # Copy Nvim config
     cp -rf ~/.config/nvim/lua/* ~/Installation_Script/user_config/nvim
     # cp -r ~/.config/nvim/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
     # cp -r ~/.vim/vimrcs/* ~/Installation_Script/user_config/vimrcs 2>/dev/null || :

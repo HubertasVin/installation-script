@@ -134,6 +134,12 @@ gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-da
 
 #--------------------------------------
 #            Configurations
+#--------    Configure Rofi --------
+mkdir -p ~/.local/share/rofi/themes/
+cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi
+#--------     Configure i3 --------
+cp -r ~/Installation_Script/user_config/i3/ ~/.config/
+cp -r ~/Installation_Script/user_config/i3blocks/ ~/.config/
 #-------- Configuring Starship --------
 mkdir -p ~/.config && touch ~/.config/starship.toml
 search=%COLORCODE
