@@ -252,7 +252,7 @@ fi
 if [ ! -d "PictureBackup" ]; then
     git clone git@github.com:HubertasVin/PictureBackup.git ~/Pictures
 fi
-rsync -av ~/Pictures/PictureBackup/* ~/Pictures/
+cp -rf ~/Pictures/PictureBackup/* ~/Pictures/
 rm -rf ~/Pictures/PictureBackup/
 
 cd $SCRIPT_DIR
