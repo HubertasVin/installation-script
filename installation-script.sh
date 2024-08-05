@@ -132,7 +132,7 @@ sudo rm -r Tela-circle-icon-theme/
 gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
 
 
-#--------------------------------------
+#----------------------------------
 #          Configurations
 #--------  Configure Rofi  --------
 mkdir -p ~/.local/share/rofi/themes/

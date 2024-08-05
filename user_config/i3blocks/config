@@ -13,6 +13,15 @@ color=#f8f8f2
 separator_block_width=15
 markup=pango
 
+[kbinput]
+command=xkb-switch
+interval=1
+border=#f8f8f2
+border_top=1
+border_bottom=0
+border_left=0
+border_right=0
+
 [wifi]
 command=iwgetid -r | tr '\n' ' ' && grep $(iwgetid -m | awk '{ printf "%s", $1 }') /proc/net/wireless | awk '{ printf "%i%\n", int($3 * 100 / 70) }'
 instance=wlp11s0f3u1
