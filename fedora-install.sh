@@ -17,7 +17,7 @@ sudo dnf install --assumeyes flatpak
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 #TODO ---- Install necessary applications ----
-sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms akmod-nvidia xorg-x11-drv-nvidia-cuda java-17-openjdk java-17-openjdk-devel maven dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors starship xclip wl-clipboard xkill ntfs-3g playerctl xbindkeys xkb-switch udiskie i3 i3blocks rofi snapd nitrogen valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam htop qbittorrent minecraft-launcher discord ranger putty tldr flameshot peek terminator s-tui
+sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms akmod-nvidia xorg-x11-drv-nvidia-cuda java-17-openjdk java-17-openjdk-devel maven dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors starship xclip wl-clipboard xkill ntfs-3g playerctl xbindkeys xkb-switch udiskie i3 i3blocks rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam htop qbittorrent minecraft-launcher discord ranger putty tldr flameshot peek terminator s-tui
 sudo dnf groupinstall -y "Development Tools" "Development Libraries"
 flatpak install flathub -y net.nokyan.Resources
 

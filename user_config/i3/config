@@ -32,6 +32,7 @@ tiling_drag modifier titlebar
 # restore nitrogen
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id setxkbmap -layout us,gb,lt
+exec --no-startup-id setxkbmap -option 'grp:alt_shift_toggle'
 
 # Start a terminal
 bindsym $mod+t exec terminator -e tmux

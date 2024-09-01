@@ -60,12 +60,16 @@ fi
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 
-
 #-------------------------------------
 #          Theme installation
 #-------- Gnome configuration --------
 if [ `which gnome-shell` ]; then
     dconf load -f / < user_config/saved_settings.dconf
+
+    git clone https://github.com/vchlum/notification-timeout.git
+    cd notification-timeout
+    make build & make install
+    gnome-extensions enable notification-timeout@chlumskyvaclav.gmail.com
 fi
 
 select themeColor in default purple pink red orange yellow green teal blue all
@@ -220,6 +224,9 @@ fi
 #-------- Moving scripts to ~/tools --------
 mkdir -p ~/tools
 cp -r "$SCRIPT_DIR"/scripts/* ~/tools
+
+#-------- Install bluetuith --------
+go install github.com/darkhz/bluetuith@latest
 
 #-------- Setup SSH --------
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
