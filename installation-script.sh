@@ -70,6 +70,7 @@ if [ `which gnome-shell` ]; then
     cd notification-timeout
     make build & make install
     gnome-extensions enable notification-timeout@chlumskyvaclav.gmail.com
+    cd .. & rm -rf notification-timeout 
 fi
 
 select themeColor in default purple pink red orange yellow green teal blue all

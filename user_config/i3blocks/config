@@ -22,12 +22,6 @@ border_bottom=0
 border_left=0
 border_right=0
 
-[wifi]
-command=iwgetid -r | tr '\n' ' ' && grep $(iwgetid -m | awk '{ printf "%s", $1 }') /proc/net/wireless | awk '{ printf "%i%\n", int($3 * 100 / 70) }'
-instance=wlp11s0f3u1
-interval=5
-label=<span color="#ff79c6">  </span>
-
 [gpu_stats]
 command=nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ printf "%02i%", $0}' && nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits | awk '{ printf " | %i°C\n", $0}'
 label=<b>GPU: </b>
