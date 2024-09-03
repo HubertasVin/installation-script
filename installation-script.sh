@@ -1,6 +1,6 @@
 #! /bin/bash
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-CONFIGS_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/user_config
+CONFIGS_DIR=~/dotfiles
 
 #-------- Script error handling --------
 touch /tmp/error
@@ -34,6 +34,8 @@ else
     echo "Unknown distribution"
 fi
 
+#-------- Get all dotfiles --------
+git clone git@github.com:HubertasVin/dotfiles.git ~
 
 
 #-----------------------------
@@ -64,7 +66,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 #          Theme installation
 #-------- Gnome configuration --------
 if [ `which gnome-shell` ]; then
-    dconf load -f / < user_config/saved_settings.dconf
+    dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
 
     git clone https://github.com/vchlum/notification-timeout.git
     cd notification-timeout
@@ -145,8 +147,8 @@ cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi ~/.local/share/rofi/themes/
 #------- Install Rofi power menu --------
 cp "$CONFIGS_DIR"/rofi/rofi-power-menu ~/.local/bin/
 #--------     Configure i3 --------
-cp -r "$CONFIGS_DIR"/user_config/i3/ ~/.config/
-cp -r "$CONFIGS_DIR"/user_config/i3blocks/ ~/.config/
+cp -r "$CONFIGS_DIR"/i3/ ~/.config/
+cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
 #-------- Configuring Starship --------
 mkdir -p ~/.config && touch ~/.config/starship.toml
 search=%COLORCODE
@@ -254,10 +256,10 @@ echo "Host *" >> ~/.ssh/config
 echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
 #-------- Restoring backups --------
-if [ ! -d "BackupFolder" ]; then
+if [ ! -d "~/Documents/BackupFolder" ]; then
     git clone git@github.com:HubertasVin/BackupFolder.git ~/Documents
 fi
-if [ ! -d "PictureBackup" ]; then
+if [ ! -d "~/Pictures/PictureBackup" ]; then
     git clone git@github.com:HubertasVin/PictureBackup.git ~/Pictures
 fi
 cp -rf ~/Pictures/PictureBackup/* ~/Pictures/

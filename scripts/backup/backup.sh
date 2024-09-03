@@ -44,25 +44,25 @@ backup_commands() {
     PROMPT_COMMAND="Backing up..."
 
     # Copy polybar, qtile, rofi configs
-    cp -r ~/.config/polybar/* ~/Installation_Script/user_config/polybar 2>/dev/null || :
-    cp -r ~/.config/qtile/* ~/Installation_Script/user_config/qtile 2>/dev/null || :
-    cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/Installation_Script/user_config/rofi/themes 2>/dev/null || :
-    cp ~/.local/bin/rofi-power-menu ~/Installation_Script/user_config/rofi/ 2>/dev/null || :
+    cp -r ~/.config/polybar/* ~/dotfiles/polybar 2>/dev/null || :
+    cp -r ~/.config/qtile/* ~/dotfiles/qtile 2>/dev/null || :
+    cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/dotfiles/rofi/themes 2>/dev/null || :
+    cp ~/.local/bin/rofi-power-menu ~/dotfiles/rofi/ 2>/dev/null || :
     # Copy i3 and i3blocks configs
-    cp -r ~/.config/i3/ ~/Installation_Script/user_config/ 2>/dev/null || :
-    cp -r ~/.config/i3blocks/ ~/Installation_Script/user_config/ 2>/dev/null || :
+    cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
+    cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
     # Copy Nvim config
-    cp -rf ~/.config/nvim/lua/* ~/Installation_Script/user_config/nvim 2>/dev/null || :
+    cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim 2>/dev/null || :
     # Copy inputrc
-    cp ~/.inputrc ~/Installation_Script/user_config/
+    cp ~/.inputrc ~/dotfiles/
     # Copy TMUX configuration
-    cp ~/.tmux.conf ~/Installation_Script/user_config/template.tmux.conf 2>/dev/null || :
-    cp ~/.tmux.conf.local ~/Installation_Script/user_config/template.tmux.conf.local 2>/dev/null || :
-    sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/Installation_Script/user_config/template.tmux.conf.local
+    cp ~/.tmux.conf ~/dotfiles/template.tmux.conf 2>/dev/null || :
+    cp ~/.tmux.conf.local ~/dotfiles/template.tmux.conf.local 2>/dev/null || :
+    sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/dotfiles/template.tmux.conf.local
     # Copy Terminator configuration
-    cp -r ~/.config/terminator/* ~/Installation_Script/user_config/terminator 2>/dev/null || :
+    cp -r ~/.config/terminator/* ~/dotfiles/terminator 2>/dev/null || :
     # Copy GNOME settings
-    dconf dump / > ~/Installation_Script/user_config/saved_settings.dconf
+    dconf dump / > ~/dotfiles/saved_settings.dconf
 
     echo "Starting backup to git"
     echo "Starting backup to git" >> "$TEMP_OUTPUT"
