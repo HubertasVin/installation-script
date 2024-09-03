@@ -56,9 +56,9 @@ backup_commands() {
     # Copy inputrc
     cp ~/.inputrc ~/dotfiles/
     # Copy TMUX configuration
-    cp ~/.tmux.conf ~/dotfiles/template.tmux.conf 2>/dev/null || :
-    cp ~/.tmux.conf.local ~/dotfiles/template.tmux.conf.local 2>/dev/null || :
-    sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/dotfiles/template.tmux.conf.local
+    cp ~/.tmux.conf ~/dotfiles/.tmux.conf 2>/dev/null || :
+    cp ~/.tmux.conf.local ~/dotfiles/.tmux.conf.local 2>/dev/null || :
+    sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/dotfiles/.tmux.conf.local
     # Copy Terminator configuration
     cp -r ~/.config/terminator/* ~/dotfiles/terminator 2>/dev/null || :
     # Copy GNOME settings

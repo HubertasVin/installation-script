@@ -189,8 +189,8 @@ nvim +WakaTimeApiKey
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
 cp "$CONFIGS_DIR"/.inputrc ~
 cp -rf "$CONFIGS_DIR"/terminator ~/.config
-cat "$CONFIGS_DIR"/template.tmux.conf > ~/.tmux.conf
-cat "$CONFIGS_DIR"/template.tmux.conf.local > ~/.tmux.conf.local
+cat "$CONFIGS_DIR"/.tmux.conf > ~/.tmux.conf
+cat "$CONFIGS_DIR"/.tmux.conf.local > ~/.tmux.conf.local
 search=%COLORCODE
 sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
 tmux source-file ~/.tmux.conf
