@@ -1,4 +1,4 @@
-#! /bin/bash
+# /bin/bash
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CONFIGS_DIR=~/dotfiles
 
@@ -159,7 +159,8 @@ sed -i "s/$search/$colorCode/" ~/.config/starship.toml
 #-------- Setup ranger --------
 ranger --copy-config=rifle
 ranger --copy-config=rc
-echo -ne "\n# Archives\nmap ex extract\nmap ec compress\n" >> ~/.config/ranger/rc.config
+cp ~/dotfiles/ranger/rc.conf ~/.config/ranger/ 2>/dev/null || :
+cp ~/dotfiles/ranger/rifle.conf ~/.config/ranger/ 2>/dev/null || :
 mkdir -p ~/.config/ranger/plugins
 if [ ! -d ~/.config/ranger/plugins/ranger-archives/ ] ; then
     git clone --depth=1 https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins

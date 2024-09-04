@@ -59,6 +59,9 @@ backup_commands() {
     cp ~/.tmux.conf ~/dotfiles/.tmux.conf 2>/dev/null || :
     cp ~/.tmux.conf.local ~/dotfiles/.tmux.conf.local 2>/dev/null || :
     sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/dotfiles/.tmux.conf.local
+    # Copy Ranger configuration
+    cp ~/.config/ranger/rc.conf ~/dotfiles/ranger/ 2>/dev/null || :
+    cp ~/.config/ranger/rifle.conf ~/dotfiles/ranger/ 2>/dev/null || :
     # Copy Terminator configuration
     cp -r ~/.config/terminator/* ~/dotfiles/terminator 2>/dev/null || :
     # Copy GNOME settings
