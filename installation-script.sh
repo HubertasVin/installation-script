@@ -35,8 +35,9 @@ else
 fi
 
 #-------- Get all dotfiles --------
-git clone git@github.com:HubertasVin/dotfiles.git ~
-
+if [ ! -d "$HOME/dotfiles/" ]; then
+    git clone git@github.com:HubertasVin/dotfiles.git ~
+fi
 
 #-----------------------------
 #    Package manager setup
