@@ -61,6 +61,11 @@ if [ ! -d "$HOME/.sdkman" ]; then
 fi
 #-------- Load sdk function to the script ---------
 source "$HOME/.sdkman/bin/sdkman-init.sh"
+#-------- Install homebrew --------
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
 
 
 #-------------------------------------
@@ -226,6 +231,16 @@ dotnet tool update -g dotnet-script
 if [ ! `which ghc` ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 fi
+#-------- Install language servers --------
+pip install "python-lsp-server[all]"
+brew install lua-language-server
+dotnet tool install --global csharp-ls
+sudo npm install -g @angular/language-server @tailwindcss/language-server typescript typescript-language-server vscode-langservers-extracted dockerfile-language-server-nodejs
+ghcup install hls
+rustup component add rust-analyzer
+go install golang.org/x/tools/gopls@latest
+cargo install gitlab-ci-ls
+cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
 #-------- Moving scripts to ~/tools --------
 mkdir -p ~/tools
 cp -r "$SCRIPT_DIR"/scripts/* ~/tools
