@@ -42,18 +42,20 @@ fi
 #-----------------------------
 #    Package manager setup
 #-------- Snapd setup --------
-sudo systemctl enable --now snapd.service
-sudo ln -s /var/lib/snapd/snap /snap
-echo 'Reboot your computer to enable snapd to function fully'
-read -p 'Confirm to reboot your computer (yN)' answer
+if [ ! `which snap` ]; then
+    sudo systemctl enable --now snapd.service
+    sudo ln -s /var/lib/snapd/snap /snap
+    echo 'Reboot your computer to enable snapd to function fully'
+    read -p 'Confirm to reboot your computer (yN)' answer
 
-case "$answer" in
-    [yY]|[yY][eE][sS])
-        reboot
-        ;;
-    [nN]|[nN][oO]|*)
-        ;;
-esac
+    case "$answer" in
+        [yY]|[yY][eE][sS])
+            reboot
+            ;;
+        [nN]|[nN][oO]|*)
+            ;;
+    esac
+fi
 
 if [ ! -d "$HOME/.sdkman" ]; then
     #-------- Install SDKMAN --------
@@ -61,11 +63,14 @@ if [ ! -d "$HOME/.sdkman" ]; then
 fi
 #-------- Load sdk function to the script ---------
 source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 #-------- Install homebrew --------
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
+if [ ! `which brew` ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
+fi
 
 
 #-------------------------------------
@@ -81,73 +86,76 @@ if [ `which gnome-shell` ]; then
     cd .. & rm -rf notification-timeout 
 fi
 
-select themeColor in default purple pink red orange yellow green teal blue all
-do
-    case $themeColor in
-        "default")
-            colorCode="#FB8C00"
-            break
-            ;;
-        "purple")
-            colorCode="#AB47BC"
-            break
-            ;;
-        "pink")
-            colorCode="#EC407A"
-            break
-            ;;
-        "red")
-            colorCode="#E53935"
-            break
-            ;;
-        "orange")
-            colorCode="#FB8C00"
-            break
-            ;;
-        "yellow")
-            colorCode="#FBC02D"
-            break
-            ;;
-        "green")
-            colorCode="#4CAF50"
-            break
-            ;;
-        "teal")
-            colorCode="#009688"
-            break
-            ;;
-        "blue")
-            colorCode="#3684DD"
-            break
-            ;;
-        "all")
-            colorCode="#FB8C00"
-            break
-            ;;
-        *)
-            echo "Invalid selection. Please select a valid color."
-            ;;
-    esac
-done
-echo "Selected the $themeColor color"
+#------ Install Graphite theme -------
+if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") ]; then
+    select themeColor in default purple pink red orange yellow green teal blue all
+    do
+        case $themeColor in
+            "default")
+                colorCode="#FB8C00"
+                break
+                ;;
+            "purple")
+                colorCode="#AB47BC"
+                break
+                ;;
+            "pink")
+                colorCode="#EC407A"
+                break
+                ;;
+            "red")
+                colorCode="#E53935"
+                break
+                ;;
+            "orange")
+                colorCode="#FB8C00"
+                break
+                ;;
+            "yellow")
+                colorCode="#FBC02D"
+                break
+                ;;
+            "green")
+                colorCode="#4CAF50"
+                break
+                ;;
+            "teal")
+                colorCode="#009688"
+                break
+                ;;
+            "blue")
+                colorCode="#3684DD"
+                break
+                ;;
+            "all")
+                colorCode="#FB8C00"
+                break
+                ;;
+            *)
+                echo "Invalid selection. Please select a valid color."
+                ;;
+        esac
+    done
+    echo "Selected the $themeColor color"
 
-#-------- Theme installation --------
-git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
-sudo Graphite-gtk-theme/install.sh -t $themeColor
-sudo rm -r Graphite-gtk-theme/
-gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
-gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
+    #-------- Theme installation --------
+    git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
+    sudo Graphite-gtk-theme/install.sh -t $themeColor
+    sudo rm -r Graphite-gtk-theme/
+    gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
+    gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
 
-#-------- Icon pack installation --------
-git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
-Tela-circle-icon-theme/install.sh $themeColor
-sudo rm -r Tela-circle-icon-theme/
-gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
+    #-------- Icon pack installation --------
+    git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
+    Tela-circle-icon-theme/install.sh $themeColor
+    sudo rm -r Tela-circle-icon-theme/
+    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
+fi
 
 
 #----------------------------------
 #-------- Setup autorandr ---------
-if [ -d "$HOME/.config/autorandr/laptop" ]; then
+if [ ! -d "$HOME/.config/autorandr/laptop" ]; then
     sh setup-autorandr.sh
 fi
 
@@ -155,73 +163,88 @@ fi
 #----------------------------------
 #          Configurations
 #--------  Configure Rofi  --------
-mkdir -p ~/.local/share/rofi/themes/
-cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi ~/.local/share/rofi/themes/
-#------- Install Rofi power menu --------
-cp "$CONFIGS_DIR"/rofi/rofi-power-menu ~/.local/bin/
+if [ -f "$HOME/.local/share/rofi/themes/rounded-nord-dark.rasi" ] && [ -f "$HOME/.local/bin/rofi-power-menu" ]; then
+    mkdir -p ~/.local/share/rofi/themes/
+    cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi ~/.local/share/rofi/themes/
+    #------- Install Rofi power menu --------
+    cp "$CONFIGS_DIR"/rofi/rofi-power-menu ~/.local/bin/
+fi
 #--------     Configure i3 --------
-cp -r "$CONFIGS_DIR"/i3/ ~/.config/
-cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
+if ! grep -q "# For the benefit of emacs users: -\*- shell-script -\*-" ~/.config/i3/config; then
+    cp -r "$CONFIGS_DIR"/i3/ ~/.config/
+    cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
+fi
 #-------- Configuring Starship --------
-mkdir -p ~/.config && touch ~/.config/starship.toml
-search=%COLORCODE
-cat "$CONFIGS_DIR"/starship_template.toml > ~/.config/starship.toml
-sed -i "s/$search/$colorCode/" ~/.config/starship.toml
+if [ ! -f "$HOME/.config/starship.toml" ]; then
+    mkdir -p ~/.config && touch ~/.config/starship.toml
+    search=%COLORCODE
+    cat "$CONFIGS_DIR"/starship_template.toml > ~/.config/starship.toml
+    sed -i "s/$search/$colorCode/" ~/.config/starship.toml
+fi
 
 #-------- Setup ranger --------
-ranger --copy-config=rifle
-ranger --copy-config=rc
-cp ~/dotfiles/ranger/rc.conf ~/.config/ranger/ 2>/dev/null || :
-cp ~/dotfiles/ranger/rifle.conf ~/.config/ranger/ 2>/dev/null || :
-mkdir -p ~/.config/ranger/plugins
-if [ ! -d ~/.config/ranger/plugins/ranger-archives/ ] ; then
-    git clone --depth=1 https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins
+if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" ~/.config/ranger/commands.py; then
+    ranger --copy-config=rifle
+    ranger --copy-config=rc
+    cp ~/dotfiles/ranger/rc.conf ~/.config/ranger/ 2>/dev/null || :
+    cp ~/dotfiles/ranger/rifle.conf ~/.config/ranger/ 2>/dev/null || :
+    mkdir -p ~/.config/ranger/plugins
+    if [ ! -d "$HOME/.config/ranger/plugins/ranger-archives" ] ; then
+        git clone --depth=1 https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins
+    fi
+    #-------- Install disk mounting plugin --------
+    cd ~/.config/ranger/plugins
+    if [ ! -d "$HOME/.config/ranger/plugins/ranger_udisk_menu" ]; then
+        git clone --depth=1 https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins
+    fi
+    touch ~/.config/ranger/commands.py
+    if ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" ~/.config/ranger/commands.py; then
+        echo "from plugins.ranger_udisk_menu.mounter import mount" >> ~/.config/ranger/commands.py
+    fi
 fi
-#-------- Install disk mounting plugin --------
-cd ~/.config/ranger/plugins
-if [ ! -d ~/.config/ranger/plugins/ranger_udisk_menu/ ]; then
-    git clone --depth=1 https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins
-fi
-touch ~/.config/ranger/commands.py
-if [ ! $(grep "from plugins.ranger_udisk_menu.mounter import mount" ~/.config/ranger/commands.py) ]; then
-    echo "from plugins.ranger_udisk_menu.mounter import mount" >> ~/.config/ranger/commands.py
-fi
+cd $SCRIPT_DIR
 
 #-------- Setup NeoVIM --------
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-unzip JetBrainsMono.zip -d JetBrainsMono
-mkdir -p ~/.local/share/fonts
-mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-Regular.ttf ~/.local/share/fonts/
-mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
-fc-cache -f -v
-rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
-nvim +MasonInstallAll
-sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim/lua
-nvim +WakaTimeApiKey
+if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] && ! grep -q "\"nvim-treesitter/nvim-treesitter\"" ~/.config/nvim/lua/plugins/init.lua; then
+    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+    unzip JetBrainsMono.zip -d JetBrainsMono
+    mkdir -p ~/.local/share/fonts
+    mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-Regular.ttf ~/.local/share/fonts/
+    mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
+    fc-cache -f -v
+    rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
+    nvim +MasonInstallAll
+    sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
+    cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim/lua
+    nvim +WakaTimeApiKey
+fi
 
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
-cp "$CONFIGS_DIR"/.inputrc ~
-cp -rf "$CONFIGS_DIR"/terminator ~/.config
-cat "$CONFIGS_DIR"/.tmux.conf > ~/.tmux.conf
-cat "$CONFIGS_DIR"/.tmux.conf.local > ~/.tmux.conf.local
-search=%COLORCODE
-sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
-tmux source-file ~/.tmux.conf
+if ! grep -q "# https://github.com/gpakosz/.tmux" ~/.tmux.conf; then
+    cp "$CONFIGS_DIR"/.inputrc ~
+    cp -rf "$CONFIGS_DIR"/terminator ~/.config
+    cat "$CONFIGS_DIR"/.tmux.conf > ~/.tmux.conf
+    cat "$CONFIGS_DIR"/.tmux.conf.local > ~/.tmux.conf.local
+    search=%COLORCODE
+    sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
+    tmux source-file ~/.tmux.conf
+fi
 
-if [ "$SHELL" = "/bin/bash" ]; then
-    #-------- Install bash-it --------
-    git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
-    ~/.bash_it/install.sh --silent
-    cp -r "$CONFIGS_DIR"/bash_it/themes/hubertas ~/.bash_it/themes/
-    #-------- Install ble.sh --------
-    wget -O - https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
-    bash ble-nightly/ble.sh --install ~/.local/share
-    #-------- Setup .bashrc --------
-    cat "$CONFIGS_DIR"/template.bashrc > ~/.bashrc
-elif [ "$SHELL" = "/bin/zsh" ]; then
-    #-------- Setup .zshrc --------
-    cat "$CONFIGS_DIR"/template.zshrc >> ~/.zshrc
+if [ ! -d "$HOME/.bash_it" ] && [ ! -d "$HOME/.local/share/blesh" ]; then
+    if [ "$SHELL" = "/bin/bash" ]; then
+        #-------- Install bash-it --------
+        git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+        ~/.bash_it/install.sh --silent
+        cp -r "$CONFIGS_DIR"/bash_it/themes/hubertas ~/.bash_it/themes/
+        #-------- Install ble.sh --------
+        wget -O - https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
+        bash ble-nightly/ble.sh --install ~/.local/share
+        #-------- Setup .bashrc --------
+        cat "$CONFIGS_DIR"/template.bashrc > ~/.bashrc
+    elif [ "$SHELL" = "/bin/zsh" ]; then
+        #-------- Setup .zshrc --------
+        cat "$CONFIGS_DIR"/template.zshrc >> ~/.zshrc
+    fi
 fi
 
 #--------------------------------
@@ -249,8 +272,10 @@ go install golang.org/x/tools/gopls@latest
 cargo install gitlab-ci-ls
 cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
 #-------- Moving scripts to ~/tools --------
-mkdir -p ~/tools
-cp -r "$SCRIPT_DIR"/scripts/* ~/tools
+if [ ! -d "$HOME/tools" ]; then
+    mkdir -p ~/tools
+    cp -r "$SCRIPT_DIR"/scripts/* ~/tools
+fi
 
 #-------- Install bluetuith --------
 go install github.com/darkhz/bluetuith@latest
@@ -271,13 +296,15 @@ if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
 fi
 
 #-------- Setup git --------
-echo 'Setting up git'
-echo -n 'Enter git username: '
-read gitName
-git config --global user.name "$gitName"
-git config --global user.email "$gitEmail"
-echo "Host *" >> ~/.ssh/config
-echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+if ! grep -q "    StrictHostKeyChecking no" ~/.ssh/config; then
+    echo 'Setting up git'
+    echo -n 'Enter git username: '
+    read gitName
+    git config --global user.name "$gitName"
+    git config --global user.email "$gitEmail"
+    echo "Host *" >> ~/.ssh/config
+    echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+fi
 
 #-------- Restoring backups --------
 if [ ! -d "~/Documents/BackupFolder" ]; then
@@ -292,9 +319,11 @@ rm -rf ~/Pictures/PictureBackup/
 cd $SCRIPT_DIR
 
 #-------- Change Installation script remote origin to ssh --------
-git remote remove origin
-git remote add origin git@github.com:HubertasVin/Installation_Script.git
-git push --set-upstream origin master
+if [ `git remote get-url origin` != "git@github.com:HubertasVin/Installation_Script.git" ]; then
+    git remote remove origin
+    git remote add origin git@github.com:HubertasVin/Installation_Script.git
+    git push --set-upstream origin master
+fi
 
 echo ""
 echo "Done!"
