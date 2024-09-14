@@ -146,6 +146,13 @@ gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-da
 
 
 #----------------------------------
+#-------- Setup autorandr ---------
+if [ -d "$HOME/.config/autorandr/laptop" ]; then
+    sh setup-autorandr.sh
+fi
+
+
+#----------------------------------
 #          Configurations
 #--------  Configure Rofi  --------
 mkdir -p ~/.local/share/rofi/themes/
