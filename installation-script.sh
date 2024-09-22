@@ -170,9 +170,16 @@ if [ -f "$HOME/.local/share/rofi/themes/rounded-nord-dark.rasi" ] && [ -f "$HOME
     cp "$CONFIGS_DIR"/rofi/rofi-power-menu ~/.local/bin/
 fi
 #--------     Configure i3 --------
-if ! grep -q "# For the benefit of emacs users: -\*- shell-script -\*-" ~/.config/i3/config; then
+if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" ~/.config/i3/config; then
     cp -r "$CONFIGS_DIR"/i3/ ~/.config/
     cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
+fi
+#--------  Configure Picom --------
+cp "$CONFIGS_DIR"/picom.conf ~/.config/
+#-------- Configure Polybar --------
+if [ ! -d "$HOME/polybar" ]; then
+    mkdir -p ~/.config/polybar/
+    cp "$CONFIGS_DIR"/polybar/* ~/.config/polybar/
 fi
 #-------- Configuring Starship --------
 if [ ! -f "$HOME/.config/starship.toml" ]; then
@@ -206,13 +213,9 @@ cd $SCRIPT_DIR
 
 #-------- Setup NeoVIM --------
 if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] && ! grep -q "\"nvim-treesitter/nvim-treesitter\"" ~/.config/nvim/lua/plugins/init.lua; then
-    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-    unzip JetBrainsMono.zip -d JetBrainsMono
     mkdir -p ~/.local/share/fonts
-    mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-Regular.ttf ~/.local/share/fonts/
-    mv ./JetBrainsMono/JetBrainsMonoNLNerdFont-SemiBold.ttf ~/.local/share/fonts/
+    cp "$CONFIGS_DIR"/fonts/* ~/.local/share/fonts/
     fc-cache -f -v
-    rm -f JetBrainsMono.zip && rm -rf JetBrainsMono
     nvim +MasonInstallAll
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
     cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim/lua
