@@ -174,6 +174,14 @@ if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" ~/.config/i3/config; the
     cp -r "$CONFIGS_DIR"/i3/ ~/.config/
     cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
 fi
+#----- Battery warning support ----
+if [ ! -f "/usr/bin/i3battery" ]; then
+    git clone https://github.com/Wabri/i3battery
+    cd i3battery
+    sh install.sh
+    cd ..
+    rm -rf i3battery/
+fi
 #--------  Configure Picom --------
 cp "$CONFIGS_DIR"/picom.conf ~/.config/
 #-------- Configure Polybar --------
