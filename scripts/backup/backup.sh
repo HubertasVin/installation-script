@@ -51,6 +51,8 @@ backup_commands() {
     # Copy i3 and i3blocks configs
     cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
     cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
+    # Copy Dunst config
+    cp ~/.config/dunst/dunstrc ~/dotfiles/ 2>/dev/null || :
     # Copy Picom configs
     cp -r ~/.config/picom.conf ~/dotfiles/ 2>/dev/null || :
     # Copy Nvim config

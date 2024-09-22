@@ -174,6 +174,10 @@ if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" ~/.config/i3/config; the
     cp -r "$CONFIGS_DIR"/i3/ ~/.config/
     cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
 fi
+if [ ! -d "$HOME/.config/dunst/" ]; then
+    mkdir -p ~/.config/dunst/
+    cp "$CONFIGS_DIR"/dunstrc ~/.config/dunst/
+fi
 #----- Battery warning support ----
 if [ ! -f "/usr/bin/i3battery" ]; then
     git clone https://github.com/Wabri/i3battery
