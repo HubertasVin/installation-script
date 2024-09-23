@@ -163,11 +163,9 @@ fi
 #----------------------------------
 #          Configurations
 #--------  Configure Rofi  --------
-if [ -f "$HOME/.local/share/rofi/themes/rounded-nord-dark.rasi" ] && [ -f "$HOME/.local/bin/rofi-power-menu" ]; then
-    mkdir -p ~/.local/share/rofi/themes/
-    cp "$CONFIGS_DIR"/rofi/themes/rounded-nord-dark.rasi ~/.local/share/rofi/themes/
-    #------- Install Rofi power menu --------
-    cp "$CONFIGS_DIR"/rofi/rofi-power-menu ~/.local/bin/
+if [ ! -d "$HOME/.config/rofi/config/" ]; then
+    mkdir -p ~/.config/rofi/
+    cp -r "$CONFIGS_DIR"/rofi/* ~/.config/rofi/
 fi
 #--------     Configure i3 --------
 if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" ~/.config/i3/config; then

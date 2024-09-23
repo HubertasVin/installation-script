@@ -46,8 +46,7 @@ backup_commands() {
     # Copy polybar, qtile, rofi configs
     cp -r ~/.config/polybar/* ~/dotfiles/polybar 2>/dev/null || :
     cp -r ~/.config/qtile/* ~/dotfiles/qtile 2>/dev/null || :
-    cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/dotfiles/rofi/themes 2>/dev/null || :
-    cp ~/.local/bin/rofi-power-menu ~/dotfiles/rofi/ 2>/dev/null || :
+    cp -r ~/.config/rofi/* ~/dotfiles/rofi/ 2>/dev/null || :
     # Copy i3 and i3blocks configs
     cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
     cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
