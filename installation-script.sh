@@ -36,7 +36,7 @@ fi
 
 #-------- Get all dotfiles --------
 if [ ! -d "$HOME/dotfiles/" ]; then
-    git clone git@github.com:HubertasVin/dotfiles.git ~
+    git clone https://github.com/HubertasVin/Installation_Script.git ~
 fi
 
 #-----------------------------
@@ -235,6 +235,8 @@ fi
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
 if ! grep -q "# https://github.com/gpakosz/.tmux" ~/.tmux.conf; then
     cp "$CONFIGS_DIR"/.inputrc ~
+    mkdir -p ~/.config/alacritty/
+    cp "$CONFIGS_DIR"/alacritty.toml ~/.config/alacritty/
     cp -rf "$CONFIGS_DIR"/terminator ~/.config
     cat "$CONFIGS_DIR"/.tmux.conf > ~/.tmux.conf
     cat "$CONFIGS_DIR"/.tmux.conf.local > ~/.tmux.conf.local
@@ -336,6 +338,15 @@ if [ `git remote get-url origin` != "git@github.com:HubertasVin/Installation_Scr
     git remote remove origin
     git remote add origin git@github.com:HubertasVin/Installation_Script.git
     git push --set-upstream origin master
+fi
+
+cd $CONFIGS_DIR
+
+#-------- Change dotfiles remote origin to ssh --------
+if [ `git remote get-url origin` != "git@github.com:HubertasVin/Installation_Script.git" ]; then
+    git remote remove origin
+    git remote add origin git@github.com:HubertasVin/Installation_Script.git
+    git push --set-upstream origin main
 fi
 
 echo ""
