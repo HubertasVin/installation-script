@@ -65,8 +65,9 @@ backup_commands() {
     # Copy Ranger configuration
     cp ~/.config/ranger/rc.conf ~/dotfiles/ranger/ 2>/dev/null || :
     cp ~/.config/ranger/rifle.conf ~/dotfiles/ranger/ 2>/dev/null || :
-    # Copy Terminator configuration
+    # Copy terminal configuration
     cp -r ~/.config/terminator/* ~/dotfiles/terminator 2>/dev/null || :
+    cp ~/.config/alacritty/alacritty.toml ~/dotfiles/ 2>/dev/null || :
     # Copy GNOME settings
     dconf dump / > ~/dotfiles/saved_settings.dconf
 

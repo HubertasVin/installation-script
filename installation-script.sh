@@ -323,7 +323,7 @@ fi
 
 #-------- Restoring backups --------
 if [ ! -d "~/Documents/BackupFolder" ]; then
-    git clone git@github.com:HubertasVin/BackupFolder.git ~/Documents
+    git clone --recurse-submodules git@github.com:HubertasVin/BackupFolder.git ~/Documents
 fi
 if [ ! -d "~/Pictures/PictureBackup" ]; then
     git clone git@github.com:HubertasVin/PictureBackup.git ~/Pictures
