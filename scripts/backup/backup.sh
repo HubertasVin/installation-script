@@ -8,18 +8,17 @@ touch /tmp/error
 handle_error() {
     local ERROR=$(cat /tmp/error)
     echo $ERROR
-    echo "$0 at line $1 with command $ERROR" >> /home/hubertas/tools/tool-errors.log
-    echo "$0 at line $1 with command $ERROR" >> "$TEMP_OUTPUT"
+    echo $ERROR >> "$TEMP_OUTPUT"
 }
 
 backup_success() {
-	  if git status | grep -q 'Your branch is up to date'; then
+    if git status | grep -q 'Your branch is up to date'; then
         echo -e "${OKGREEN}Backup successful for ${PWD}${NC}"
         echo "${OKGREEN}Backup successful for ${PWD}${NC}" >> "$1"
-	  else
-	      echo -e "${FAIL}Backup failed for ${PWD}${NC}"
+	else
+	    echo -e "${FAIL}Backup failed for ${PWD}${NC}"
         echo "${FAIL}Backup failed for ${PWD}${NC}" >> "$1"
-	  fi
+	fi
 }
 
 backup_commands() {
@@ -35,7 +34,7 @@ backup_commands() {
     TEMP_OUTPUT=$(mktemp)
     TEMP_ERROR=$(mktemp)
 
-    trap 'handle_error $LINENO $TEMP_ERROR' ERR
+    trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
 
     echo -e "${OKBLUE}Backing up...${NC}"
     echo "${OKBLUE}Backing up...${NC}" >> "$TEMP_OUTPUT"
@@ -46,14 +45,11 @@ backup_commands() {
     # Copy polybar, qtile, rofi configs
     cp -r ~/.config/polybar/* ~/dotfiles/polybar 2>/dev/null || :
     cp -r ~/.config/qtile/* ~/dotfiles/qtile 2>/dev/null || :
-    cp -r ~/.config/rofi/* ~/dotfiles/rofi/ 2>/dev/null || :
+    cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/dotfiles/rofi/themes 2>/dev/null || :
+    cp ~/.local/bin/rofi-power-menu ~/dotfiles/rofi/ 2>/dev/null || :
     # Copy i3 and i3blocks configs
     cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
     cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
-    # Copy Dunst config
-    cp ~/.config/dunst/dunstrc ~/dotfiles/ 2>/dev/null || :
-    # Copy Picom configs
-    cp -r ~/.config/picom.conf ~/dotfiles/ 2>/dev/null || :
     # Copy Nvim config
     cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim 2>/dev/null || :
     # Copy inputrc
@@ -65,7 +61,7 @@ backup_commands() {
     # Copy Ranger configuration
     cp ~/.config/ranger/rc.conf ~/dotfiles/ranger/ 2>/dev/null || :
     cp ~/.config/ranger/rifle.conf ~/dotfiles/ranger/ 2>/dev/null || :
-    # Copy terminal configuration
+    # Copy Terminator configuration
     cp -r ~/.config/terminator/* ~/dotfiles/terminator 2>/dev/null || :
     cp ~/.config/alacritty/alacritty.toml ~/dotfiles/ 2>/dev/null || :
     # Copy GNOME settings
@@ -80,9 +76,9 @@ backup_commands() {
         pwd
         echo -e "${OKBLUE}Backing up ${p}${NC}"
         echo "${OKBLUE}Backing up ${p}${NC}" >> "$TEMP_OUTPUT"
-        git add . 1> /dev/null
+        git add .
         if ! git diff-index --quiet HEAD --; then
-            git commit -m "Backup"
+            git commit -am "Backup"
             git push
             backup_success "$TEMP_OUTPUT"
         else
