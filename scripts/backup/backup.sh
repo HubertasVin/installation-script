@@ -91,8 +91,8 @@ backup_commands() {
                 git status >> "$1"
             fi
         fi
-        tput clear
-        echo -e "$(cat "$TEMP_OUTPUT")"
+        # tput clear
+        # echo -e "$(cat "$TEMP_OUTPUT")"
     done < gitlocations.txt
 
     echo -e "${OKGREEN}Backup complete${NC}"
