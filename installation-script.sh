@@ -331,9 +331,11 @@ if [ ! -d "~/Documents/BackupFolder" ]; then
 fi
 if [ ! -d "~/Pictures/PictureBackup" ]; then
     git clone git@github.com:HubertasVin/PictureBackup.git ~/Pictures
+    cp -rf ~/Pictures/PictureBackup/* ~/Pictures/
+    rm -rf ~/Pictures/PictureBackup/
+    cd "$HOME"/Pictures
+    git branch --set-upstream-to=origin/main master
 fi
-cp -rf ~/Pictures/PictureBackup/* ~/Pictures/
-rm -rf ~/Pictures/PictureBackup/
 
 cd $SCRIPT_DIR
 
@@ -347,9 +349,9 @@ fi
 cd $CONFIGS_DIR
 
 #-------- Change dotfiles remote origin to ssh --------
-if [ `git remote get-url origin` != "git@github.com:HubertasVin/Installation_Script.git" ]; then
+if [ `git remote get-url origin` != "git@github.com:HubertasVin/dotfiles.git" ]; then
     git remote remove origin
-    git remote add origin git@github.com:HubertasVin/Installation_Script.git
+    git remote add origin git@github.com:HubertasVin/dotfiles.git
     git push --set-upstream origin main
 fi
 
