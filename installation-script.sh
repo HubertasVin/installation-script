@@ -295,7 +295,11 @@ fi
 #-------- Install bluetuith --------
 go install github.com/darkhz/bluetuith@latest
 
-#-------- Setup SSH --------
+#------- Move .desktop files -------
+cp ~/dotfiles/desktop_files/ibkr_desktop.desktop ~/.local/share/applications/
+cp ~/dotfiles/desktop_files/polybar.desktop ~/.local/share/applications/
+
+#------------ Setup SSH ------------
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
     echo 'Setting up ssh'
     echo -n 'Enter git email: '

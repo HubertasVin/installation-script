@@ -17,7 +17,7 @@ sudo dnf install --assumeyes flatpak
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 #TODO ---- Install necessary applications ----
-sudo dnf install -y --allowerasing cmake ninja-build xrandr ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms akmod-nvidia xorg-x11-drv-nvidia-cuda java-17-openjdk java-17-openjdk-devel maven dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors starship xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel picom dunst polybar udiskie i3 i3blocks rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek terminator alacritty s-tui
+sudo dnf install -y --allowerasing cmake ninja-build xrandr @virtualization ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms akmod-nvidia xorg-x11-drv-nvidia-cuda java-17-openjdk java-17-openjdk-devel maven dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors starship xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel picom dunst polybar udiskie i3 i3blocks rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek terminator alacritty s-tui
 sudo dnf groupinstall -y "Development Tools" "Development Libraries"
 flatpak install flathub -y net.nokyan.Resources
 
@@ -30,6 +30,10 @@ sudo dnf config-manager --set-enabled fedora-cisco-openh264
 
 #TODO ---- Update system ----
 sudo dnf update -y
+
+#TODO ---- Enable virtualization stuff ----
+sudo systemctl start libvirtd
+sudo systemctl enable libvirtd
 
 #TODO ---- Install glow for CLI markdown reading ----
 echo '[charm]
