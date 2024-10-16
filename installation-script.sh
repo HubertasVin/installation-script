@@ -334,7 +334,7 @@ if [ ! -d "~/Pictures/PictureBackup" ]; then
     cp -rf ~/Pictures/PictureBackup/* ~/Pictures/
     rm -rf ~/Pictures/PictureBackup/
     cd "$HOME"/Pictures
-    git branch --set-upstream-to=origin/main master
+    git push --set-upstream origin main
 fi
 
 cd $SCRIPT_DIR
