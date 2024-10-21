@@ -36,7 +36,7 @@ fi
 
 #-------- Get all dotfiles --------
 if [ ! -d "$HOME/dotfiles/" ]; then
-    git clone https://github.com/HubertasVin/Installation_Script.git ~
+    git clone https://github.com/HubertasVin/dotfiles.git ~
 fi
 
 #-----------------------------
@@ -326,13 +326,13 @@ if ! grep -q "    StrictHostKeyChecking no" ~/.ssh/config; then
 fi
 
 #-------- Restoring backups --------
-if [ ! -d "~/Documents/BackupFolder" ]; then
-    git clone --recurse-submodules git@github.com:HubertasVin/BackupFolder.git ~/Documents
+if [ ! -d "~/Documents/backup-folder" ]; then
+    git clone --recurse-submodules git@github.com:HubertasVin/backup-folder.git ~/Documents
 fi
-if [ ! -d "~/Pictures/PictureBackup" ]; then
-    git clone git@github.com:HubertasVin/PictureBackup.git ~/Pictures
-    cp -rf ~/Pictures/PictureBackup/* ~/Pictures/
-    rm -rf ~/Pictures/PictureBackup/
+if [ ! -d "~/Pictures/picture-backup" ]; then
+    git clone git@github.com:HubertasVin/picture-backup.git ~/Pictures
+    cp -rf ~/Pictures/picture-backup/* ~/Pictures/
+    rm -rf ~/Pictures/picture-backup/
     cd "$HOME"/Pictures
     git push --set-upstream origin main
 fi
@@ -340,9 +340,9 @@ fi
 cd $SCRIPT_DIR
 
 #-------- Change Installation script remote origin to ssh --------
-if [ `git remote get-url origin` != "git@github.com:HubertasVin/Installation_Script.git" ]; then
+if [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-script.git" ]; then
     git remote remove origin
-    git remote add origin git@github.com:HubertasVin/Installation_Script.git
+    git remote add origin git@github.com:HubertasVin/installation-script.git
     git push --set-upstream origin master
 fi
 
