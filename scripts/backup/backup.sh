@@ -51,7 +51,8 @@ backup_commands() {
     cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
     cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
     # Copy Nvim config
-    cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim 2>/dev/null || :
+    cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim/lua 2>/dev/null || :
+    cp -rf ~/.config/nvim/init.lua ~/dotfiles/nvim/init.lua 2>/dev/null || :
     # Copy inputrc
     cp ~/.inputrc ~/dotfiles/
     # Copy TMUX configuration

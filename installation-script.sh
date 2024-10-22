@@ -228,7 +228,7 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] && ! 
     fc-cache -f -v
     nvim +MasonInstallAll
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim/lua
+    cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim
     nvim +WakaTimeApiKey
 fi
 
