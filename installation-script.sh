@@ -72,6 +72,13 @@ if [ ! `which brew` ]; then
     echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
 fi
 
+#-- Setup npm dir for global installs --
+if [ ! -d "$HOME/.npm-global" ]; then
+    mkdir -p ~/.npm-global
+    npm config set prefix '~/.npm-global'
+
+fi
+
 
 #-------------------------------------
 #          Theme installation
