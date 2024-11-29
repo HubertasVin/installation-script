@@ -166,6 +166,9 @@ if [ ! -d "$HOME/.config/autorandr/laptop" ]; then
     sh setup-autorandr.sh
 fi
 
+#----------------------------------
+#-------- Install packages --------
+bash <(curl -s https://updates.zen-browser.app/install.sh)
 
 #----------------------------------
 #          Configurations
