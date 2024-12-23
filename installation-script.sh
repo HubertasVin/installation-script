@@ -287,7 +287,7 @@ if [ ! `which ghc` ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 fi
 #-------- Install language servers --------
-pip install "python-lsp-server[all]"
+python -m pip install python-lsp-server
 brew install lua-language-server
 dotnet tool install --global csharp-ls
 sudo npm install -g @angular/language-server @tailwindcss/language-server typescript typescript-language-server vscode-langservers-extracted dockerfile-language-server-nodejs
