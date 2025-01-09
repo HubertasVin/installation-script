@@ -74,7 +74,6 @@ backup_commands() {
     while read p || [[ -n $p ]];
     do
         cd $p
-        pwd
         echo -e "${OKBLUE}Backing up ${p}${NC}"
         echo "${OKBLUE}Backing up ${p}${NC}" >> "$TEMP_OUTPUT"
         git add .
@@ -85,11 +84,11 @@ backup_commands() {
         else
             if git status | grep -q 'Your branch is up to date'; then
                 echo -e "${OKGREEN}The backup is up to date for ${PWD}${NC}"
-                echo "${OKGREEN}The backup is up to date for ${PWD}${NC}" >> "$1"
+                echo "${OKGREEN}The backup is up to date for ${PWD}${NC}" >> "$TEMP_OUTPUT"
             else
                 echo -e "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
-                echo "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}" >> "$1"
-                git status >> "$1"
+                echo "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}" >> "$TEMP_OUTPUT"
+                git status >> "$TEMP_OUTPUT"
             fi
         fi
         # tput clear
