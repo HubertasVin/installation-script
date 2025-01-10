@@ -26,7 +26,7 @@ class arguments:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("-g", "--exclude-git", action="store_true", help="Exclude Git repositories from backup")
-    parser.add_argument("--src", nargs='+', required=True, help="Source directories to be backedup")
+    parser.add_argument("--src", nargs='+', required=True, help="Source directories to be backed-up")
     parser.add_argument("--dst", required=True, help="Destination in remote directory for backup")
     parser.add_argument("--ip", required=True, help="Remote IP")
     parser.add_argument("--user", required=True, help="Remote user")
@@ -37,6 +37,7 @@ class arguments:
 home_dir = os.path.expanduser('~')
 dstBackupLoc="~/Backups"
 tmpBackupLoc=home_dir + "/.temp/.backup"
+backupShellLoc=home_dir + "/tools/backup/backup.sh"
 
 def create_ssh_client(server, user, password):
     client = paramiko.SSHClient()
@@ -91,30 +92,30 @@ def remove_contents(folder):
 
 
 #TODO Add git repositories to backup
-if arguments.config["add_git"]:
-    for git in arguments.config["add_git"]:
-        Path("gitlocations.txt").append(git)
+# if arguments.config["add_git"]:
+#     for git in arguments.config["add_git"]:
+#         Path("gitlocations.txt").append(git)
 
 # Run backup script
 
-subprocess.run(["backup.sh"], shell=True)
+subprocess.run([backupShellLoc], shell=True)
 
-if not os.path.exists(tmpBackupLoc):
-    os.makedirs(tmpBackupLoc.absolute())
-    os.makedirs(tmpBackupLoc)
+tmpBackupLocPath = Path(tmpBackupLoc)
+if not tmpBackupLocPath.exists():
+    os.makedirs(tmpBackupLocPath.absolute(), exist_ok=True)
 
 if len(os.listdir(tmpBackupLoc)) != 0:
     remove_contents(tmpBackupLoc)
 
-print("Starting backup to remote")
+print(bcolors.OKBLUE + "Starting backup to git remote..." + bcolors.ENDC)
 
 # Copy all the backup files to temporary folder
-print(bcolors.OKBLUE + "Copying files to temporary backup folder" + bcolors.ENDC)
+print(bcolors.OKBLUE + "Copying files to temporary backup folder..." + bcolors.ENDC)
 for src_dir in arguments.config["src"]:
     shutil.copytree(src_dir, tmpBackupLoc + "/" + os.path.basename(src_dir), dirs_exist_ok=True)
 
 # Delete git projects and turn them into their own scripts to clone them
-print(bcolors.OKBLUE + "Deleting git projects and turning them into their own scripts to clone them" + bcolors.ENDC)
+print(bcolors.OKBLUE + "Deleting git projects and turning them into their own scripts to clone them..." + bcolors.ENDC)
 f=open(home_dir + "/Installation_Script/scripts/backup/.gitignoreremote")
 gitignoreremote=f.read().splitlines()
 
