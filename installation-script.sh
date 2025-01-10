@@ -296,6 +296,8 @@ rustup component add rust-analyzer
 go install golang.org/x/tools/gopls@latest
 cargo install gitlab-ci-ls
 cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
+#-------- Install libraries --------
+pip install gitpython paramiko scp
 #-------- Moving scripts to ~/tools --------
 if [ ! -d "$HOME/tools" ]; then
     mkdir -p ~/tools
@@ -337,7 +339,7 @@ fi
 
 #-------- Restoring backups --------
 if [ ! -d "~/Documents/backup-folder" ]; then
-    git clone --recurse-submodules git@github.com:HubertasVin/backup-folder.git ~/Documents
+    git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git ~/Documents
 fi
 if [ ! -d "~/Pictures/picture-backup" ]; then
     git clone git@github.com:HubertasVin/picture-backup.git ~/Pictures
