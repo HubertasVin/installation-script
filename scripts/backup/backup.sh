@@ -11,36 +11,54 @@ handle_error() {
     echo $ERROR >> "$TEMP_OUTPUT"
 }
 
+print_console() {
+    echo -e "$1"
+    echo "$1" >> "$TEMP_OUTPUT"
+}
+
+print_git_status() {
+    output="$(git status --short | awk '
+        {
+            if ($1 == "M") printf "(M) %s, ", $2; # Modified
+            else if ($1 == "A") printf "(A) %s, ", $2; # Added
+            else if ($1 == "D") printf "(D) %s, ", $2; # Deleted
+            else if ($1 == "??") printf "(A) %s, ", $2; # Untracked
+        }
+        ' | sed 's/, $/\n\n/')"
+
+    if [[ "$output" != "" ]]; then
+        print_console "   ${CYAN}Here are the changes that are being commited:${NC}"
+        print_console "   $output"
+        print_console ""
+    fi
+}
+
 backup_success() {
     if git status | grep -q 'Your branch is up to date'; then
-        echo -e "${OKGREEN}Backup successful for ${PWD}${NC}"
-        echo "${OKGREEN}Backup successful for ${PWD}${NC}" >> "$1"
+        print_console "   ${OKGREEN}Backup successful for ${PWD}${NC}"
 	else
-	    echo -e "${FAIL}Backup failed for ${PWD}${NC}"
-        echo "${FAIL}Backup failed for ${PWD}${NC}" >> "$1"
+        print_console "   ${FAIL}Backup failed for ${PWD}${NC}"
 	fi
 }
 
 backup_commands() {
     currentLoc=$(pwd)
-    YELLOW='\033[1;33m'
-    GREEN='\033[0;32m'
-    RED='\033[0;31m'
+    CYAN='\033[0;96m'
+    YELLOW='\033[0;93m'
+    GREEN='\033[0;92m'
+    RED='\033[0;91m'
+    OKBLUE='\033[1;34m'
+    OKGREEN='\033[1;32m'
+    FAIL='\033[1;31m'
     NC='\033[0m'            # No Color
-    OKBLUE='\033[94m'
-    OKGREEN='\033[92m'
-    FAIL='\033[91m'
 
     TEMP_OUTPUT=$(mktemp)
     TEMP_ERROR=$(mktemp)
 
     trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
 
-    echo -e "${OKBLUE}Backing up...${NC}"
-    echo "${OKBLUE}Backing up...${NC}" >> "$TEMP_OUTPUT"
-    echo -e "${OKBLUE}Copying config files${NC}"
-    echo "${OKBLUE}Copying config files${NC}" >> "$TEMP_OUTPUT"
-    PROMPT_COMMAND="Backing up..."
+    print_console "${OKBLUE}Backing up...${NC}"
+    print_console "${OKBLUE}Copying config files...${NC}"
 
     # Copy polybar, qtile, rofi configs
     cp -r ~/.config/polybar/* ~/dotfiles/polybar 2>/dev/null || :
@@ -68,46 +86,45 @@ backup_commands() {
     # Copy GNOME settings
     dconf dump / > ~/dotfiles/saved_settings.dconf
 
-    echo "Starting backup to git"
-    echo "Starting backup to git" >> "$TEMP_OUTPUT"
+    print_console "${OKBLUE}Starting backup to git...${NC}"
 
     while read p || [[ -n $p ]];
     do
         cd $p
-        echo -e "${OKBLUE}Backing up ${p}${NC}"
-        echo "${OKBLUE}Backing up ${p}${NC}" >> "$TEMP_OUTPUT"
+        print_console " > ${OKBLUE}Backing up ${p}${NC}"
+        print_git_status
+
         git add .
         if ! git diff-index --quiet HEAD --; then
-            git commit -am "Backup"
-            git push
+            print_console "   ${YELLOW}Commiting updates to remote${NC}"
+            git commit -am "Backup" | sed 's/^/   /'
+            git push > /dev/null 2>&1 | sed 's/^/   /'
             backup_success "$TEMP_OUTPUT"
         else
             if git status | grep -q 'Your branch is up to date'; then
-                echo -e "${OKGREEN}The backup is up to date for ${PWD}${NC}"
-                echo "${OKGREEN}The backup is up to date for ${PWD}${NC}" >> "$TEMP_OUTPUT"
+                print_console "   ${OKGREEN}The backup is up to date for ${PWD}${NC}"
             else
-                echo -e "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
-                echo "${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}" >> "$TEMP_OUTPUT"
-                git status >> "$TEMP_OUTPUT"
+                print_console "   ${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
+                git status | sed 's/^/   /' >> "$TEMP_OUTPUT"
             fi
         fi
         # tput clear
         # echo -e "$(cat "$TEMP_OUTPUT")"
     done < gitlocations.txt
 
-    echo -e "${OKGREEN}Backup complete${NC}"
-    echo "${OKGREEN}Backup complete${NC}" >> "$TEMP_OUTPUT"
-    PROMPT_COMMAND="Completed backup."
+    print_console "${OKGREEN}Backup complete${NC}"
 
     echo "Press any key to continue..."
     read -n 1 -s
 }
 
+PRINT_GIT_STATUS_SERIALIZED=$(declare -f print_git_status)
 HANDLE_ERROR_SERIALIZED=$(declare -f handle_error)
 BACKUP_SUCCESS_SERIALIZED=$(declare -f backup_success)
 BACKUP_COMMANDS_SERIALIZED=$(declare -f backup_commands)
+PRINT_CONSOLE_SERIALIZED=$(declare -f print_console)
 
-tmux new-session -d -s backup-session bash -c "$BACKUP_COMMANDS_SERIALIZED; $HANDLE_ERROR_SERIALIZED; $BACKUP_SUCCESS_SERIALIZED; cd /home/hubertas/tools/backup; backup_commands"
+tmux new-session -d -s backup-session bash -c "$PRINT_GIT_STATUS_SERIALIZED; $HANDLE_ERROR_SERIALIZED; $BACKUP_SUCCESS_SERIALIZED; $BACKUP_COMMANDS_SERIALIZED; $PRINT_CONSOLE_SERIALIZED; cd /home/hubertas/tools/backup; backup_commands"
 tmux set-option -t backup-session status off
 TMUX='' tmux attach -t backup-session > /dev/null
 
