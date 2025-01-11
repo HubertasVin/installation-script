@@ -299,9 +299,8 @@ cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git m
 #-------- Install libraries --------
 pip install gitpython paramiko scp
 #-------- Moving scripts to ~/tools --------
-if [ ! -d "$HOME/tools" ]; then
-    mkdir -p ~/tools
-    cp -r "$SCRIPT_DIR"/scripts/* ~/tools
+if [ ! -L "$HOME/tools" ]; then
+    ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
 fi
 
 #-------- Install bluetuith --------
