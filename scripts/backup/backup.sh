@@ -98,7 +98,7 @@ backup_commands() {
         if ! git diff-index --quiet HEAD --; then
             print_console "   ${YELLOW}Commiting updates to remote${NC}"
             git commit -am "Backup" | sed 's/^/   /'
-            git push > /dev/null 2>&1 | sed 's/^/   /'
+            git push origin $(git rev-parse --abbrev-ref HEAD) > /dev/null 2>&1 | sed 's/^/   /'
             backup_success "$TEMP_OUTPUT"
         else
             if git status | grep -q 'Your branch is up to date'; then
