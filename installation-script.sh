@@ -90,7 +90,7 @@ if [ `which gnome-shell` ]; then
     cd notification-timeout
     make build & make install
     gnome-extensions enable notification-timeout@chlumskyvaclav.gmail.com
-    cd .. & rm -rf notification-timeout 
+    cd .. & rm -rf notification-timeout
 fi
 
 #------ Install Graphite theme -------
@@ -146,11 +146,18 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
     echo "Selected the $themeColor color"
 
     #-------- Theme installation --------
+    #---- Graphite ----
     git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
     sudo Graphite-gtk-theme/install.sh -t $themeColor
     sudo rm -r Graphite-gtk-theme/
     gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
     gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
+    #---- Flat Remix ----
+    git clone https://github.com/daniruiz/flat-remix-gnome.git && cd flat-remix-gnome
+    make
+    sudo make install
+    cd .. && rm -r flat-remix-gnome
+    gsettings set org.gnome.shell.extensions.user-theme name "Flat-Remix-Dark-fullPanel"
 
     #-------- Icon pack installation --------
     git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
