@@ -135,43 +135,53 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
     do
         case $themeColor in
             "default")
-                colorCode="#FB8C00"
+                colorCode="#3684DD"
+                iconThemeColor="-blue"
                 break
                 ;;
             "purple")
                 colorCode="#AB47BC"
+                iconThemeColor="-purple"
                 break
                 ;;
             "pink")
                 colorCode="#EC407A"
+                iconThemeColor="-pink"
                 break
                 ;;
             "red")
                 colorCode="#E53935"
+                iconThemeColor="-red"
                 break
                 ;;
             "orange")
                 colorCode="#FB8C00"
+                iconThemeColor="-orange"
                 break
                 ;;
             "yellow")
                 colorCode="#FBC02D"
+                iconThemeColor="-yellow"
                 break
                 ;;
             "green")
                 colorCode="#4CAF50"
+                iconThemeColor="-green"
                 break
                 ;;
             "teal")
                 colorCode="#009688"
+                iconThemeColor="-manjaro"
                 break
                 ;;
             "blue")
                 colorCode="#3684DD"
+                iconThemeColor="-blue"
                 break
                 ;;
             "all")
-                colorCode="#FB8C00"
+                colorCode="#3684DD"
+                iconThemeColor=""
                 break
                 ;;
             *)
@@ -211,9 +221,9 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
 
     #-------- Icon pack installation --------
     git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
-    Tela-circle-icon-theme/install.sh $themeColor
+    Tela-circle-icon-theme/install.sh $iconThemeColor
     sudo rm -r Tela-circle-icon-theme/
-    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$themeColor-dark"
+    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle$iconThemeColor-dark"
 fi
 
 
@@ -297,7 +307,6 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! 
     fc-cache -f -v
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
     cp -rf "$CONFIGS_DIR"/nvim "$HOME"/.config/nvim
-    nvim +MasonInstallAll
     nvim +WakaTimeApiKey
 fi
 

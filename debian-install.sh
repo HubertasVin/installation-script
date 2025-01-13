@@ -15,6 +15,7 @@ sudo apt autoremove -y
 if ! grep -q multiverse /etc/apt/sources.list.d/ubuntu.sources; then
     sudo add-apt-repository multiverse
     sudo add-apt-repository ppa:daniruiz/flat-remix
+    sudo dpkg --add-architecture i386
 fi
 #TODO ---- Install MS Teams and VS Code ----
 if [ ! -f /etc/apt/keyrings/packages.microsoft.gpg ]; then
@@ -40,13 +41,13 @@ sudo apt update
 sudo apt install -y code build-essential cmake ninja-build gstreamer1.0-plugins-bad openjdk-8-jdk openjdk-17-jdk openjdk-21-jdk python3-venv python3-pip pipx maven npm dotnet-sdk-8.0 aspnetcore-runtime-8.0 dotnet-runtime-8.0 clang bash-completion golang-go gh libglew-dev libglfw3 libglfw3-dev libncurses-dev dkms acpi acpid brightnessctl xclip wl-clipboard xinput ntfs-3g playerctl xbindkeys meson
 
 # Utilities / Libraries
-sudo apt install -y imagemagick gettext gstreamer1.0-plugins-good gstreamer1.0-libav libglib2.0-dev-bin libpcre2-dev libpixman-1-dev uthash-dev libxcb-util-dev libxcb-image0-dev libxcb-render-util0-dev libxcb-xkb-dev libdrm-dev libx11-dev libx11-xcb-dev libxcb1-dev libgl-dev libegl1-mesa-dev libepoxy-dev linux-headers-$(uname -r) linux-headers-generic
+sudo apt install -y imagemagick gettext gstreamer1.0-plugins-good gstreamer1.0-libav libglib2.0-dev-bin libpcre2-dev libpixman-1-dev uthash-dev libxcb-util-dev libxcb-image0-dev libxcb-render-util0-dev libxcb-xkb-dev libdrm-dev libx11-dev libx11-xcb-dev libxcb1-dev libgl-dev libegl1-mesa-dev libepoxy-dev linux-headers-$(uname -r) linux-headers-generic libc6:i386 libncurses6:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 
 # Command-line tools and utilities
 sudo apt install -y htop s-tui nvtop tmux tldr ffmpeg flameshot vlc qbittorrent ranger putty ubuntu-restricted-extras pamixer peek blueman nitrogen valgrind
 
 # Apps
-sudo apt install -y alacritty dconf-editor gnome-tweaks gnome-shell-extensions gnome-shell-pomodoro steam wine
+sudo apt install -y alacritty dconf-editor gnome-tweaks gnome-shell-extensions gnome-shell-pomodoro steam-installer wine
 
 if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/blur-my-shell@aunetx/ ]; then
 	git clone https://github.com/aunetx/blur-my-shell
