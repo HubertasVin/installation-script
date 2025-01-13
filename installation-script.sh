@@ -1,6 +1,6 @@
-# /bin/bash
+#!/bin/bash
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-CONFIGS_DIR=~/dotfiles
+CONFIGS_DIR="$HOME"/dotfiles
 
 #-------- Script error handling --------
 touch /tmp/error
@@ -10,33 +10,64 @@ trap 'handle_error $LINENO' ERR
 handle_error() {
     local ERROR=$(cat /tmp/error)
     echo $ERROR
-    echo "$0 at line $1 with command $ERROR"
 }
+
+touch /tmp/error
+trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
 
 # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # │                   DEBIAN                   │
 # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then
-    sh debian-install.sh
+    bash debian-install.sh
 
 # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # │                   FEDORA                   │
 # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
-    sh fedora-install.sh
+    bash fedora-install.sh
 
 # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # │                    ARCH                    │
 # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which pacman 2>/dev/null` ]; then
-    sh arch-install.sh
+    bash arch-install.sh
 else
     echo "Unknown distribution"
 fi
 
+#------------ Setup SSH ------------
+if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
+    echo 'Setting up ssh'
+    echo -n 'Enter git email: '
+    read gitEmail
+    ssh-keygen -t rsa -b 4096 -C $gitEmail
+    if ps -e | grep -q 'gnome-shell'; then
+    	cat "$HOME"/.ssh/id_rsa.pub | xclip -selection clipboard
+    else
+    	cat "$HOME"/.ssh/id_rsa.pub | wl-copy
+    fi
+    echo 'SSH key copied to clipboard, go to Github:'
+    echo '1. Go to user settings'
+    echo '2. Press "SSH and GPG keys"'
+    echo '3. Paste in the copied text in to the text box'
+    read -n 1 -p '(Press any key to continue)' answer
+fi
+
+#-------- Setup git --------
+if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HOME"/.ssh/config; then
+    echo 'Setting up git'
+    echo -n 'Enter git username: '
+    read gitName
+    git config --global user.name "$gitName"
+    git config --global user.email "$gitEmail"
+    echo "Host *" >> "$HOME"/.ssh/config
+    echo "    StrictHostKeyChecking no" >> "$HOME"/.ssh/config
+fi
+
 #-------- Get all dotfiles --------
 if [ ! -d "$HOME/dotfiles/" ]; then
-    git clone https://github.com/HubertasVin/dotfiles.git ~
+    git clone git@github.com:HubertasVin/dotfiles.git "$HOME"/dotfiles
 fi
 
 #-----------------------------
@@ -56,6 +87,9 @@ if [ ! `which snap` ]; then
             ;;
     esac
 fi
+if [ ! `which nvim` ]; then
+    sudo snap install nvim --classic
+fi
 
 if [ ! -d "$HOME/.sdkman" ]; then
     #-------- Install SDKMAN --------
@@ -67,15 +101,16 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 #-------- Install homebrew --------
 if [ ! `which brew` ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+    test -d "$HOME"/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
     test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> "$HOME"/.bashrc
+    eval "\$($(brew --prefix)/bin/brew shellenv)"
 fi
 
 #-- Setup npm dir for global installs --
 if [ ! -d "$HOME/.npm-global" ]; then
-    mkdir -p ~/.npm-global
-    npm config set prefix '~/.npm-global'
+    mkdir -p "$HOME"/.npm-global
+    npm config set prefix '"$HOME"/.npm-global'
 
 fi
 
@@ -85,12 +120,13 @@ fi
 #-------- Gnome configuration --------
 if [ `which gnome-shell` ]; then
     dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
-
-    git clone https://github.com/vchlum/notification-timeout.git
-    cd notification-timeout
-    make build & make install
-    gnome-extensions enable notification-timeout@chlumskyvaclav.gmail.com
-    cd .. & rm -rf notification-timeout
+	
+	if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
+		git clone https://github.com/vchlum/notification-timeout.git
+		cd notification-timeout
+		make build && make install
+		cd .. && rm -rf notification-timeout
+    fi
 fi
 
 #------ Install Graphite theme -------
@@ -152,10 +188,24 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
     sudo rm -r Graphite-gtk-theme/
     gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
     gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
+
     #---- Flat Remix ----
-    git clone https://github.com/daniruiz/flat-remix-gnome.git && cd flat-remix-gnome
-    make
-    sudo make install
+    if gnome-shell --version | grep -q "GNOME Shell 47."; then
+    	git clone https://github.com/daniruiz/flat-remix-gnome
+    elif gnome-shell --version | grep -q "GNOME Shell 46."; then
+    	git clone --branch 20240813 https://github.com/daniruiz/flat-remix-gnome
+    elif gnome-shell --version | grep -q "GNOME Shell 45." || gnome-shell --version | grep -q "GNOME Shell 44."; then
+    	git clone --branch 20231026 https://github.com/daniruiz/flat-remix-gnome
+    elif gnome-shell --version | grep -q "GNOME Shell 43."; then
+    	git clone --branch 20221107 https://github.com/daniruiz/flat-remix-gnome
+    elif gnome-shell --version | grep -q "GNOME Shell 42."; then
+    	git clone --branch 20220622 https://github.com/daniruiz/flat-remix-gnome
+    elif gnome-shell --version | grep -q "GNOME Shell 41." || gnome-shell --version | grep -q "GNOME Shell 40."; then
+    	git clone --branch 20211223 https://github.com/daniruiz/flat-remix-gnome
+    fi
+    
+    cd flat-remix-gnome
+    make && sudo make install
     cd .. && rm -r flat-remix-gnome
     gsettings set org.gnome.shell.extensions.user-theme name "Flat-Remix-Dark-fullPanel"
 
@@ -169,29 +219,31 @@ fi
 
 #----------------------------------
 #-------- Setup autorandr ---------
-if [ ! -d "$HOME/.config/autorandr/laptop" ]; then
-    sh setup-autorandr.sh
-fi
+#if [ ! -d "$HOME/.config/autorandr/laptop" ]; then
+#    bash setup-autorandr.sh
+#fi
 
 #----------------------------------
 #-------- Install packages --------
-bash <(curl -s https://updates.zen-browser.app/install.sh)
+if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
+	bash <(curl -s https://updates.zen-browser.app/install.sh)
+fi
 
 #----------------------------------
 #          Configurations
 #--------  Configure Rofi  --------
 if [ ! -d "$HOME/.config/rofi/config/" ]; then
-    mkdir -p ~/.config/rofi/
-    cp -r "$CONFIGS_DIR"/rofi/* ~/.config/rofi/
+    mkdir -p "$HOME"/.config/rofi/
+    cp -r "$CONFIGS_DIR"/rofi/* "$HOME"/.config/rofi/
 fi
 #--------     Configure i3 --------
-if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" ~/.config/i3/config; then
-    cp -r "$CONFIGS_DIR"/i3/ ~/.config/
-    cp -r "$CONFIGS_DIR"/i3blocks/ ~/.config/
+if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" "$HOME"/.config/i3/config; then
+    cp -r "$CONFIGS_DIR"/i3/ "$HOME"/.config/
+    cp -r "$CONFIGS_DIR"/i3blocks/ "$HOME"/.config/
 fi
 if [ ! -d "$HOME/.config/dunst/" ]; then
-    mkdir -p ~/.config/dunst/
-    cp "$CONFIGS_DIR"/dunstrc ~/.config/dunst/
+    mkdir -p "$HOME"/.config/dunst/
+    cp "$CONFIGS_DIR"/dunstrc "$HOME"/.config/dunst/
 fi
 #----- Battery warning support ----
 if [ ! -f "/usr/bin/i3battery" ]; then
@@ -202,80 +254,79 @@ if [ ! -f "/usr/bin/i3battery" ]; then
     rm -rf i3battery/
 fi
 #--------  Configure Picom --------
-cp "$CONFIGS_DIR"/picom.conf ~/.config/
+cp "$CONFIGS_DIR"/picom.conf "$HOME"/.config/
 #-------- Configure Polybar --------
 if [ ! -d "$HOME/polybar" ]; then
-    mkdir -p ~/.config/polybar/
-    cp "$CONFIGS_DIR"/polybar/* ~/.config/polybar/
+    mkdir -p "$HOME"/.config/polybar/
+    cp -r "$CONFIGS_DIR"/polybar/* "$HOME"/.config/polybar/
 fi
 #-------- Configuring Starship --------
 if [ ! -f "$HOME/.config/starship.toml" ]; then
-    mkdir -p ~/.config && touch ~/.config/starship.toml
+    mkdir -p "$HOME"/.config && touch "$HOME"/.config/starship.toml
     search=%COLORCODE
-    cat "$CONFIGS_DIR"/starship_template.toml > ~/.config/starship.toml
-    sed -i "s/$search/$colorCode/" ~/.config/starship.toml
+    cat "$CONFIGS_DIR"/starship_template.toml > "$HOME"/.config/starship.toml
+    sed -i "s/$search/$colorCode/" "$HOME"/.config/starship.toml
 fi
 
 #-------- Setup ranger --------
-if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" ~/.config/ranger/commands.py; then
+if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
     ranger --copy-config=rifle
     ranger --copy-config=rc
-    cp ~/dotfiles/ranger/rc.conf ~/.config/ranger/ 2>/dev/null || :
-    cp ~/dotfiles/ranger/rifle.conf ~/.config/ranger/ 2>/dev/null || :
-    mkdir -p ~/.config/ranger/plugins
+    cp "$HOME"/dotfiles/ranger/rc.conf "$HOME"/.config/ranger/ 2>/dev/null || :
+    cp "$HOME"/dotfiles/ranger/rifle.conf "$HOME"/.config/ranger/ 2>/dev/null || :
+    mkdir -p "$HOME"/.config/ranger/plugins
     if [ ! -d "$HOME/.config/ranger/plugins/ranger-archives" ] ; then
-        git clone --depth=1 https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins
+        git clone https://github.com/maximtrp/ranger-archives.git "$HOME"/.config/ranger/plugins/ranger-archives
     fi
     #-------- Install disk mounting plugin --------
-    cd ~/.config/ranger/plugins
+    cd "$HOME"/.config/ranger/plugins
     if [ ! -d "$HOME/.config/ranger/plugins/ranger_udisk_menu" ]; then
-        git clone --depth=1 https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins
+        git clone https://github.com/SL-RU/ranger_udisk_menu "$HOME"/.config/ranger/plugins/ranger_udisk_menu
     fi
-    touch ~/.config/ranger/commands.py
-    if ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" ~/.config/ranger/commands.py; then
-        echo "from plugins.ranger_udisk_menu.mounter import mount" >> ~/.config/ranger/commands.py
+    touch "$HOME"/.config/ranger/commands.py
+    if ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
+        echo "from plugins.ranger_udisk_menu.mounter import mount" >> "$HOME"/.config/ranger/commands.py
     fi
 fi
 cd $SCRIPT_DIR
 
 #-------- Setup NeoVIM --------
-if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] && ! grep -q "\"nvim-treesitter/nvim-treesitter\"" ~/.config/nvim/lua/plugins/init.lua; then
-    mkdir -p ~/.local/share/fonts
-    cp "$CONFIGS_DIR"/fonts/* ~/.local/share/fonts/
+if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" "$HOME"/.config/nvim/lua/plugins/init.lua; then
+    mkdir -p "$HOME"/.local/share/fonts
+    cp "$CONFIGS_DIR"/fonts/* "$HOME"/.local/share/fonts/
     fc-cache -f -v
-    nvim +MasonInstallAll
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    cp -rf "$CONFIGS_DIR"/nvim/* ~/.config/nvim
+    cp -rf "$CONFIGS_DIR"/nvim "$HOME"/.config/nvim
+    nvim +MasonInstallAll
     nvim +WakaTimeApiKey
 fi
 
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
-if ! grep -q "# https://github.com/gpakosz/.tmux" ~/.tmux.conf; then
-    cp "$CONFIGS_DIR"/.inputrc ~
-    mkdir -p ~/.config/alacritty/
-    cp "$CONFIGS_DIR"/alacritty.toml ~/.config/alacritty/
-    cp -rf "$CONFIGS_DIR"/terminator ~/.config
-    cat "$CONFIGS_DIR"/.tmux.conf > ~/.tmux.conf
-    cat "$CONFIGS_DIR"/.tmux.conf.local > ~/.tmux.conf.local
+if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
+    cp "$CONFIGS_DIR"/.inputrc "$HOME"
+    mkdir -p "$HOME"/.config/alacritty/
+    cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
+    cp -rf "$CONFIGS_DIR"/terminator "$HOME"/.config
+    cat "$CONFIGS_DIR"/.tmux.conf > "$HOME"/.tmux.conf
+    cat "$CONFIGS_DIR"/.tmux.conf.local > "$HOME"/.tmux.conf.local
     search=%COLORCODE
-    sed -i "s/$search/$colorCode/" ~/.tmux.conf.local
-    tmux source-file ~/.tmux.conf
+    sed -i "s/$search/$colorCode/" "$HOME"/.tmux.conf.local
 fi
 
 if [ ! -d "$HOME/.bash_it" ] && [ ! -d "$HOME/.local/share/blesh" ]; then
     if [ "$SHELL" = "/bin/bash" ]; then
         #-------- Install bash-it --------
-        git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
-        ~/.bash_it/install.sh --silent
-        cp -r "$CONFIGS_DIR"/bash_it/themes/hubertas ~/.bash_it/themes/
+        git clone --depth=1 https://github.com/Bash-it/bash-it.git "$HOME"/.bash_it
+        "$HOME"/.bash_it/install.sh --silent
+        cp -r "$CONFIGS_DIR"/bash_it/themes/hubertas "$HOME"/.bash_it/themes/
         #-------- Install ble.sh --------
         wget -O - https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
-        bash ble-nightly/ble.sh --install ~/.local/share
+        bash ble-nightly/ble.sh --install "$HOME"/.local/share
         #-------- Setup .bashrc --------
-        cat "$CONFIGS_DIR"/template.bashrc > ~/.bashrc
+        cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
     elif [ "$SHELL" = "/bin/zsh" ]; then
         #-------- Setup .zshrc --------
-        cat "$CONFIGS_DIR"/template.zshrc >> ~/.zshrc
+        cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
     fi
 fi
 
@@ -284,93 +335,59 @@ fi
 #-------- Install Gradle --------
 sdk install gradle
 #-------- Install Rustc --------
-if [ ! `which rustc` ]; then
+if [ ! -f "$HOME"/.cargo/bin/rustc ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    . "$HOME/.cargo/env"
 fi
 #-------- Install dotnet script for running .cs files --------
-dotnet tool update -g dotnet-script
-#-------- Install GHCup --------
-if [ ! `which ghc` ]; then
-    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
+	dotnet tool install -g dotnet-script
+	dotnet tool install -g csharp-ls
 fi
 #-------- Install language servers --------
-python -m pip install python-lsp-server
-brew install lua-language-server
-dotnet tool install --global csharp-ls
+pipx install python-lsp-server
+if [ ! -f /home/linuxbrew/.linuxbrew/bin/lua-language-server ]; then
+	brew install lua-language-server
+fi
 sudo npm install -g @angular/language-server @tailwindcss/language-server typescript typescript-language-server vscode-langservers-extracted dockerfile-language-server-nodejs
-ghcup install hls
 rustup component add rust-analyzer
 go install golang.org/x/tools/gopls@latest
 cargo install gitlab-ci-ls
 cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
 #-------- Install libraries --------
-pip install gitpython paramiko scp
-#-------- Moving scripts to ~/tools --------
+python3 -m pip install --break-system-packages gitpython paramiko scp
+#-------- Linking scripts to ~/tools --------
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
 fi
 
 #-------- Install bluetuith --------
-go install github.com/darkhz/bluetuith@latest
+#go install github.com/darkhz/bluetuith@latest
 
 #------- Move .desktop files -------
-cp ~/dotfiles/desktop_files/ibkr_desktop.desktop ~/.local/share/applications/
-cp ~/dotfiles/desktop_files/polybar.desktop ~/.local/share/applications/
-
-#------------ Setup SSH ------------
-if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
-    echo 'Setting up ssh'
-    echo -n 'Enter git email: '
-    read gitEmail
-    ssh-keygen -t rsa -b 4096 -C $gitEmail
-    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-    cat ~/.ssh/id_rsa.pub | wl-copy
-    echo 'SSH key copied to clipboard, go to Github:'
-    echo '1. Go to user settings'
-    echo '2. Press "SSH and GPG keys"'
-    echo '3. Paste in the copied text in to the text box'
-    read -n 1 -p '(Press any key to continue)' answer
-fi
-
-#-------- Setup git --------
-if ! grep -q "    StrictHostKeyChecking no" ~/.ssh/config; then
-    echo 'Setting up git'
-    echo -n 'Enter git username: '
-    read gitName
-    git config --global user.name "$gitName"
-    git config --global user.email "$gitEmail"
-    echo "Host *" >> ~/.ssh/config
-    echo "    StrictHostKeyChecking no" >> ~/.ssh/config
-fi
+cp "$HOME"/dotfiles/desktop_files/ibkr_desktop.desktop "$HOME"/.local/share/applications/
+cp "$HOME"/dotfiles/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
 
 #-------- Restoring backups --------
-if [ ! -d "~/Documents/backup-folder" ]; then
-    git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git ~/Documents
+if [ ! -d "$HOME"/Documents/backup-folder ]; then
+    git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git "$HOME"/Documents/backup-folder
+    cd "$HOME"/Documents/backup-folder
+    git push --set-upstream origin master
 fi
-if [ ! -d "~/Pictures/picture-backup" ]; then
-    git clone git@github.com:HubertasVin/picture-backup.git ~/Pictures
-    cp -rf ~/Pictures/picture-backup/* ~/Pictures/
-    rm -rf ~/Pictures/picture-backup/
+if [ ! -d "$HOME"/Pictures ]; then
+    git clone git@github.com:HubertasVin/picture-backup.git "$HOME"/Pictures
     cd "$HOME"/Pictures
     git push --set-upstream origin main
 fi
 
-cd $SCRIPT_DIR
-
 #-------- Change Installation script remote origin to ssh --------
-if [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-script.git" ]; then
+cd $SCRIPT_DIR
+if [ -d "$HOME"/installation-script ] && [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-script.git" ]; then
     git remote remove origin
     git remote add origin git@github.com:HubertasVin/installation-script.git
     git push --set-upstream origin master
-fi
-
-cd $CONFIGS_DIR
-
-#-------- Change dotfiles remote origin to ssh --------
-if [ `git remote get-url origin` != "git@github.com:HubertasVin/dotfiles.git" ]; then
-    git remote remove origin
-    git remote add origin git@github.com:HubertasVin/dotfiles.git
-    git push --set-upstream origin main
+elif [ ! -d "$HOME"/installation-script ]; then
+	git clone git@github.com:HubertasVin/installation-script.git "$HOME"/installation-script
 fi
 
 echo ""
