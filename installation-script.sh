@@ -89,6 +89,7 @@ if [ ! `which snap` ]; then
 fi
 if [ ! `which nvim` ]; then
     sudo snap install nvim --classic
+    sudo snap install obsidian --classic
 fi
 
 if [ ! -d "$HOME/.sdkman" ]; then
@@ -364,7 +365,7 @@ go install golang.org/x/tools/gopls@latest
 cargo install gitlab-ci-ls
 cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
 #-------- Install libraries --------
-python3 -m pip install --break-system-packages gitpython paramiko scp
+python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib
 #-------- Linking scripts to ~/tools --------
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
