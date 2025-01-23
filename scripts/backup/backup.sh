@@ -24,7 +24,7 @@ print_git_status() {
             else if ($1 == "D") printf "(D) %s, ", $2; # Deleted
             else if ($1 == "??") printf "(A) %s, ", $2; # Untracked
         }
-        ' | sed 's/, $/\n\n/')"
+    ' | sed 's/, $/\n\n/')"
 
     if [[ "$output" != "" ]]; then
         print_console "   ${CYAN}Here are the changes that are being commited:${NC}"
@@ -36,9 +36,9 @@ print_git_status() {
 backup_success() {
     if git status | grep -q 'Your branch is up to date'; then
         print_console "   ${OKGREEN}Backup successful for ${PWD}${NC}"
-	else
+    else
         print_console "   ${FAIL}Backup failed for ${PWD}${NC}"
-	fi
+    fi
 }
 
 backup_commands() {
@@ -77,6 +77,8 @@ backup_commands() {
     cp ~/.tmux.conf ~/dotfiles/.tmux.conf 2>/dev/null || :
     cp ~/.tmux.conf.local ~/dotfiles/.tmux.conf.local 2>/dev/null || :
     sed -i 's/^tmux_conf_theme_colour_0=.*/tmux_conf_theme_colour_0="%COLORCODE"    # default/' ~/dotfiles/.tmux.conf.local
+    # Copy fish config
+    cp ~/.config/fish/config.fish ~/dotfiles/config.fish 2>/dev/null || :
     # Copy Ranger configuration
     cp ~/.config/ranger/rc.conf ~/dotfiles/ranger/ 2>/dev/null || :
     cp ~/.config/ranger/rifle.conf ~/dotfiles/ranger/ 2>/dev/null || :

@@ -1,3 +1,4 @@
+#!/bin/bash
 scriptLoc=$(pwd)
 
 PROMPT_COMMAND="Running Post-Installation System Updates..."
@@ -18,7 +19,7 @@ cd ${scriptLoc}
 PROMPT_COMMAND="Installing Necessary Applications..."
 yay -S --noconfirm optimus-manager optimus-manager-qt gnome-session-properties piper-git minecraft-launcher visual-studio-code-bin eclipse-java teams bookworm neovim-plug bashdb gnome-shell-pomodoro
 
-sudo pacman -S --noconfirm snapd nvidia neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime starship neofetch xclip wl-clipboard dotnet-sdk spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree python-pip gtk-doc sddm ranger glow
+sudo pacman -S --noconfirm snapd nvidia fish neovim npm gdb steam discord lutris gimp vlc qbittorrent etcher powerline xorg-xkill nvidia-prime starship neofetch xclip wl-clipboard dotnet-sdk spotify-launcher docbook-xml intltool autoconf-archive gnome-common itstool docbook-xsl mallard-ducktype yelp-tools glib2-docs python-pygments python-anytree python-pip gtk-doc sddm ranger glow
 
 #TODO ---- Install Rust ----
 PROMPT_COMMAND="Installing Rust..."

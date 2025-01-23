@@ -9,16 +9,18 @@ from git import Repo
 import paramiko
 from scp import SCPClient
 
+
 class bcolors:
-    HEADER='\033[95m'
-    OKBLUE='\033[94m'
-    OKCYAN='\033[96m'
-    OKGREEN='\033[92m'
-    WARNING='\033[93m'
-    FAIL='\033[91m'
-    ENDC='\033[0m'
-    BOLD='\033[1m'
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
 
 class arguments:
     parser = argparse.ArgumentParser(
@@ -34,10 +36,12 @@ class arguments:
 
     config = vars(parser.parse_args())
 
+
 home_dir = os.path.expanduser('~')
-dstBackupLoc="~/Backups"
-tmpBackupLoc=home_dir + "/.temp/.backup"
-backupShellLoc=home_dir + "/tools/backup/backup.sh"
+dstBackupLoc = "~/Backups"
+tmpBackupLoc = home_dir + "/.temp/.backup"
+backupShellLoc = home_dir + "/tools/backup/backup.sh"
+
 
 def create_ssh_client(server, user, password):
     client = paramiko.SSHClient()
@@ -46,31 +50,35 @@ def create_ssh_client(server, user, password):
     client.connect(server, username=user, password=password)
     return client
 
+
 def get_git_remote(path):
-    repo=Repo(path)
-    remote=repo.config_reader().get_value("remote \"origin\"", "url")
+    repo = Repo(path)
+    remote = repo.config_reader().get_value("remote \"origin\"", "url")
     return remote
 
+
 def generate_git_clone_script(script_loc, parent_path, remote):
-    script_loc=Path(script_loc)
-    path_to_script=os.path.join(script_loc, "gitClone.sh")
-    parent_path=parent_path.replace(home_dir + "/.temp/.backup/", "")
+    script_loc = Path(script_loc)
+    path_to_script = os.path.join(script_loc, "gitClone.sh")
+    parent_path = parent_path.replace(home_dir + "/.temp/.backup/", "")
 
     if not os.path.isfile(path_to_script):
-        f=open(path_to_script, "w")
+        f = open(path_to_script, "w")
         f.write("#! /bin/bash\n\n")
     else:
-        f=open(path_to_script, "a")
-    
+        f = open(path_to_script, "a")
+
     f.write("git clone " + remote + " " + parent_path + "\n")
 
-def add_move_to_git_clone_script(script_loc, src, dst):
-    script_loc=Path(script_loc)
-    path_to_script=os.path.join(script_loc, "gitClone.sh")
 
-    f=open(path_to_script, "a")
-    
+def add_move_to_git_clone_script(script_loc, src, dst):
+    script_loc = Path(script_loc)
+    path_to_script = os.path.join(script_loc, "gitClone.sh")
+
+    f = open(path_to_script, "a")
+
     f.write("mv " + src + " " + dst + "\n")
+
 
 def make_tarfile(output_filename, source_dirs):
     with tarfile.open(output_filename, "w:gz") as tar:
@@ -78,6 +86,7 @@ def make_tarfile(output_filename, source_dirs):
             # Get the base name of the source directory to use as the arcname
             arcname = os.path.basename(source_dir)
             tar.add(source_dir, arcname=arcname)
+
 
 def remove_contents(folder):
     for filename in os.listdir(folder):
@@ -91,7 +100,7 @@ def remove_contents(folder):
             print("Failed to delete %s\n%s" % (file_path, e))
 
 
-#TODO Add git repositories to backup
+# TODO Add git repositories to backup
 # if arguments.config["add_git"]:
 #     for git in arguments.config["add_git"]:
 #         Path("gitlocations.txt").append(git)
@@ -116,8 +125,8 @@ for src_dir in arguments.config["src"]:
 
 # Delete git projects and turn them into their own scripts to clone them
 print(bcolors.OKBLUE + "Deleting git projects and turning them into their own scripts to clone them..." + bcolors.ENDC)
-f=open(home_dir + "/Installation_Script/scripts/backup/.gitignoreremote")
-gitignoreremote=f.read().splitlines()
+f = open(home_dir + "/installation-script/scripts/backup/.gitignoreremote")
+gitignoreremote = f.read().splitlines()
 
 if arguments.config["exclude_git"]:
     for root, subdirs, files in os.walk(tmpBackupLoc):
@@ -131,13 +140,13 @@ for src_dir in arguments.config["src"]:
 
 # Make tar file
 print(bcolors.OKBLUE + "Compressing files" + bcolors.ENDC)
-timeNow=datetime.now()
+timeNow = datetime.now()
 source_dirs = [tmpBackupLoc + "/" + dir for dir in os.listdir(tmpBackupLoc)]
 tarfile_name = tmpBackupLoc + "/" + timeNow.strftime('%Y-%m-%d_%H-%M-%S') + ".tar.gz"
 make_tarfile(tarfile_name, source_dirs)
 
 # SCPCLient takes a paramiko transport as an argument
-try :
+try:
     ssh = create_ssh_client(arguments.config["ip"], arguments.config["user"], arguments.config["password"])
     scp = SCPClient(ssh.get_transport())
     print(bcolors.OKBLUE + "Copying backup to remote" + bcolors.ENDC)

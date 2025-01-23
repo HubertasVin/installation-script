@@ -15,22 +15,22 @@ handle_error() {
 touch /tmp/error
 trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
 
-# ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-# │                   DEBIAN                   │
-# ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 if [ `which apt 2>/dev/null` ]; then
+    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
+    # │                   DEBIAN                   │
+    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
     bash debian-install.sh
 
-# ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-# │                   FEDORA                   │
-# ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which rpm 2>/dev/null` ]; then
+    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
+    # │                   FEDORA                   │
+    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
     bash fedora-install.sh
 
-# ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-# │                    ARCH                    │
-# ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 elif [ `which pacman 2>/dev/null` ]; then
+    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
+    # │                    ARCH                    │
+    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
     bash arch-install.sh
 else
     echo "Unknown distribution"
@@ -43,9 +43,9 @@ if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
     read gitEmail
     ssh-keygen -t rsa -b 4096 -C $gitEmail
     if ps -e | grep -q 'gnome-shell'; then
-    	cat "$HOME"/.ssh/id_rsa.pub | xclip -selection clipboard
+        cat "$HOME"/.ssh/id_rsa.pub | xclip -selection clipboard
     else
-    	cat "$HOME"/.ssh/id_rsa.pub | wl-copy
+        cat "$HOME"/.ssh/id_rsa.pub | wl-copy
     fi
     echo 'SSH key copied to clipboard, go to Github:'
     echo '1. Go to user settings'
@@ -59,6 +59,8 @@ if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HO
     echo 'Setting up git'
     echo -n 'Enter git username: '
     read gitName
+    echo -n 'Enter git email: '
+    read gitEmail
     git config --global user.name "$gitName"
     git config --global user.email "$gitEmail"
     echo "Host *" >> "$HOME"/.ssh/config
@@ -121,12 +123,12 @@ fi
 #-------- Gnome configuration --------
 if [ `which gnome-shell` ]; then
     dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
-	
-	if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
-		git clone https://github.com/vchlum/notification-timeout.git
-		cd notification-timeout
-		make build && make install
-		cd .. && rm -rf notification-timeout
+
+    if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
+        git clone https://github.com/vchlum/notification-timeout.git
+        cd notification-timeout
+        make build && make install
+        cd .. && rm -rf notification-timeout
     fi
 fi
 
@@ -202,19 +204,19 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
 
     #---- Flat Remix ----
     if gnome-shell --version | grep -q "GNOME Shell 47."; then
-    	git clone https://github.com/daniruiz/flat-remix-gnome
+        git clone https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 46."; then
-    	git clone --branch 20240813 https://github.com/daniruiz/flat-remix-gnome
+        git clone --branch 20240813 https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 45." || gnome-shell --version | grep -q "GNOME Shell 44."; then
-    	git clone --branch 20231026 https://github.com/daniruiz/flat-remix-gnome
+        git clone --branch 20231026 https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 43."; then
-    	git clone --branch 20221107 https://github.com/daniruiz/flat-remix-gnome
+        git clone --branch 20221107 https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 42."; then
-    	git clone --branch 20220622 https://github.com/daniruiz/flat-remix-gnome
+        git clone --branch 20220622 https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 41." || gnome-shell --version | grep -q "GNOME Shell 40."; then
-    	git clone --branch 20211223 https://github.com/daniruiz/flat-remix-gnome
+        git clone --branch 20211223 https://github.com/daniruiz/flat-remix-gnome
     fi
-    
+
     cd flat-remix-gnome
     make && sudo make install
     cd .. && rm -r flat-remix-gnome
@@ -237,7 +239,7 @@ fi
 #----------------------------------
 #-------- Install packages --------
 if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
-	bash <(curl -s https://updates.zen-browser.app/install.sh)
+    bash <(curl -s https://updates.zen-browser.app/install.sh)
 fi
 
 #----------------------------------
@@ -303,17 +305,27 @@ cd $SCRIPT_DIR
 
 #-------- Setup NeoVIM --------
 if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" "$HOME"/.config/nvim/lua/plugins/init.lua; then
+    git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
     mkdir -p "$HOME"/.local/share/fonts
     cp "$CONFIGS_DIR"/fonts/* "$HOME"/.local/share/fonts/
     fc-cache -f -v
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    cp -rf "$CONFIGS_DIR"/nvim "$HOME"/.config/nvim
-    nvim +WakaTimeApiKey
+    rm -rf "$HOME"/.config/nvim/init.lua "$HOME"/.config/nvim/lua
+    cp -rf "$CONFIGS_DIR"/nvim/* "$HOME"/.config/nvim
+    nvim +"MasonInstall --force angular-language-server ansible-language-server ansible-lint bash-language-server clangd csharp-language-server css-lsp dockerfile-language-server docker-compose-language-service html-lsp java-language-server json-lsp lemminx lua-language-server sqlls stylua prettier python-lsp-server pyink rust-analyzer typescript-language-server tailwindcss-language-server taplo yaml-language-server yamllint" +WakaTimeApiKey
 fi
 
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
 if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
     cp "$CONFIGS_DIR"/.inputrc "$HOME"
+
+    #-------- Setup .bashrc --------
+    cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
+    #-------- Setup .zshrc --------
+    cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
+    #-------- Setup fish --------
+    cat "$CONFIGS_DIR"/config.fish >> "$HOME"/.config/fish/config.fish
+
     mkdir -p "$HOME"/.config/alacritty/
     cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
     cp -rf "$CONFIGS_DIR"/terminator "$HOME"/.config
@@ -321,23 +333,6 @@ if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
     cat "$CONFIGS_DIR"/.tmux.conf.local > "$HOME"/.tmux.conf.local
     search=%COLORCODE
     sed -i "s/$search/$colorCode/" "$HOME"/.tmux.conf.local
-fi
-
-if [ ! -d "$HOME/.bash_it" ] && [ ! -d "$HOME/.local/share/blesh" ]; then
-    if [ "$SHELL" = "/bin/bash" ]; then
-        #-------- Install bash-it --------
-        git clone --depth=1 https://github.com/Bash-it/bash-it.git "$HOME"/.bash_it
-        "$HOME"/.bash_it/install.sh --silent
-        cp -r "$CONFIGS_DIR"/bash_it/themes/hubertas "$HOME"/.bash_it/themes/
-        #-------- Install ble.sh --------
-        wget -O - https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
-        bash ble-nightly/ble.sh --install "$HOME"/.local/share
-        #-------- Setup .bashrc --------
-        cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
-    elif [ "$SHELL" = "/bin/zsh" ]; then
-        #-------- Setup .zshrc --------
-        cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
-    fi
 fi
 
 #--------------------------------
@@ -351,21 +346,12 @@ if [ ! -f "$HOME"/.cargo/bin/rustc ]; then
 fi
 #-------- Install dotnet script for running .cs files --------
 if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
-	dotnet tool install -g dotnet-script
-	dotnet tool install -g csharp-ls
+    dotnet tool install -g dotnet-script
 fi
 #-------- Install language servers --------
-pipx install python-lsp-server
-if [ ! -f /home/linuxbrew/.linuxbrew/bin/lua-language-server ]; then
-	brew install lua-language-server
-fi
-sudo npm install -g @angular/language-server @tailwindcss/language-server typescript typescript-language-server vscode-langservers-extracted dockerfile-language-server-nodejs
-rustup component add rust-analyzer
 go install golang.org/x/tools/gopls@latest
-cargo install gitlab-ci-ls
-cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
 #-------- Install libraries --------
-python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib
+python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib whaaaaat prompt_toolkit==1.0.18
 #-------- Linking scripts to ~/tools --------
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
@@ -397,7 +383,7 @@ if [ -d "$HOME"/installation-script ] && [ `git remote get-url origin` != "git@g
     git remote add origin git@github.com:HubertasVin/installation-script.git
     git push --set-upstream origin master
 elif [ ! -d "$HOME"/installation-script ]; then
-	git clone git@github.com:HubertasVin/installation-script.git "$HOME"/installation-script
+    git clone git@github.com:HubertasVin/installation-script.git "$HOME"/installation-script
 fi
 
 echo ""
