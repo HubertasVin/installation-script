@@ -312,7 +312,7 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! 
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
     rm -rf "$HOME"/.config/nvim/init.lua "$HOME"/.config/nvim/lua
     cp -rf "$CONFIGS_DIR"/nvim/* "$HOME"/.config/nvim
-    nvim +"MasonInstall --force angular-language-server ansible-language-server ansible-lint bash-language-server clangd csharp-language-server css-lsp dockerfile-language-server docker-compose-language-service html-lsp java-language-server json-lsp lemminx lua-language-server sqlls stylua prettier python-lsp-server pyink rust-analyzer typescript-language-server tailwindcss-language-server taplo yaml-language-server yamllint" +WakaTimeApiKey
+    nvim +WakaTimeApiKey +MasonInstallAll
 fi
 
 #-------- Restore configuration for terminal, tmux and bash/zsh --------

@@ -19,10 +19,10 @@ print_console() {
 print_git_status() {
     output="$(git status --short | awk '
         {
-            if ($1 == "M") printf "(M) %s, ", $2; # Modified
-            else if ($1 == "A") printf "(A) %s, ", $2; # Added
-            else if ($1 == "D") printf "(D) %s, ", $2; # Deleted
-            else if ($1 == "??") printf "(A) %s, ", $2; # Untracked
+            if ($1 == "M") printf "(M) %s, ", substr($0, index($0, $2)); # Modified
+            else if ($1 == "A") printf "(A) %s, ", substr($0, index($0, $2)); # Added
+            else if ($1 == "D") printf "(D) %s, ", substr($0, index($0, $2)); # Deleted
+            else if ($1 == "??") printf "(A) %s, ", substr($0, index($0, $2)); # Untracked
         }
     ' | sed 's/, $/\n\n/')"
 
