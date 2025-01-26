@@ -121,65 +121,62 @@ fi
 #-------------------------------------
 #          Theme installation
 #-------- Gnome configuration --------
-if [ `which gnome-shell` ]; then
+if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
     dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
-
-    if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
-        git clone https://github.com/vchlum/notification-timeout.git
-        cd notification-timeout
-        make build && make install
-        cd .. && rm -rf notification-timeout
-    fi
+    git clone https://github.com/vchlum/notification-timeout.git
+    cd notification-timeout
+    make build && make install
+    cd .. && rm -rf notification-timeout
 fi
 
 #------ Install Graphite theme -------
-if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") ]; then
+if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     select themeColor in default purple pink red orange yellow green teal blue all
     do
         case $themeColor in
             "default")
                 colorCode="#3684DD"
-                iconThemeColor="-blue"
+                iconThemeColor="blue"
                 break
                 ;;
             "purple")
                 colorCode="#AB47BC"
-                iconThemeColor="-purple"
+                iconThemeColor="purple"
                 break
                 ;;
             "pink")
                 colorCode="#EC407A"
-                iconThemeColor="-pink"
+                iconThemeColor="pink"
                 break
                 ;;
             "red")
                 colorCode="#E53935"
-                iconThemeColor="-red"
+                iconThemeColor="red"
                 break
                 ;;
             "orange")
                 colorCode="#FB8C00"
-                iconThemeColor="-orange"
+                iconThemeColor="orange"
                 break
                 ;;
             "yellow")
                 colorCode="#FBC02D"
-                iconThemeColor="-yellow"
+                iconThemeColor="yellow"
                 break
                 ;;
             "green")
                 colorCode="#4CAF50"
-                iconThemeColor="-green"
+                iconThemeColor="green"
                 break
                 ;;
             "teal")
                 colorCode="#009688"
-                iconThemeColor="-manjaro"
+                iconThemeColor="manjaro"
                 break
                 ;;
             "blue")
                 colorCode="#3684DD"
-                iconThemeColor="-blue"
+                iconThemeColor="blue"
                 break
                 ;;
             "all")
@@ -219,14 +216,14 @@ if [ ! $(gsettings get org.gnome.desktop.interface gtk-theme | grep "Graphite") 
 
     cd flat-remix-gnome
     make && sudo make install
-    cd .. && rm -r flat-remix-gnome
+    cd .. && rm -rf flat-remix-gnome
     gsettings set org.gnome.shell.extensions.user-theme name "Flat-Remix-Dark-fullPanel"
 
     #-------- Icon pack installation --------
     git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
     Tela-circle-icon-theme/install.sh $iconThemeColor
     sudo rm -r Tela-circle-icon-theme/
-    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle$iconThemeColor-dark"
+    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$iconThemeColor-dark"
 fi
 
 
@@ -324,6 +321,7 @@ if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
     #-------- Setup .zshrc --------
     cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
     #-------- Setup fish --------
+    mkdir -p "$HOME"/.config/fish
     cat "$CONFIGS_DIR"/config.fish >> "$HOME"/.config/fish/config.fish
 
     mkdir -p "$HOME"/.config/alacritty/
