@@ -368,7 +368,7 @@ if [ ! -d "$HOME"/Documents/backup-folder ]; then
     cd "$HOME"/Documents/backup-folder
     git push --set-upstream origin master
 fi
-if [ ! -d "$HOME"/Pictures ]; then
+if [ -d "$HOME"/Pictures ] && [ -z "$(ls -A "$HOME"/Pictures)" ]; then
     git clone git@github.com:HubertasVin/picture-backup.git "$HOME"/Pictures
     cd "$HOME"/Pictures
     git push --set-upstream origin main
