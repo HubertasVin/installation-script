@@ -37,6 +37,8 @@ flatpak install flathub -y net.nokyan.Resources
 sudo dnf copr enable -y atim/starship
 
 #TODO ---- Stard Docker ----
+sudo usermod -aG docker $USER
+newgrp docker
 sudo systemctl start docker
 
 #TODO ---- systemConfiguration ----
