@@ -68,6 +68,8 @@ backup_commands() {
     # Copy i3 and i3blocks configs
     cp -r ~/.config/i3/ ~/dotfiles/ 2>/dev/null || :
     cp -r ~/.config/i3blocks/ ~/dotfiles/ 2>/dev/null || :
+    # Copy Sway config
+    cp -r ~/.config/sway/ ~/dotfiles/ 2>/dev/null || :
     # Copy Nvim config
     cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim/lua 2>/dev/null || :
     cp -rf ~/.config/nvim/init.lua ~/dotfiles/nvim/init.lua 2>/dev/null || :
