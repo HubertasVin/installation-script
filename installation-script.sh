@@ -318,11 +318,10 @@ if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
 
     #-------- Setup .bashrc --------
     cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
-    #-------- Setup .zshrc --------
+    #-------- Setup zsh --------
     cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
-    #-------- Setup fish --------
-    mkdir -p "$HOME"/.config/fish
-    cat "$CONFIGS_DIR"/config.fish >> "$HOME"/.config/fish/config.fish
+    chsh $(whoami) -s $(which zsh)
+    brew install zsh-autosuggestions zsh-syntax-highlighting
 
     mkdir -p "$HOME"/.config/alacritty/
     cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
@@ -346,6 +345,8 @@ fi
 if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
     dotnet tool install -g dotnet-script
 fi
+#-------- Install tools --------
+cargo install gpu-usage-waybar
 #-------- Install language servers --------
 go install golang.org/x/tools/gopls@latest
 #-------- Install libraries --------

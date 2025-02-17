@@ -1,3 +1,3 @@
 #!/bin/bash
 
-find /sys/devices -type f -name gt_cur* -print0 | xargs -0 cat
+nvidia-smi --query-gpu=name,utilization.gpu --format=csv | tail -n1 | cut -d',' -f2 | tr -d ' %'

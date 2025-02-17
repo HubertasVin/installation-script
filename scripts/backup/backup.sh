@@ -62,6 +62,7 @@ backup_commands() {
 
     # Copy polybar, qtile, rofi configs
     cp -r ~/.config/polybar/* ~/dotfiles/polybar 2>/dev/null || :
+    cp -r ~/.config/waybar/ ~/dotfiles/waybar 2>/dev/null || :
     cp -r ~/.config/qtile/* ~/dotfiles/qtile 2>/dev/null || :
     cp ~/.local/share/rofi/themes/rounded-nord-dark.rasi ~/dotfiles/rofi/themes 2>/dev/null || :
     cp ~/.local/bin/rofi-power-menu ~/dotfiles/rofi/ 2>/dev/null || :
