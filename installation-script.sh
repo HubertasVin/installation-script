@@ -325,7 +325,6 @@ if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
 
     mkdir -p "$HOME"/.config/alacritty/
     cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
-    cp -rf "$CONFIGS_DIR"/terminator "$HOME"/.config
     cat "$CONFIGS_DIR"/.tmux.conf > "$HOME"/.tmux.conf
     cat "$CONFIGS_DIR"/.tmux.conf.local > "$HOME"/.tmux.conf.local
     search=%COLORCODE
