@@ -75,7 +75,7 @@ fi
 #-----------------------------
 #    Package manager setup
 #-------- Snapd setup --------
-if [ ! `which snap` ]; then
+if [ `which snap` ]; then
     sudo systemctl enable --now snapd.service
     sudo ln -s /var/lib/snapd/snap /snap
     echo 'Reboot your computer to enable snapd to function fully'
@@ -91,6 +91,8 @@ if [ ! `which snap` ]; then
 fi
 if [ ! `which nvim` ]; then
     sudo snap install nvim --classic
+fi
+if [ ! -d "/var/snap/obsidian" ]; then
     sudo snap install obsidian --classic
 fi
 
@@ -102,7 +104,7 @@ fi
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 #-------- Install homebrew --------
-if [ ! `which brew` ]; then
+if [ ! -d "$HOME/linuxbrew" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     test -d "$HOME"/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
     test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -247,36 +249,29 @@ if [ ! -d "$HOME/.config/rofi/config/" ]; then
     cp -r "$CONFIGS_DIR"/rofi/* "$HOME"/.config/rofi/
 fi
 #--------     Configure i3 --------
-if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" "$HOME"/.config/i3/config; then
-    cp -r "$CONFIGS_DIR"/i3/ "$HOME"/.config/
-    cp -r "$CONFIGS_DIR"/i3blocks/ "$HOME"/.config/
-fi
-if [ ! -d "$HOME/.config/dunst/" ]; then
-    mkdir -p "$HOME"/.config/dunst/
-    cp "$CONFIGS_DIR"/dunstrc "$HOME"/.config/dunst/
-fi
+#if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" "$HOME"/.config/i3/config; then
+#    cp -r "$CONFIGS_DIR"/i3/ "$HOME"/.config/
+#    cp -r "$CONFIGS_DIR"/i3blocks/ "$HOME"/.config/
+#fi
+#if [ ! -d "$HOME/.config/dunst/" ]; then
+#    mkdir -p "$HOME"/.config/dunst/
+#    cp "$CONFIGS_DIR"/dunstrc "$HOME"/.config/dunst/
+#fi
 #----- Battery warning support ----
-if [ ! -f "/usr/bin/i3battery" ]; then
-    git clone https://github.com/Wabri/i3battery
-    cd i3battery
-    sh install.sh
-    cd ..
-    rm -rf i3battery/
-fi
+#if [ ! -f "/usr/bin/i3battery" ]; then
+#    git clone https://github.com/Wabri/i3battery
+#    cd i3battery
+#    sh install.sh
+#    cd ..
+#    rm -rf i3battery/
+#fi
 #--------  Configure Picom --------
-cp "$CONFIGS_DIR"/picom.conf "$HOME"/.config/
+#cp "$CONFIGS_DIR"/picom.conf "$HOME"/.config/
 #-------- Configure Polybar --------
-if [ ! -d "$HOME/polybar" ]; then
-    mkdir -p "$HOME"/.config/polybar/
-    cp -r "$CONFIGS_DIR"/polybar/* "$HOME"/.config/polybar/
-fi
-#-------- Configuring Starship --------
-if [ ! -f "$HOME/.config/starship.toml" ]; then
-    mkdir -p "$HOME"/.config && touch "$HOME"/.config/starship.toml
-    search=%COLORCODE
-    cat "$CONFIGS_DIR"/starship_template.toml > "$HOME"/.config/starship.toml
-    sed -i "s/$search/$colorCode/" "$HOME"/.config/starship.toml
-fi
+#if [ ! -d "$HOME/polybar" ]; then
+#    mkdir -p "$HOME"/.config/polybar/
+#    cp -r "$CONFIGS_DIR"/polybar/* "$HOME"/.config/polybar/
+#fi
 
 #-------- Setup ranger --------
 if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
@@ -298,7 +293,6 @@ if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/co
         echo "from plugins.ranger_udisk_menu.mounter import mount" >> "$HOME"/.config/ranger/commands.py
     fi
 fi
-cd $SCRIPT_DIR
 
 #-------- Setup NeoVIM --------
 if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" "$HOME"/.config/nvim/lua/plugins/init.lua; then
@@ -338,7 +332,7 @@ sdk install gradle
 #-------- Install Rustc --------
 if [ ! -f "$HOME"/.cargo/bin/rustc ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    . "$HOME/.cargo/env"
+    source "$HOME/.cargo/env"
 fi
 #-------- Install dotnet script for running .cs files --------
 if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
@@ -349,7 +343,7 @@ cargo install gpu-usage-waybar
 #-------- Install language servers --------
 go install golang.org/x/tools/gopls@latest
 #-------- Install libraries --------
-python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib whaaaaat prompt_toolkit==1.0.18
+python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib prompt_toolkit==1.0.18
 #-------- Linking scripts to ~/tools --------
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
@@ -359,7 +353,6 @@ fi
 #go install github.com/darkhz/bluetuith@latest
 
 #------- Move .desktop files -------
-cp "$HOME"/dotfiles/desktop_files/ibkr_desktop.desktop "$HOME"/.local/share/applications/
 cp "$HOME"/dotfiles/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
 
 #-------- Restoring backups --------
