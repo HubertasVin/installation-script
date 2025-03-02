@@ -63,6 +63,7 @@ if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HO
     read gitEmail
     git config --global user.name "$gitName"
     git config --global user.email "$gitEmail"
+    git config --global diff.algorithm patience
     echo "Host *" >> "$HOME"/.ssh/config
     echo "    StrictHostKeyChecking no" >> "$HOME"/.ssh/config
 fi
