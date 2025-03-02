@@ -1,6 +1,4 @@
 #!/bin/bash
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-CONFIGS_DIR="$HOME"/dotfiles
 
 #-------- Script error handling --------
 touch /tmp/error
@@ -14,6 +12,35 @@ handle_error() {
 
 touch /tmp/error
 trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
+
+
+# ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
+# │              Helper functions              │
+# ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
+initialize_variables() {
+    # Set SCRIPT_DIR if not already set
+    if [ -z "$SCRIPT_DIR" ]; then
+        SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+    fi
+    CONFIGS_DIR="$HOME/dotfiles"
+    SEARCH_CODE="%COLORCODE"
+
+    if [ -z "$gitEmail" ]; then
+        read gitEmail
+    fi
+    if [ -z "$gitName" ]; then
+        read gitName
+    fi
+
+    if [ -z "$colorCode" ]; then
+        colorCode="#3684DD"
+    fi
+    if [ -z "$iconThemeColor" ]; then
+        iconThemeColor="blue"
+    fi
+}
+initialize_variables
+
 
 if [ `which apt 2>/dev/null` ]; then
     # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
@@ -40,7 +67,6 @@ fi
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
     echo 'Setting up ssh'
     echo -n 'Enter git email: '
-    read gitEmail
     ssh-keygen -t rsa -b 4096 -C $gitEmail
     if ps -e | grep -q 'gnome-shell'; then
         cat "$HOME"/.ssh/id_rsa.pub | xclip -selection clipboard
@@ -58,9 +84,7 @@ fi
 if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HOME"/.ssh/config; then
     echo 'Setting up git'
     echo -n 'Enter git username: '
-    read gitName
     echo -n 'Enter git email: '
-    read gitEmail
     git config --global user.name "$gitName"
     git config --global user.email "$gitEmail"
     git config --global diff.algorithm patience
@@ -80,7 +104,7 @@ if [ `which snap` ]; then
     sudo systemctl enable --now snapd.service
     sudo ln -s /var/lib/snapd/snap /snap
     echo 'Reboot your computer to enable snapd to function fully'
-    read -p 'Confirm to reboot your computer (yN)' answer
+    read -p 'Confirm to reboot your computer (y/N)' answer
 
     case "$answer" in
         [yY]|[yY][eE][sS])
@@ -97,11 +121,10 @@ if [ ! -d "/var/snap/obsidian" ]; then
     sudo snap install obsidian --classic
 fi
 
+#--------- Install SDKMAN ---------
 if [ ! -d "$HOME/.sdkman" ]; then
-    #-------- Install SDKMAN --------
     curl -s "https://get.sdkman.io" | bash
 fi
-#-------- Load sdk function to the script ---------
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 #-------- Install homebrew --------
@@ -117,13 +140,12 @@ fi
 if [ ! -d "$HOME/.npm-global" ]; then
     mkdir -p "$HOME"/.npm-global
     npm config set prefix '"$HOME"/.npm-global'
-
 fi
 
 
 #-------------------------------------
 #          Theme installation
-#-------- Gnome configuration --------
+#--------- Gnome configuration -------
 if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
     dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
     git clone https://github.com/vchlum/notification-timeout.git
@@ -244,37 +266,7 @@ fi
 
 #----------------------------------
 #          Configurations
-#--------  Configure Rofi  --------
-if [ ! -d "$HOME/.config/rofi/config/" ]; then
-    mkdir -p "$HOME"/.config/rofi/
-    cp -r "$CONFIGS_DIR"/rofi/* "$HOME"/.config/rofi/
-fi
-#--------     Configure i3 --------
-#if ! grep -q "# (_)___ /    ___ ___  _ __  / _(_) __ _" "$HOME"/.config/i3/config; then
-#    cp -r "$CONFIGS_DIR"/i3/ "$HOME"/.config/
-#    cp -r "$CONFIGS_DIR"/i3blocks/ "$HOME"/.config/
-#fi
-#if [ ! -d "$HOME/.config/dunst/" ]; then
-#    mkdir -p "$HOME"/.config/dunst/
-#    cp "$CONFIGS_DIR"/dunstrc "$HOME"/.config/dunst/
-#fi
-#----- Battery warning support ----
-#if [ ! -f "/usr/bin/i3battery" ]; then
-#    git clone https://github.com/Wabri/i3battery
-#    cd i3battery
-#    sh install.sh
-#    cd ..
-#    rm -rf i3battery/
-#fi
-#--------  Configure Picom --------
-#cp "$CONFIGS_DIR"/picom.conf "$HOME"/.config/
-#-------- Configure Polybar --------
-#if [ ! -d "$HOME/polybar" ]; then
-#    mkdir -p "$HOME"/.config/polybar/
-#    cp -r "$CONFIGS_DIR"/polybar/* "$HOME"/.config/polybar/
-#fi
-
-#-------- Setup ranger --------
+#---------- Setup ranger ----------
 if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
     ranger --copy-config=rifle
     ranger --copy-config=rc
@@ -308,7 +300,7 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! 
 fi
 
 #-------- Restore configuration for terminal, tmux and bash/zsh --------
-if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
+if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.conf" "$HOME"/.tmux.conf; then
     cp "$CONFIGS_DIR"/.inputrc "$HOME"
 
     #-------- Setup .bashrc --------
@@ -322,15 +314,14 @@ if ! grep -q "# https://github.com/gpakosz/.tmux" "$HOME"/.tmux.conf; then
     cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
     cat "$CONFIGS_DIR"/.tmux.conf > "$HOME"/.tmux.conf
     cat "$CONFIGS_DIR"/.tmux.conf.local > "$HOME"/.tmux.conf.local
-    search=%COLORCODE
-    sed -i "s/$search/$colorCode/" "$HOME"/.tmux.conf.local
+    sed -i "s/$SEARCH_CODE/$colorCode/" "$HOME"/.tmux.conf.local
 fi
 
 #--------------------------------
 #    Install development tools
 #-------- Install Gradle --------
 sdk install gradle
-#-------- Install Rustc --------
+#-------- Install Rustc ---------
 if [ ! -f "$HOME"/.cargo/bin/rustc ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     source "$HOME/.cargo/env"
@@ -339,22 +330,18 @@ fi
 if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
     dotnet tool install -g dotnet-script
 fi
-#-------- Install tools --------
-cargo install gpu-usage-waybar
-#-------- Install language servers --------
+#--- Install language servers ---
 go install golang.org/x/tools/gopls@latest
-#-------- Install libraries --------
+#------- Install libraries ------
 python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib prompt_toolkit==1.0.18
-#-------- Linking scripts to ~/tools --------
+#-- Linking scripts to ~/tools --
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
 fi
 
-#-------- Install bluetuith --------
-#go install github.com/darkhz/bluetuith@latest
-
 #------- Move .desktop files -------
-cp "$HOME"/dotfiles/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
+cp "$CONFIGS_DIR"/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
+cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/applications/
 
 #-------- Restoring backups --------
 if [ ! -d "$HOME"/Documents/backup-folder ]; then
