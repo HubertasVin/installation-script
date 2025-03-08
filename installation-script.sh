@@ -220,7 +220,7 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     #---- Graphite ----
     git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
     sudo Graphite-gtk-theme/install.sh -t $themeColor
-    sudo rm -r Graphite-gtk-theme/
+    rm -rf Graphite-gtk-theme/
     gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
     gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
 
@@ -238,7 +238,6 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     elif gnome-shell --version | grep -q "GNOME Shell 41." || gnome-shell --version | grep -q "GNOME Shell 40."; then
         git clone --branch 20211223 https://github.com/daniruiz/flat-remix-gnome
     fi
-
     cd flat-remix-gnome
     make && sudo make install
     cd .. && rm -rf flat-remix-gnome
@@ -247,8 +246,15 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     #-------- Icon pack installation --------
     git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
     Tela-circle-icon-theme/install.sh $iconThemeColor
-    sudo rm -r Tela-circle-icon-theme/
+    rm -rf Tela-circle-icon-theme/
     gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$iconThemeColor-dark"
+
+    #----------- Mouse icon packs -----------
+    mkdir -p "$HOME"/.icons
+    git clone https://gitlab.com/Burning_Cube/quintom-cursor-theme.git
+    cp -pr quintom-cursor-theme/Quintom_Ink\ Cursors/Quintom_Ink "$HOME"/.icons
+    cp -pr quintom-cursor-theme/Quintom_Snow\ Cursors/Quintom_Snow "$HOME"/.icons
+    rm -rf quintom-cursor-theme/
 fi
 
 

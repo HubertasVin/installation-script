@@ -24,6 +24,9 @@ fi
 if [ ! -f /etc/yum.repos.d/shells:zsh-users:zsh-autosuggestions.repo ]; then
     sudo dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/shells:zsh-users:zsh-autosuggestions/Fedora_Rawhide/shells:zsh-users:zsh-autosuggestions.repo
 fi
+if [ ! -f /etc/yum.repos.d/vivaldi-fedora.repo ]; then
+    sudo dnf config-manager addrepo --from-repofile=https://repo.vivaldi.com/stable/vivaldi-fedora.repo
+fi
 if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
     if [ ! -f /etc/yum.repos.d/amdgpu.repo ]; then
         sudo tee /etc/yum.repos.d/amdgpu.repo <<EOF
@@ -63,9 +66,9 @@ if glxinfo | grep -q NVIDIA; then
     sudo dnf install -y akmods-nvidia xorg-x11-drv-nvidia-cuda
 fi
 if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
-    sudo dnf install -y amdgpu-dkms rocm 
+    sudo dnf install -y amdgpu-dkms rocm
 fi
-sudo dnf install -y --allowerasing fish cmake python3-pip ninja-build xrandr @virtualization ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms java-17-openjdk java-17-openjdk-devel docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin maven pipx dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel gh picom dunst polybar udiskie rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam btop htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek alacritty s-tui gnome-shell-extension-user-theme gnome-shell-extension-blur-my-shell glib2-devel ImageMagick fontawesome-fonts pavucontrol zsh php python3-devel
+sudo dnf install -y --allowerasing fish cmake python3-pip ninja-build xrandr @virtualization ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms java-17-openjdk java-17-openjdk-devel docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin maven pipx dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel gh picom dunst polybar udiskie rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam btop htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek alacritty s-tui gnome-shell-extension-user-theme gnome-shell-extension-blur-my-shell glib2-devel ImageMagick fontawesome-fonts pavucontrol zsh php python3-devel vivaldi-stable
 sudo dnf group install -y d-development c-development development-tools
 flatpak install flathub -y net.nokyan.Resources
 
