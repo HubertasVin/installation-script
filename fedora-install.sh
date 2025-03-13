@@ -68,11 +68,14 @@ fi
 if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
     sudo dnf install -y amdgpu-dkms rocm
 fi
-sudo dnf install -y --allowerasing fish cmake python3-pip ninja-build xrandr @virtualization ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms java-17-openjdk java-17-openjdk-devel docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin maven pipx dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel gh picom dunst polybar udiskie rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam btop htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek alacritty s-tui gnome-shell-extension-user-theme gnome-shell-extension-blur-my-shell glib2-devel ImageMagick fontawesome-fonts pavucontrol zsh php python3-devel brave-browser
+sudo dnf install -y --allowerasing fish cmake python3-pip ninja-build xrandr @virtualization ffmpeg-free ffmpeg-free-devel gstreamer1-plugin-openh264 mozilla-openh264 gcc ncurses-devel kernel-headers kernel-devel acpi acpid brightnessctl dkms java-17-openjdk java-17-openjdk-devel java-11-openjdk java-11-openjdk-devel java-21-openjdk java-21-openjdk-devel docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin maven pipx dotnet-sdk-8.0 aspnetcore-runtime-8.0 ghc-compiler go clang-tools-extra bash-completion wine sassc glfw glfw-devel glew glew-devel lm_sensors xclip wl-clipboard xkill xinput ntfs-3g playerctl xbindkeys xkb-switch dbus-devel libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel gh picom dunst polybar udiskie rofi snapd nitrogen blueman valgrind neovim gnome-tweaks gnome-pomodoro xset vlc code steam btop htop qbittorrent minecraft-launcher discord ranger putty arandr autorandr pamixer tldr flameshot peek alacritty s-tui gnome-shell-extension-user-theme gnome-shell-extension-blur-my-shell glib2-devel ImageMagick fontawesome-fonts pavucontrol zsh php python3-devel brave-browser
 sudo dnf group install -y d-development c-development development-tools
 flatpak install flathub -y net.nokyan.Resources
+# Install OnlyOffice
+sudo dnf remove -y 'libreoffice*'
+flatpak install flathub org.onlyoffice.desktopeditors
 
-#TODO ---- Install Starship ----
+# ---- Install Starship ----
 sudo dnf copr enable -y atim/starship
 
 #TODO ---- Stard Docker ----
