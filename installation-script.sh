@@ -138,8 +138,7 @@ fi
 
 #-- Setup npm dir for global installs --
 if [ ! -d "$HOME/.npm-global" ]; then
-    mkdir -p "$HOME"/.npm-global
-    npm config set prefix '"$HOME"/.npm-global'
+    npm config set prefix '${HOME}/.npm-global'
 fi
 
 

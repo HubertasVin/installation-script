@@ -169,6 +169,8 @@ install_applications() {
         gh
         zsh
         php
+        ansible
+        ansible-vault
     )
 
     # Desktop & Applications Packages
