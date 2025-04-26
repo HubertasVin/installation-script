@@ -28,7 +28,7 @@ done | sort -u > "$EXCLUDE_FILE"
 
 borg init --encryption=repokey "$BORG_REPO" 2>/dev/null || true
 
-borg create --stats --progress \
+borg create --verbose --stats --progress \
     --exclude-from "$EXCLUDE_FILE" \
     "$BORG_REPO::backup-{now:%Y-%m-%d_%H:%M:%S}" \
     "${SOURCES[@]}"

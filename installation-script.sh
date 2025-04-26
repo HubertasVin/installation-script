@@ -2,7 +2,7 @@
 
 #-------- Script error handling --------
 touch /tmp/error
-set -euo pipefail
+set -e
 trap 'handle_error $LINENO' ERR
 
 handle_error() {
@@ -26,9 +26,11 @@ initialize_variables() {
     SEARCH_CODE="%COLORCODE"
 
     if [ -z "$gitEmail" ]; then
+	echo "Enter your git email"
         read gitEmail
     fi
     if [ -z "$gitName" ]; then
+	echo "Enter your git username"
         read gitName
     fi
 
@@ -64,14 +66,14 @@ else
 fi
 
 #------------ Setup SSH ------------
-if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
+if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
     echo 'Setting up ssh'
     echo -n 'Enter git email: '
-    ssh-keygen -t rsa -b 4096 -C $gitEmail
+    ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa_github" -N "" -C $gitEmail
     if ps -e | grep -q 'gnome-shell'; then
-        cat "$HOME"/.ssh/id_rsa.pub | xclip -selection clipboard
+        cat "$HOME"/.ssh/id_rsa_github.pub | xclip -selection clipboard
     else
-        cat "$HOME"/.ssh/id_rsa.pub | wl-copy
+        cat "$HOME"/.ssh/id_rsa_github.pub | wl-copy
     fi
     echo 'SSH key copied to clipboard, go to Github:'
     echo '1. Go to user settings'
@@ -101,18 +103,20 @@ fi
 #    Package manager setup
 #-------- Snapd setup --------
 if [ `which snap` ]; then
-    sudo systemctl enable --now snapd.service
-    sudo ln -s /var/lib/snapd/snap /snap
-    echo 'Reboot your computer to enable snapd to function fully'
-    read -p 'Confirm to reboot your computer (y/N)' answer
+    if [ ! -L "/snap" ]; then
+	sudo systemctl enable --now snapd.service
+	sudo ln -s /var/lib/snapd/snap /snap
+	echo 'Reboot your computer to enable snapd to function fully'
+	read -p 'Confirm to reboot your computer (y/N)' answer
 
-    case "$answer" in
-        [yY]|[yY][eE][sS])
-            reboot
-            ;;
-        [nN]|[nN][oO]|*)
-            ;;
-    esac
+	case "$answer" in
+	[yY]|[yY][eE][sS])
+	    reboot
+	    ;;
+	[nN]|[nN][oO]|*)
+	    ;;
+	esac
+    fi
 fi
 if [ ! `which nvim` ]; then
     sudo snap install nvim --classic
@@ -128,7 +132,7 @@ fi
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 #-------- Install homebrew --------
-if [ ! -d "$HOME/linuxbrew" ]; then
+if [ ! -d "/home/linuxbrew" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     test -d "$HOME"/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
     test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -234,8 +238,8 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
         git clone --branch 20221107 https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 42."; then
         git clone --branch 20220622 https://github.com/daniruiz/flat-remix-gnome
-    elif gnome-shell --version | grep -q "GNOME Shell 41." || gnome-shell --version | grep -q "GNOME Shell 40."; then
-        git clone --branch 20211223 https://github.com/daniruiz/flat-remix-gnome
+    else
+        git clone https://github.com/daniruiz/flat-remix-gnome
     fi
     cd flat-remix-gnome
     make && sudo make install
@@ -311,7 +315,7 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
     #-------- Setup .bashrc --------
     cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
     #-------- Setup zsh --------
-    cat "$CONFIGS_DIR"/template.zshrc >> "$HOME"/.zshrc
+    cat "$CONFIGS_DIR"/template.zshrc > "$HOME"/.zshrc
     chsh $(whoami) -s $(which zsh)
     brew install zsh-autosuggestions zsh-syntax-highlighting
 
@@ -325,7 +329,7 @@ fi
 #--------------------------------
 #          Setup Borg
 #--------------------------------
-source borg-setup.sh
+source "$SCRIPT_DIR/borg-setup.sh"
 
 #--------------------------------
 #    Install development tools
@@ -357,16 +361,6 @@ cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/appl
 
 #-------- Restoring backups --------
 source "$SCRIPT_DIR/scripts/backup/borg-restore.sh"
-# if [ ! -d "$HOME"/Documents/backup-folder ]; then
-#     git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git "$HOME"/Documents/backup-folder
-#     cd "$HOME"/Documents/backup-folder
-#     git push --set-upstream origin master
-# fi
-# if [ -d "$HOME"/Pictures ] && [ -z "$(ls -A "$HOME"/Pictures)" ]; then
-#     git clone git@github.com:HubertasVin/picture-backup.git "$HOME"/Pictures
-#     cd "$HOME"/Pictures
-#     git push --set-upstream origin main
-# fi
 
 #-------- Change Installation script remote origin to ssh --------
 cd $SCRIPT_DIR

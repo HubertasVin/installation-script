@@ -10,7 +10,7 @@ update_system() {
     log "Updating and upgrading the system..."
     sudo dnf update -y
     sudo dnf upgrade --refresh -y
-    sudo dnf install -y dnf-command(config-manager)
+    sudo dnf install -y 'dnf-command(config-manager)'
 }
 
 add_repos() {
@@ -39,7 +39,7 @@ add_repos() {
     fi
 
     # Add AMD/ATI specific repositories if applicable
-    if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
+    if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
         log "Detected AMD/ATI graphics. Adding AMD repositories..."
         if [ ! -f /etc/yum.repos.d/amdgpu.repo ]; then
             sudo tee /etc/yum.repos.d/amdgpu.repo > /dev/null <<EOF
@@ -67,29 +67,9 @@ EOF
 
     if [ ! -f /etc/yum.repos.d/vscode.repo ]; then
         log "Adding Visual Studio Code repository..."
-        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-        sudo tee /etc/yum.repos.d/vscode.repo > /dev/null <<EOF
-[code]
-name=Visual Studio Code
-baseurl=https://packages.microsoft.com/yumrepos/vscode
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-EOF
-    fi
-
-    if [ ! -f /etc/yum.repos.d/microsoft-prod.repo ]; then
-        log "Adding Microsoft repository..."
-        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-        sudo tee /etc/yum.repos.d/microsoft-prod.repo > /dev/null <<EOF
-[microsoft-prod]
-name=Microsoft Prod Repository
-baseurl=https://packages.microsoft.com/yumrepos/microsoft-rhel8-prod
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-EOF
-    fi
+	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+	echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+fi
 
     log "Cleaning DNF cache..."
     sudo dnf clean all
@@ -109,7 +89,7 @@ install_applications() {
         log "Installing NVIDIA drivers..."
         sudo dnf install -y akmods-nvidia xorg-x11-drv-nvidia-cuda
     fi
-    if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
+    if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
         log "Installing AMD drivers..."
         sudo dnf install -y amdgpu-dkms rocm
     fi
@@ -160,10 +140,6 @@ install_applications() {
         containerd.io
         docker-buildx-plugin
         docker-compose-plugin
-        java-17-openjdk
-        java-17-openjdk-devel
-        java-11-openjdk
-        java-11-openjdk-devel
         java-21-openjdk
         java-21-openjdk-devel
         gh
@@ -175,6 +151,7 @@ install_applications() {
 
     # Desktop & Applications Packages
     desktop_apps=(
+        borgbackup
         ffmpeg-free
         ffmpeg-free-devel
         gstreamer1-plugin-openh264
@@ -235,7 +212,7 @@ install_applications() {
     all_packages=("${system_dev[@]}" "${desktop_apps[@]}")
 
     log "Installing packages..."
-    sudo dnf install -y --allowerasing "${all_packages[@]}"
+    sudo dnf install -y --skip-unavailable --allowerasing "${all_packages[@]}"
     sudo dnf group install -y d-development c-development development-tools
 
     log "Installing Flatpak applications..."

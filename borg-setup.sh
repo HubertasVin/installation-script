@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
 # 1) PROMPT FOR AND PERSIST THE VAULT PASSPHRASE
 if [[ -z "${BORG_PASSPHRASE:-}" ]]; then
@@ -14,11 +14,13 @@ if [[ -z "${BORG_PASSPHRASE:-}" ]]; then
         stty -echo; read -r _borg_pass; stty echo; printf "\n" >&2
     fi
     export BORG_PASSPHRASE="$_borg_pass"
+fi
 
+if [[ ! -z "${BORG_PASSPHRASE:-}" ]]; then
     for rc in ~/.bashrc ~/.zshrc; do
         # only append once
         if ! grep -q '^export BORG_PASSPHRASE=' "$rc" 2>/dev/null; then
-            printf "\n# Borg repo passphrase\nexport BORG_PASSPHRASE='%s'\n" "$_borg_pass" >> "$rc"
+            printf "\n# Borg repo passphrase\nexport BORG_PASSPHRASE='%s'\n" "$BORG_PASSPHRASE" >> "$rc"
         fi
     done
 fi
