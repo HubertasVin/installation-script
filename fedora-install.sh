@@ -220,7 +220,7 @@ install_applications() {
         flameshot
         peek
         alacritty
-        s-tui
+        ncdu
         gnome-shell-extension-user-theme
         gnome-shell-extension-blur-my-shell
         gnome-shell-extension-forge

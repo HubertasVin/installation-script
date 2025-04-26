@@ -2,7 +2,7 @@
 
 #-------- Script error handling --------
 touch /tmp/error
-set -e
+set -euo pipefail
 trap 'handle_error $LINENO' ERR
 
 handle_error() {
@@ -343,12 +343,16 @@ python3 -m pip install --break-system-packages gitpython paramiko scp pandas mat
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
 fi
+#-- Install NPM update checker --
+npm i -g npm-check-updates
 
 #------- Move .desktop files -------
 cp "$CONFIGS_DIR"/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
 cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/applications/
 
 #-------- Restoring backups --------
+source borg-setup.sh
+source scripts/backup/borg-restore.sh
 if [ ! -d "$HOME"/Documents/backup-folder ]; then
     git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git "$HOME"/Documents/backup-folder
     cd "$HOME"/Documents/backup-folder
