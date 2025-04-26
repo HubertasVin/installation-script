@@ -323,6 +323,11 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 fi
 
 #--------------------------------
+#          Setup Borg
+#--------------------------------
+source borg-setup.sh
+
+#--------------------------------
 #    Install development tools
 #-------- Install Gradle --------
 sdk install gradle
@@ -351,18 +356,17 @@ cp "$CONFIGS_DIR"/desktop_files/polybar.desktop "$HOME"/.local/share/application
 cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/applications/
 
 #-------- Restoring backups --------
-source borg-setup.sh
-source scripts/backup/borg-restore.sh
-if [ ! -d "$HOME"/Documents/backup-folder ]; then
-    git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git "$HOME"/Documents/backup-folder
-    cd "$HOME"/Documents/backup-folder
-    git push --set-upstream origin master
-fi
-if [ -d "$HOME"/Pictures ] && [ -z "$(ls -A "$HOME"/Pictures)" ]; then
-    git clone git@github.com:HubertasVin/picture-backup.git "$HOME"/Pictures
-    cd "$HOME"/Pictures
-    git push --set-upstream origin main
-fi
+source "$SCRIPT_DIR/scripts/backup/borg-restore.sh"
+# if [ ! -d "$HOME"/Documents/backup-folder ]; then
+#     git clone --recurse-submodules -j8 git@github.com:HubertasVin/backup-folder.git "$HOME"/Documents/backup-folder
+#     cd "$HOME"/Documents/backup-folder
+#     git push --set-upstream origin master
+# fi
+# if [ -d "$HOME"/Pictures ] && [ -z "$(ls -A "$HOME"/Pictures)" ]; then
+#     git clone git@github.com:HubertasVin/picture-backup.git "$HOME"/Pictures
+#     cd "$HOME"/Pictures
+#     git push --set-upstream origin main
+# fi
 
 #-------- Change Installation script remote origin to ssh --------
 cd $SCRIPT_DIR
