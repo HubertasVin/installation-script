@@ -147,6 +147,7 @@ install_applications() {
         php
         ansible
         ansible-vault
+        adoptiom-temurin-java-repository
     )
 
     # Desktop & Applications Packages
@@ -213,6 +214,7 @@ install_applications() {
 
     log "Installing packages..."
     sudo dnf install -y --skip-unavailable --allowerasing "${all_packages[@]}"
+    sudo dnf install -y --skip-unavailable --allowerasing temurin-11-jdk temurin-17-jdk
     sudo dnf group install -y d-development c-development development-tools
 
     log "Installing Flatpak applications..."
