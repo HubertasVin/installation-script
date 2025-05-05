@@ -135,11 +135,9 @@ install_applications() {
         go
         clang-tools-extra
         bash-completion
-        docker-ce
-        docker-ce-cli
-        containerd.io
-        docker-buildx-plugin
-        docker-compose-plugin
+        docker-cli
+        containerd
+        docker-compose
         java-21-openjdk
         java-21-openjdk-devel
         gh
