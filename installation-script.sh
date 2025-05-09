@@ -359,7 +359,8 @@ fi
 #--- Install language servers ---
 go install golang.org/x/tools/gopls@latest
 #------- Install libraries ------
-python3 -m pip install --break-system-packages gitpython paramiko scp pandas matplotlib prompt_toolkit==1.0.18
+python3 -m pip install --break-system-packages gitpython paramiko scp pandas prompt_toolkit==1.0.18
+pip install matplotlib
 #-- Linking scripts to ~/tools --
 if [ ! -L "$HOME/tools" ]; then
     ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
