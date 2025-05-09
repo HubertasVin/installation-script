@@ -116,6 +116,8 @@ install_applications() {
         cmake
         python3-devel
         python3-pip
+        python3-virtualenv
+        python3.11
         ninja-build
         xrandr
         @virtualization
@@ -130,7 +132,7 @@ install_applications() {
         maven
         pipx
         dotnet-sdk-8.0
-        aspnetcore-runtime-8.0
+        dotnet-sdk-9.0
         ghc-compiler
         go
         clang-tools-extra

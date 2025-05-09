@@ -99,6 +99,7 @@ if [ ! -d "$HOME/dotfiles/" ]; then
     git clone git@github.com:HubertasVin/dotfiles.git "$HOME"/dotfiles
 fi
 
+
 #-----------------------------
 #    Package manager setup
 #-------- Snapd setup --------
@@ -144,6 +145,12 @@ fi
 if [ ! -d "$HOME/.npm-global" ]; then
     npm config set prefix '${HOME}/.npm-global'
 fi
+
+
+#-------------------------------------
+#         Start-up speed-up
+#-------------------------------------
+sudo systemctl disable NetworkManager-wait-online.service
 
 
 #-------------------------------------
@@ -316,6 +323,11 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
     cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
     #-------- Setup zsh --------
     cat "$CONFIGS_DIR"/template.zshrc > "$HOME"/.zshrc
+    if ! grep -q "HSA_OVERRIDE_GFX_VERSION" ~/.zshrc; then
+        echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.zshrc
+        echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
+    fi
+
     chsh $(whoami) -s $(which zsh)
     brew install zsh-autosuggestions zsh-syntax-highlighting
 
