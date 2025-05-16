@@ -15,15 +15,15 @@ trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && h
 
 
 # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-# │              Helper functions              │
+# │               Initialization               │
 # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
 initialize_variables() {
-    # Set SCRIPT_DIR if not already set
     if [ -z "$SCRIPT_DIR" ]; then
         SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
     fi
     CONFIGS_DIR="$HOME/dotfiles"
     SEARCH_CODE="%COLORCODE"
+    TRASH_DOWNLOADS_SERVICE_FILE=/etc/systemd/system/trash-downloads.service
 
     if [ -z "$gitEmail" ]; then
 	echo "Enter your git email"
@@ -82,7 +82,7 @@ if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
     read -n 1 -p '(Press any key to continue)' answer
 fi
 
-#-------- Setup git --------
+#------------- Setup git -------------
 if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HOME"/.ssh/config; then
     echo 'Setting up git'
     echo -n 'Enter git username: '
@@ -94,15 +94,15 @@ if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HO
     echo "    StrictHostKeyChecking no" >> "$HOME"/.ssh/config
 fi
 
-#-------- Get all dotfiles --------
+#-------- Download dotfiles ----------
 if [ ! -d "$HOME/dotfiles/" ]; then
     git clone git@github.com:HubertasVin/dotfiles.git "$HOME"/dotfiles
 fi
 
 
-#-----------------------------
-#    Package manager setup
-#-------- Snapd setup --------
+#INFO: -------------------------------
+#         Package manager setup
+#------------ Snapd setup ------------
 if [ `which snap` ]; then
     if [ ! -L "/snap" ]; then
 	sudo systemctl enable --now snapd.service
@@ -126,13 +126,13 @@ if [ ! -d "/var/snap/obsidian" ]; then
     sudo snap install obsidian --classic
 fi
 
-#--------- Install SDKMAN ---------
+#---------- Install SDKMAN -----------
 if [ ! -d "$HOME/.sdkman" ]; then
     curl -s "https://get.sdkman.io" | bash
 fi
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-#-------- Install homebrew --------
+#--------- Install homebrew ----------
 if [ ! -d "/home/linuxbrew" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     test -d "$HOME"/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
@@ -147,15 +147,21 @@ if [ ! -d "$HOME/.npm-global" ]; then
 fi
 
 
-#-------------------------------------
+#-------- Install Zen browser --------
+if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
+    bash <(curl -s https://updates.zen-browser.app/install.sh)
+fi
+
+
+#INFO: -------------------------------
 #         Start-up speed-up
 #-------------------------------------
 sudo systemctl disable NetworkManager-wait-online.service
 
 
-#-------------------------------------
-#          Theme installation
-#--------- Gnome configuration -------
+#INFO: -------------------------------
+#             Gnome setup
+#------- Restore Gnome settings ------
 if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
     dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
     git clone https://github.com/vchlum/notification-timeout.git
@@ -164,7 +170,7 @@ if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlum
     cd .. && rm -rf notification-timeout
 fi
 
-#------ Install Graphite theme -------
+#-------- Install GDM themes ---------
 if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     select themeColor in default purple pink red orange yellow green teal blue all
     do
@@ -227,14 +233,14 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     echo "Selected the $themeColor color"
 
     #-------- Theme installation --------
-    #---- Graphite ----
+    #------------- Graphite -------------
     git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
     sudo Graphite-gtk-theme/install.sh -t $themeColor
     rm -rf Graphite-gtk-theme/
     gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
     gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
 
-    #---- Flat Remix ----
+    #------------ Flat Remix ------------
     if gnome-shell --version | grep -q "GNOME Shell 47."; then
         git clone https://github.com/daniruiz/flat-remix-gnome
     elif gnome-shell --version | grep -q "GNOME Shell 46."; then
@@ -274,15 +280,9 @@ fi
 #    bash setup-autorandr.sh
 #fi
 
-#----------------------------------
-#-------- Install packages --------
-if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
-    bash <(curl -s https://updates.zen-browser.app/install.sh)
-fi
-
-#----------------------------------
-#          Configurations
-#---------- Setup ranger ----------
+#INFO: --------------------------
+#          Ranger setup
+#--------------------------------
 if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
     ranger --copy-config=rifle
     ranger --copy-config=rc
@@ -303,7 +303,9 @@ if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/co
     fi
 fi
 
-#-------- Setup NeoVIM --------
+#INFO: --------------------------
+#          Setup NeoVim
+#--------------------------------
 if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" "$HOME"/.config/nvim/lua/plugins/init.lua; then
     git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
     mkdir -p "$HOME"/.local/share/fonts
@@ -315,7 +317,9 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! 
     nvim +WakaTimeApiKey +MasonInstallAll
 fi
 
-#-------- Restore configuration for terminal, tmux and bash/zsh --------
+#INFO: -------------------------------------------------
+#           Terminal, tmux and bash/zsh setup
+#-------------------------------------------------------
 if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.conf" "$HOME"/.tmux.conf; then
     cp "$CONFIGS_DIR"/.inputrc "$HOME"
 
@@ -338,12 +342,12 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
     sed -i "s/$SEARCH_CODE/$colorCode/" "$HOME"/.tmux.conf.local
 fi
 
-#--------------------------------
+#INFO: --------------------------
 #          Setup Borg
 #--------------------------------
 source "$SCRIPT_DIR/borg-setup.sh"
 
-#--------------------------------
+#INFO: --------------------------
 #    Install development tools
 #-------- Install Gradle --------
 sdk install gradle
@@ -361,23 +365,52 @@ go install golang.org/x/tools/gopls@latest
 #------- Install libraries ------
 python3 -m pip install --break-system-packages gitpython paramiko scp pandas prompt_toolkit==1.0.18
 pip install matplotlib
-#-- Linking scripts to ~/tools --
-if [ ! -L "$HOME/tools" ]; then
-    ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
-fi
 #-- Install NPM update checker --
 npm i -g npm-check-updates
 
+
+#INFO:------------------------------
+#    Desktop files and services
 #------- Move .desktop files -------
 cp "$CONFIGS_DIR"/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
 cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/applications/
 
+if [ ! -f "$TRASH_DOWNLOADS_SERVICE_FILE" ]; then
+    sudo tee "$TRASH_DOWNLOADS_SERVICE_FILE" > /dev/null <<EOF
+[Unit]
+Description=Clean stale Downloads into .trash at boot
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/hubertas/tools/trash_downloads.sh
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable trash-downloads.service
+fi
+
+#--- Linking scripts to ~/tools ----
+if [ ! -L "$HOME/tools" ]; then
+    ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
+fi
+
 #-------- Restoring backups --------
-source "$SCRIPT_DIR/scripts/backup/borg-restore.sh"
+if [ -z "${BORG_RESTORE_DONE:-}" ]; then
+    echo "Restoring backups…"
+    source "$SCRIPT_DIR/scripts/backup/borg-restore.sh"
+    # mark as done
+    export BORG_RESTORE_DONE=1
+else
+    echo "Backups already restored in this session; skipping."
+fi
 
 #-------- Change Installation script remote origin to ssh --------
 cd $SCRIPT_DIR
-if [ -d "$HOME"/installation-script ] && [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-script.git" ]; then
+if [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-script.git" ]; then
     git remote remove origin
     git remote add origin git@github.com:HubertasVin/installation-script.git
     git push --set-upstream origin master
