@@ -383,7 +383,7 @@ After=local-fs.target
 
 [Service]
 Type=oneshot
-ExecStart=/home/hubertas/tools/trash_downloads.sh
+ExecStart=/usr/bin/env bash /home/hubertas/tools/trash_downloads.sh
 
 [Install]
 WantedBy=multi-user.target
