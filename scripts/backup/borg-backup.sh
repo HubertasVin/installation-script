@@ -33,3 +33,8 @@ borg create --verbose --stats --progress \
     --exclude-from "$EXCLUDE_FILE" \
     "$BORG_REPO::backup-{now:%Y-%m-%d_%H:%M:%S}" \
     "${SOURCES[@]}"
+
+borg prune --verbose --list \
+    "$BORG_REPO" \
+    --glob-archives 'backup-*' \
+    --keep-last 3
