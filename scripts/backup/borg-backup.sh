@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-export BORG_REPO="borg:/home/borguser/backups"
+export BORG_REPO="borg:~/backups"
+export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 
 SOURCES=(
     "$HOME/Documents/backup-folder"
