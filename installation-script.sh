@@ -58,8 +58,8 @@ initialize_variables() {
         echo -n "Enter VPS SSH host (domain or IPv4): "
         read sshHost
         case "$(validate_input "$sshHost" "($IP_REGEX|$DOMAIN_REGEX)"; echo $?)" in
-            1) echo "Error: host cannot be empty." >&2; sshHost=;; 
-            2) echo "Error: '$sshHost' is not a valid domain or IPv4." >&2; sshHost=;;
+            1) echo "Error: host cannot be empty." >&2; sshHost= ;;
+            2) echo "Error: '$sshHost' is not a valid domain or IPv4." >&2; sshHost= ;;
         esac
     done
 
@@ -91,26 +91,22 @@ initialize_variables() {
 initialize_variables
 
 
-if [ `which apt 2>/dev/null` ]; then
-    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-    # │                   DEBIAN                   │
-    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-    bash debian-install.sh
-
-elif [ `which rpm 2>/dev/null` ]; then
-    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-    # │                   FEDORA                   │
-    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-    bash fedora-install.sh
-
-elif [ `which pacman 2>/dev/null` ]; then
-    # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
-    # │                    ARCH                    │
-    # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
-    bash arch-install.sh
-else
-    echo "Unknown distribution"
-fi
+. /etc/os-release
+case "$ID" in
+    debian|ubuntu|linuxmint)
+        bash debian-install.sh
+        ;;
+    fedora)
+        bash fedora-install.sh
+        ;;
+    arch|manjaro)
+        bash arch-install.sh
+        ;;
+    *)
+        echo "Unknown distribution: ID=${ID}, ID_LIKE=${ID_LIKE}" >&2
+        exit 1
+        ;;
+esac
 
 #------------ Setup SSH ------------
 if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
