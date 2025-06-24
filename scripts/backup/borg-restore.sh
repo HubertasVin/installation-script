@@ -13,5 +13,5 @@ echo "Restoring backup $latest"
 
 # Extract at root so absolute paths restore into their original locations
 pushd / >/dev/null
-borg extract --verbose --stats --progress "$BORG_REPO::$latest"
+borg extract --verbose --progress "$BORG_REPO::$latest"
 popd >/dev/null

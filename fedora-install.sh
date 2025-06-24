@@ -190,6 +190,7 @@ install_applications() {
         minecraft-launcher
         discord
         ranger
+        trash-cli
         putty
         arandr
         autorandr
