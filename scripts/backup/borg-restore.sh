@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export BORG_REPO="borguser@198.7.118.97:/home/borguser/backups"
+export BORG_REPO="borg:/home/borguser/backups"
 
 # Find the latest archive
 latest=$(borg list --last 1 --format '{archive}' "$BORG_REPO")

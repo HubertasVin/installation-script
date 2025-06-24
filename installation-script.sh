@@ -24,14 +24,30 @@ initialize_variables() {
     CONFIGS_DIR="$HOME/dotfiles"
     SEARCH_CODE="%COLORCODE"
     TRASH_DOWNLOADS_SERVICE_FILE=/etc/systemd/system/trash-downloads.service
+    IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+    DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 
     if [ -z "$gitEmail" ]; then
-	echo "Enter your git email"
+        echo "Enter your git email"
         read gitEmail
     fi
     if [ -z "$gitName" ]; then
-	echo "Enter your git username"
+        echo "Enter your git username"
         read gitName
+    fi
+
+    if [ -z "$sshHost" ]; then
+        read -p "Enter VPS SSH host (domain or IPv4): " sshHost
+        if [[ ! $sshHost =~ $IP_REGEX && ! $sshHost =~ $DOMAIN_REGEX ]]; then
+            echo "Error: '$sshHost' is not a valid domain or IPv4 address." >&2
+            exit 1
+        fi
+    fi
+    if [ -z "$sshUser" ]; then
+        read -p "Enter VPS SSH user: " sshUser
+    fi
+    if [ -z "$borgUser" ]; then
+        read -p "Enter VPS Borg user: " borgUser
     fi
 
     if [ -z "$colorCode" ]; then
@@ -82,6 +98,22 @@ if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
     read -n 1 -p '(Press any key to continue)' answer
 fi
 
+mkdir -p "$HOME/.ssh"
+touch "$HOME/.ssh/config"
+chmod 600 "$HOME/.ssh/config"
+if ! grep -qE "^[[:space:]]+HostName[[:space:]]+$sshHost\$" "$HOME/.ssh/config"; then
+    cat >> "$HOME/.ssh/config" <<EOF
+
+Host vps
+    HostName $sshHost
+    User     $sshUser
+
+Host borg
+    HostName $sshHost
+    User     $borgUser
+EOF
+fi
+
 #------------- Setup git -------------
 if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HOME"/.ssh/config; then
     echo 'Setting up git'
@@ -105,18 +137,18 @@ fi
 #------------ Snapd setup ------------
 if [ `which snap` ]; then
     if [ ! -L "/snap" ]; then
-	sudo systemctl enable --now snapd.service
-	sudo ln -s /var/lib/snapd/snap /snap
-	echo 'Reboot your computer to enable snapd to function fully'
-	read -p 'Confirm to reboot your computer (y/N)' answer
+        sudo systemctl enable --now snapd.service
+        sudo ln -s /var/lib/snapd/snap /snap
+        echo 'Reboot your computer to enable snapd to function fully'
+        read -p 'Confirm to reboot your computer (y/N)' answer
 
-	case "$answer" in
-	[yY]|[yY][eE][sS])
-	    reboot
-	    ;;
-	[nN]|[nN][oO]|*)
-	    ;;
-	esac
+        case "$answer" in
+            [yY]|[yY][eE][sS])
+                reboot
+                ;;
+            [nN]|[nN][oO]|*)
+                ;;
+        esac
     fi
 fi
 if [ ! `which nvim` ]; then

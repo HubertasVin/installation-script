@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export BORG_REPO="borguser@198.7.118.97:/home/borguser/backups"
+export BORG_REPO="borg:/home/borguser/backups"
 
 SOURCES=(
     "$HOME/Documents/backup-folder"
