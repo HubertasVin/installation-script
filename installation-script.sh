@@ -17,6 +17,15 @@ trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && h
 # ┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑
 # │               Initialization               │
 # ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙
+validate_input() {
+    local in="$1" re="$2"
+
+    [[ $in =~ [^[:space:]] ]] || return 1
+    [[ -n $re && ! $in =~ $re ]] && return 2
+
+    return 0
+}
+
 initialize_variables() {
     if [ -z "$SCRIPT_DIR" ]; then
         SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -27,28 +36,50 @@ initialize_variables() {
     IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
     DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 
-    if [ -z "$gitEmail" ]; then
-        echo "Enter your git email"
+    while [ -z "$gitEmail" ]; do
+        echo -n "Enter your git email: "
         read gitEmail
-    fi
-    if [ -z "$gitName" ]; then
-        echo "Enter your git username"
-        read gitName
-    fi
-
-    if [ -z "$sshHost" ]; then
-        read -p "Enter VPS SSH host (domain or IPv4): " sshHost
-        if [[ ! $sshHost =~ $IP_REGEX && ! $sshHost =~ $DOMAIN_REGEX ]]; then
-            echo "Error: '$sshHost' is not a valid domain or IPv4 address." >&2
-            exit 1
+        if ! validate_input "$gitEmail"; then
+            echo "Error: git email cannot be empty." >&2
+            gitEmail=
         fi
-    fi
-    if [ -z "$sshUser" ]; then
-        read -p "Enter VPS SSH user: " sshUser
-    fi
-    if [ -z "$borgUser" ]; then
-        read -p "Enter VPS Borg user: " borgUser
-    fi
+    done
+
+    while [ -z "$gitName" ]; do
+        echo -n "Enter your git username: "
+        read gitName
+        if ! validate_input "$gitName"; then
+            echo "Error: git username cannot be empty." >&2
+            gitName=
+        fi
+    done
+
+    while [ -z "$sshHost" ]; do
+        echo -n "Enter VPS SSH host (domain or IPv4): "
+        read sshHost
+        case "$(validate_input "$sshHost" "($IP_REGEX|$DOMAIN_REGEX)"; echo $?)" in
+            1) echo "Error: host cannot be empty." >&2; sshHost=;; 
+            2) echo "Error: '$sshHost' is not a valid domain or IPv4." >&2; sshHost=;;
+        esac
+    done
+
+    while [ -z "$sshUser" ]; do
+        echo -n "Enter VPS SSH user: "
+        read sshUser
+        if ! validate_input "$sshUser"; then
+            echo "Error: SSH user cannot be empty." >&2
+            sshUser=
+        fi
+    done
+
+    while [ -z "$borgUser" ]; do
+        echo -n "Enter VPS Borg user: "
+        read borgUser
+        if ! validate_input "$borgUser"; then
+            echo "Error: Borg user cannot be empty." >&2
+            borgUser=
+        fi
+    done
 
     if [ -z "$colorCode" ]; then
         colorCode="#3684DD"
