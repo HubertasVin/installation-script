@@ -208,6 +208,8 @@ install_applications() {
         fontawesome-fonts
         pavucontrol
         brave-browser
+        fzf
+        zoxide
     )
 
     # Combine both arrays into a single installation list
