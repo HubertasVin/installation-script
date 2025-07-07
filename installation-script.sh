@@ -27,7 +27,7 @@ validate_input() {
 }
 
 initialize_variables() {
-    if [ -z "$SCRIPT_DIR" ]; then
+    if [ -z $SCRIPT_DIR ]; then
         SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
     fi
     CONFIGS_DIR="$HOME/dotfiles"
@@ -114,9 +114,9 @@ if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
     echo -n 'Enter git email: '
     ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa_github" -N "" -C $gitEmail
     if ps -e | grep -q 'gnome-shell'; then
-        cat "$HOME"/.ssh/id_rsa_github.pub | xclip -selection clipboard
+        cat $HOME/.ssh/id_rsa_github.pub | xclip -selection clipboard
     else
-        cat "$HOME"/.ssh/id_rsa_github.pub | wl-copy
+        cat $HOME/.ssh/id_rsa_github.pub | wl-copy
     fi
     echo 'SSH key copied to clipboard, go to Github:'
     echo '1. Go to user settings'
@@ -142,20 +142,20 @@ EOF
 fi
 
 #------------- Setup git -------------
-if [ ! -f "$HOME"/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" "$HOME"/.ssh/config; then
+if [ ! -f $HOME/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" $HOME/.ssh/config; then
     echo 'Setting up git'
     echo -n 'Enter git username: '
     echo -n 'Enter git email: '
     git config --global user.name "$gitName"
     git config --global user.email "$gitEmail"
     git config --global diff.algorithm patience
-    echo "Host *" >> "$HOME"/.ssh/config
-    echo "    StrictHostKeyChecking no" >> "$HOME"/.ssh/config
+    echo "Host *" >> $HOME/.ssh/config
+    echo "    StrictHostKeyChecking no" >> $HOME/.ssh/config
 fi
 
 #-------- Download dotfiles ----------
 if [ ! -d "$HOME/dotfiles/" ]; then
-    git clone git@github.com:HubertasVin/dotfiles.git "$HOME"/dotfiles
+    git clone git@github.com:HubertasVin/dotfiles.git $HOME/dotfiles
 fi
 
 
@@ -194,9 +194,9 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 #--------- Install homebrew ----------
 if [ ! -d "/home/linuxbrew" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    test -d "$HOME"/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
+    test -d $HOME/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
     test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> "$HOME"/.bashrc
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $HOME/.bashrc
     eval "\$($(brew --prefix)/bin/brew shellenv)"
 fi
 
@@ -221,8 +221,8 @@ sudo systemctl disable NetworkManager-wait-online.service
 #INFO: -------------------------------
 #             Gnome setup
 #------- Restore Gnome settings ------
-if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
-    dconf load -f / < "$CONFIGS_DIR"/saved_settings.dconf
+if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
+    dconf load -f / < $CONFIGS_DIR/saved_settings.dconf
     git clone https://github.com/vchlum/notification-timeout.git
     cd notification-timeout
     make build && make install
@@ -325,10 +325,10 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$iconThemeColor-dark"
 
     #----------- Mouse icon packs -----------
-    mkdir -p "$HOME"/.icons
+    mkdir -p $HOME/.icons
     git clone https://gitlab.com/Burning_Cube/quintom-cursor-theme.git
-    cp -pr quintom-cursor-theme/Quintom_Ink\ Cursors/Quintom_Ink "$HOME"/.icons
-    cp -pr quintom-cursor-theme/Quintom_Snow\ Cursors/Quintom_Snow "$HOME"/.icons
+    cp -pr quintom-cursor-theme/Quintom_Ink\ Cursors/Quintom_Ink $HOME/.icons
+    cp -pr quintom-cursor-theme/Quintom_Snow\ Cursors/Quintom_Snow $HOME/.icons
     rm -rf quintom-cursor-theme/
 fi
 
@@ -342,50 +342,50 @@ fi
 #INFO: --------------------------
 #          Ranger setup
 #--------------------------------
-if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
+if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
     ranger --copy-config=rifle
     ranger --copy-config=rc
-    cp "$HOME"/dotfiles/ranger/rc.conf "$HOME"/.config/ranger/ 2>/dev/null || :
-    cp "$HOME"/dotfiles/ranger/rifle.conf "$HOME"/.config/ranger/ 2>/dev/null || :
-    mkdir -p "$HOME"/.config/ranger/plugins
+    cp $HOME/dotfiles/ranger/rc.conf "$HOME"/.config/ranger/ 2>/dev/null || :
+    cp $HOME/dotfiles/ranger/rifle.conf "$HOME"/.config/ranger/ 2>/dev/null || :
+    mkdir -p $HOME/.config/ranger/plugins
     if [ ! -d "$HOME/.config/ranger/plugins/ranger-archives" ] ; then
-        git clone https://github.com/maximtrp/ranger-archives.git "$HOME"/.config/ranger/plugins/ranger-archives
+        git clone https://github.com/maximtrp/ranger-archives.git $HOME/.config/ranger/plugins/ranger-archives
     fi
     #-------- Install disk mounting plugin --------
-    cd "$HOME"/.config/ranger/plugins
+    cd $HOME/.config/ranger/plugins
     if [ ! -d "$HOME/.config/ranger/plugins/ranger_udisk_menu" ]; then
-        git clone https://github.com/SL-RU/ranger_udisk_menu "$HOME"/.config/ranger/plugins/ranger_udisk_menu
+        git clone https://github.com/SL-RU/ranger_udisk_menu $HOME/.config/ranger/plugins/ranger_udisk_menu
     fi
-    touch "$HOME"/.config/ranger/commands.py
-    if ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" "$HOME"/.config/ranger/commands.py; then
-        echo "from plugins.ranger_udisk_menu.mounter import mount" >> "$HOME"/.config/ranger/commands.py
+    touch $HOME/.config/ranger/commands.py
+    if ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
+        echo "from plugins.ranger_udisk_menu.mounter import mount" >> $HOME/.config/ranger/commands.py
     fi
 fi
 
 #INFO: --------------------------
 #          Setup NeoVim
 #--------------------------------
-if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" "$HOME"/.config/nvim/lua/plugins/init.lua; then
+if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" $HOME/.config/nvim/lua/plugins/init.lua; then
     git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
-    mkdir -p "$HOME"/.local/share/fonts
-    cp "$CONFIGS_DIR"/fonts/* "$HOME"/.local/share/fonts/
+    mkdir -p $HOME/.local/share/fonts
+    cp $CONFIGS_DIR/fonts/* $HOME/.local/share/fonts/
     fc-cache -f -v
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    rm -rf "$HOME"/.config/nvim/init.lua "$HOME"/.config/nvim/lua
-    cp -rf "$CONFIGS_DIR"/nvim/* "$HOME"/.config/nvim
+    rm -rf $HOME/.config/nvim/init.lua "$HOME"/.config/nvim/lua
+    cp -rf $CONFIGS_DIR/nvim/* $HOME/.config/nvim
     nvim +WakaTimeApiKey +MasonInstallAll
 fi
 
 #INFO: -------------------------------------------------
 #           Terminal, tmux and bash/zsh setup
 #-------------------------------------------------------
-if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.conf" "$HOME"/.tmux.conf; then
-    cp "$CONFIGS_DIR"/.inputrc "$HOME"
+if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.conf" $HOME/.tmux.conf; then
+    cp $CONFIGS_DIR/.inputrc $HOME
 
     #-------- Setup .bashrc --------
-    cat "$CONFIGS_DIR"/template.bashrc > "$HOME"/.bashrc
+    cat $CONFIGS_DIR/template.bashrc > $HOME/.bashrc
     #-------- Setup zsh --------
-    cat "$CONFIGS_DIR"/template.zshrc > "$HOME"/.zshrc
+    cat $CONFIGS_DIR/template.zshrc > $HOME/.zshrc
     if ! grep -q "HSA_OVERRIDE_GFX_VERSION" ~/.zshrc; then
         echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.zshrc
         echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
@@ -393,12 +393,14 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 
     chsh $(whoami) -s $(which zsh)
     brew install zsh-autosuggestions zsh-syntax-highlighting
+    brew install jandedobbeleer/oh-my-posh/oh-my-posh
 
-    mkdir -p "$HOME"/.config/alacritty/
-    cp "$CONFIGS_DIR"/alacritty.toml "$HOME"/.config/alacritty/
-    cat "$CONFIGS_DIR"/.tmux.conf > "$HOME"/.tmux.conf
-    cat "$CONFIGS_DIR"/.tmux.conf.local > "$HOME"/.tmux.conf.local
-    sed -i "s/$SEARCH_CODE/$colorCode/" "$HOME"/.tmux.conf.local
+    mkdir -p $HOME/.config/alacritty/
+    cp $CONFIGS_DIR/alacritty.toml $HOME/.config/alacritty/
+    cp $CONFIGS_DIR/.tmux.conf $HOME/
+    cp $CONFIGS_DIR/.tmux.conf.local $HOME/
+    sed -i "s/$SEARCH_CODE/$colorCode/" $HOME/.tmux.conf.local
+    cp $CONFIGS_DIR/ohmyposh.toml $HOME/.config/
 fi
 
 #INFO: --------------------------
@@ -411,7 +413,7 @@ source "$SCRIPT_DIR/borg-setup.sh"
 #-------- Install Gradle --------
 sdk install gradle
 #-------- Install Rustc ---------
-if [ ! -f "$HOME"/.cargo/bin/rustc ]; then
+if [ ! -f $HOME/.cargo/bin/rustc ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     source "$HOME/.cargo/env"
 fi
@@ -431,8 +433,8 @@ npm i -g npm-check-updates
 #INFO:------------------------------
 #    Desktop files and services
 #------- Move .desktop files -------
-cp "$CONFIGS_DIR"/desktop_files/polybar.desktop "$HOME"/.local/share/applications/
-cp "$CONFIGS_DIR"/desktop_files/custom_startup.desktop "$HOME"/.local/share/applications/
+cp $CONFIGS_DIR/desktop_files/polybar.desktop $HOME/.local/share/applications/
+cp $CONFIGS_DIR/desktop_files/custom_startup.desktop $HOME/.local/share/applications/
 
 if [ ! -f "$TRASH_DOWNLOADS_SERVICE_FILE" ]; then
     sudo tee "$TRASH_DOWNLOADS_SERVICE_FILE" > /dev/null <<EOF
@@ -454,7 +456,7 @@ fi
 
 #--- Linking scripts to ~/tools ----
 if [ ! -L "$HOME/tools" ]; then
-    ln -s "$SCRIPT_DIR"/scripts/ "$HOME"/tools
+    ln -s $SCRIPT_DIR/scripts/ $HOME/tools
 fi
 
 #-------- Restoring backups --------
@@ -473,8 +475,8 @@ if [ `git remote get-url origin` != "git@github.com:HubertasVin/installation-scr
     git remote remove origin
     git remote add origin git@github.com:HubertasVin/installation-script.git
     git push --set-upstream origin master
-elif [ ! -d "$HOME"/installation-script ]; then
-    git clone git@github.com:HubertasVin/installation-script.git "$HOME"/installation-script
+elif [ ! -d $HOME/installation-script ]; then
+    git clone git@github.com:HubertasVin/installation-script.git $HOME/installation-script
 fi
 
 echo ""
