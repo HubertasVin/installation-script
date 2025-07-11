@@ -220,13 +220,19 @@ sudo systemctl disable NetworkManager-wait-online.service
 
 #INFO: -------------------------------
 #             Gnome setup
-#------- Restore Gnome settings ------
+#------- Restore Gnome settings and missing extensions ------
 if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
     dconf load -f / < $CONFIGS_DIR/saved_settings.dconf
+    # Notification timeout
     git clone https://github.com/vchlum/notification-timeout.git
-    cd notification-timeout
+    cd notification-timeout/
     make build && make install
     cd .. && rm -rf notification-timeout
+    # Dash-to-dock
+    git clone https://github.com/micheleg/dash-to-dock.git
+    cd dash-to-dock/
+    make && make install
+    cd .. && rm -rf dash-to-dock/
 fi
 
 #-------- Install GDM themes ---------

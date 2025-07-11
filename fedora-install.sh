@@ -160,7 +160,6 @@ install_applications() {
         wine
         sassc
         lm_sensors
-        xclip
         wl-clipboard
         xkill
         xinput
@@ -168,14 +167,10 @@ install_applications() {
         playerctl
         xbindkeys
         xkb-switch
-        picom
         dunst
         polybar
         udiskie
-        rofi
         snapd
-        nitrogen
-        blueman
         valgrind
         neovim
         gnome-tweaks
@@ -187,7 +182,6 @@ install_applications() {
         btop
         htop
         qbittorrent
-        minecraft-launcher
         discord
         ranger
         trash-cli
@@ -207,7 +201,6 @@ install_applications() {
         ImageMagick
         fontawesome-fonts
         pavucontrol
-        brave-browser
         fzf
         zoxide
     )
