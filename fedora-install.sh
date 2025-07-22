@@ -113,6 +113,7 @@ install_applications() {
         xcb-util-renderutil-devel
         xorg-x11-proto-devel
         xcb-util-devel
+        util-linux-script
         cmake
         python3-devel
         python3-pip
