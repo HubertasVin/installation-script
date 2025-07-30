@@ -185,6 +185,9 @@ fi
 if [ ! -d "/var/snap/obsidian" ]; then
     sudo snap install obsidian --classic
 fi
+if [ ! `which findstr` ]; then
+    go install github.com/HubertasVin/findstr@latest
+fi
 
 #---------- Install SDKMAN -----------
 if [ ! -d "$HOME/.sdkman" ]; then
