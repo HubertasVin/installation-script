@@ -422,11 +422,6 @@ source "$SCRIPT_DIR/borg-setup.sh"
 #    Install development tools
 #-------- Install Gradle --------
 sdk install gradle
-#-------- Install Rustc ---------
-if [ ! -f $HOME/.cargo/bin/rustc ]; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    source "$HOME/.cargo/env"
-fi
 #-------- Install dotnet script for running .cs files --------
 if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
     dotnet tool install -g dotnet-script

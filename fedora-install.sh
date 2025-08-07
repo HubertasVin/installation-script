@@ -144,6 +144,8 @@ install_applications() {
         java-21-openjdk
         java-21-openjdk-devel
         gh
+        rust
+        cargo
         zsh
         php
         ansible
