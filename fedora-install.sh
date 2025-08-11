@@ -150,6 +150,7 @@ install_applications() {
         php
         ansible
         ansible-vault
+        python3-ansible-lint
         adoptiom-temurin-java-repository
     )
 
