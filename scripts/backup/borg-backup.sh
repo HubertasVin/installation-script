@@ -12,12 +12,6 @@ handle_error() {
 
 trap 'echo "Error at line $LINENO with command: $BASH_COMMAND" > /tmp/error && handle_error' ERR
 
-run_prefixed() {
-    # "-oL -eL" turns on line-buffering to add "  " before each line
-    script -q /dev/null -c "$*" \
-        | sed -u 's/^/   /'
-}
-
 print_console() {
     echo -e "$1"
     echo "$1" >> "$TEMP_OUTPUT"
@@ -132,14 +126,14 @@ perform_backup() {
         done
     done | sort -u > "$EXCLUDE_FILE"
 
-    run_prefixed borg init --encryption=repokey "$BORG_REPO" 2>/dev/null || true
+    borg init --encryption=repokey "$BORG_REPO" 2>/dev/null || true
 
-    run_prefixed borg create --verbose --stats --progress \
+    borg create --verbose --stats --progress \
         --exclude-from "$EXCLUDE_FILE" \
         "$BORG_REPO::backup-{now:%Y-%m-%d_%H:%M:%S}" \
         "${SOURCES[@]}"
 
-    run_prefixed borg prune --verbose --list \
+    borg prune --verbose --list \
         "$BORG_REPO" \
         --glob-archives 'backup-*' \
         --keep-last 3
