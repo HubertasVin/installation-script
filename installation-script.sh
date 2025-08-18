@@ -391,9 +391,9 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
     cp $CONFIGS_DIR/.inputrc $HOME
 
     #-------- Setup .bashrc --------
-    cat $CONFIGS_DIR/template.bashrc > $HOME/.bashrc
+    cat $CONFIGS_DIR/.bashrc > $HOME/.bashrc
     #-------- Setup zsh --------
-    cat $CONFIGS_DIR/template.zshrc > $HOME/.zshrc
+    cat $CONFIGS_DIR/.zshrc > $HOME/.zshrc
     if ! grep -q "HSA_OVERRIDE_GFX_VERSION" ~/.zshrc; then
         echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.zshrc
         echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
