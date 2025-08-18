@@ -376,13 +376,11 @@ fi
 #          Setup NeoVim
 #--------------------------------
 if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" $HOME/.config/nvim/lua/plugins/init.lua; then
-    git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+    git clone https://github.com/HubertasVin/nvim-config.git ~/.config/nvim && nvim
     mkdir -p $HOME/.local/share/fonts
     cp $CONFIGS_DIR/fonts/* $HOME/.local/share/fonts/
     fc-cache -f -v
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    rm -rf $HOME/.config/nvim/init.lua "$HOME"/.config/nvim/lua
-    cp -rf $CONFIGS_DIR/nvim/* $HOME/.config/nvim
     nvim +WakaTimeApiKey +MasonInstallAll
 fi
 
