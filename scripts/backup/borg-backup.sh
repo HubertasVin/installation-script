@@ -42,6 +42,27 @@ backup_success() {
     fi
 }
 
+commit_changes_remote() {
+    print_console " > ${OKBLUE}Backing up $1${NC}"
+    print_git_status
+
+    git add .
+    if ! git diff-index --quiet HEAD --; then
+        print_console "   ${YELLOW}Commiting updates to $1${NC}"
+        git commit -am "Backup $(date +'%Y-%m-%d %H:%M:%S')" | sed 's/^/   /'
+        git push origin $(git rev-parse --abbrev-ref HEAD) > /dev/null 2>&1 | sed 's/^/   /'
+        backup_success "$TEMP_OUTPUT"
+    else
+        if git status | grep -q 'Your branch is up to date'; then
+            print_console "   ${OKGREEN}The backup is up to date for ${PWD}${NC}"
+        else
+            print_console "   ${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
+            git status | sed 's/^/   /' >> "$TEMP_OUTPUT"
+        fi
+    fi
+    print_console ""
+}
+
 copy_config_files() {
     currentLoc=$(pwd)
     CYAN='\033[0;96m'
@@ -59,9 +80,6 @@ copy_config_files() {
     print_console "${OKBLUE}Backing up...${NC}"
     print_console "${OKBLUE}Copying config files...${NC}"
 
-    # Copy Nvim config
-    cp -rf ~/.config/nvim/lua/* ~/dotfiles/nvim/lua 2>/dev/null || :
-    cp -rf ~/.config/nvim/init.lua ~/dotfiles/nvim/init.lua 2>/dev/null || :
     # Copy inputrc
     cp ~/.inputrc ~/dotfiles/
     # Copy TMUX configuration
@@ -77,23 +95,10 @@ copy_config_files() {
     dconf dump / > ~/dotfiles/saved_settings.dconf
 
     cd ~/dotfiles
-    print_console " > ${OKBLUE}Backing up ~/dotfiles/${NC}"
-    print_git_status
+    commit_changes_remote "~/dotfiles"
 
-    git add .
-    if ! git diff-index --quiet HEAD --; then
-        print_console "   ${YELLOW}Commiting updates to remote${NC}"
-        git commit -am "Backup $(date +'%Y-%m-%d %H:%M:%S')" | sed 's/^/   /'
-        git push origin $(git rev-parse --abbrev-ref HEAD) > /dev/null 2>&1 | sed 's/^/   /'
-        backup_success "$TEMP_OUTPUT"
-    else
-        if git status | grep -q 'Your branch is up to date'; then
-            print_console "   ${OKGREEN}The backup is up to date for ${PWD}${NC}"
-        else
-            print_console "   ${FAIL}Something went wrong. there is nothing to commit, but the branch is not up to date for ${PWD}${NC}"
-            git status | sed 's/^/   /' >> "$TEMP_OUTPUT"
-        fi
-    fi
+    cd ~/.config/nvim
+    commit_changes_remote "~/.config/nvim"
 }
 
 perform_backup() {
@@ -137,8 +142,6 @@ perform_backup() {
         "$BORG_REPO" \
         --glob-archives 'backup-*' \
         --keep-last 3
-
-    print_console "  ${OKGREEN}Backup complete${NC}"
 
     print_console "${OKGREEN}Backup complete${NC}"
 
