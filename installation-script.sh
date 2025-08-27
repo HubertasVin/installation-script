@@ -381,7 +381,7 @@ if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! 
     cp $CONFIGS_DIR/fonts/* $HOME/.local/share/fonts/
     fc-cache -f -v
     sudo npm install -g typescript typescript-language-server vscode-langservers-extracted
-    nvim +WakaTimeApiKey +MasonInstallAll
+    nvim +WakaTimeApiKey +MasonToolsUpdate
 fi
 
 #INFO: -------------------------------------------------
