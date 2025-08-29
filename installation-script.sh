@@ -109,10 +109,10 @@ case "$ID" in
 esac
 
 #------------ Setup SSH ------------
-if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
+if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
     echo 'Setting up ssh'
     echo -n 'Enter git email: '
-    ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa_github" -N "" -C $gitEmail
+    ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $gitEmail
     if ps -e | grep -q 'gnome-shell'; then
         cat $HOME/.ssh/id_rsa_github.pub | xclip -selection clipboard
     else
@@ -125,11 +125,11 @@ if [ ! -f "$HOME/.ssh/id_rsa_github.pub" ]; then
     read -n 1 -p '(Press any key to continue)' answer
 fi
 
-mkdir -p "$HOME/.ssh"
-touch "$HOME/.ssh/config"
-chmod 600 "$HOME/.ssh/config"
-if ! grep -qE "^[[:space:]]+HostName[[:space:]]+$sshHost\$" "$HOME/.ssh/config"; then
-    cat >> "$HOME/.ssh/config" <<EOF
+mkdir -p $HOME/.ssh
+touch $HOME/.ssh/config
+chmod 600 $HOME/.ssh/config
+if ! grep -qE "^[[:space:]]+HostName[[:space:]]+$sshHost\$" $HOME/.ssh/config; then
+    cat >> $HOME/.ssh/config <<EOF
 
 Host vps
     HostName $sshHost
@@ -155,7 +155,7 @@ if [ ! -f $HOME/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" $HOME/
 fi
 
 #-------- Download dotfiles ----------
-if [ ! -d "$HOME/dotfiles/" ]; then
+if [ ! -d $HOME/dotfiles ]; then
     git clone git@github.com:HubertasVin/dotfiles.git $HOME/dotfiles
 fi
 
@@ -190,10 +190,10 @@ if [ ! `which findstr` ]; then
 fi
 
 #---------- Install SDKMAN -----------
-if [ ! -d "$HOME/.sdkman" ]; then
+if [ ! -d $HOME/.sdkman ]; then
     curl -s "https://get.sdkman.io" | bash
 fi
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+source $HOME/.sdkman/bin/sdkman-init.sh
 
 #--------- Install homebrew ----------
 if [ ! -d "/home/linuxbrew" ]; then
@@ -205,7 +205,7 @@ if [ ! -d "/home/linuxbrew" ]; then
 fi
 
 #-- Setup npm dir for global installs --
-if [ ! -d "$HOME/.npm-global" ]; then
+if [ ! -d $HOME/.npm-global ]; then
     npm config set prefix '${HOME}/.npm-global'
 fi
 
@@ -352,18 +352,18 @@ fi
 #INFO: --------------------------
 #          Ranger setup
 #--------------------------------
-if [ ! -f "$HOME/.config/ranger/rifle.conf" ] && [ ! -f "$HOME/.config/ranger/commands.py" ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
+if [ ! -f $HOME/.config/ranger/rifle.conf ] && [ ! -f $HOME/.config/ranger/commands.py ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
     ranger --copy-config=rifle
     ranger --copy-config=rc
     cp $HOME/dotfiles/ranger/rc.conf "$HOME"/.config/ranger/ 2>/dev/null || :
     cp $HOME/dotfiles/ranger/rifle.conf "$HOME"/.config/ranger/ 2>/dev/null || :
     mkdir -p $HOME/.config/ranger/plugins
-    if [ ! -d "$HOME/.config/ranger/plugins/ranger-archives" ] ; then
+    if [ ! -d $HOME/.config/ranger/plugins/ranger-archives ] ; then
         git clone https://github.com/maximtrp/ranger-archives.git $HOME/.config/ranger/plugins/ranger-archives
     fi
     #-------- Install disk mounting plugin --------
     cd $HOME/.config/ranger/plugins
-    if [ ! -d "$HOME/.config/ranger/plugins/ranger_udisk_menu" ]; then
+    if [ ! -d $HOME/.config/ranger/plugins/ranger_udisk_menu ]; then
         git clone https://github.com/SL-RU/ranger_udisk_menu $HOME/.config/ranger/plugins/ranger_udisk_menu
     fi
     touch $HOME/.config/ranger/commands.py
@@ -375,7 +375,7 @@ fi
 #INFO: --------------------------
 #          Setup NeoVim
 #--------------------------------
-if [ ! -f "$HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf" ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" $HOME/.config/nvim/lua/plugins/init.lua; then
+if [ ! -f $HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" $HOME/.config/nvim/lua/plugins/init.lua; then
     git clone https://github.com/HubertasVin/nvim-config.git ~/.config/nvim && nvim
     mkdir -p $HOME/.local/share/fonts
     cp $CONFIGS_DIR/fonts/* $HOME/.local/share/fonts/
@@ -439,26 +439,27 @@ npm i -g npm-check-updates
 cp $CONFIGS_DIR/desktop_files/polybar.desktop $HOME/.local/share/applications/
 cp $CONFIGS_DIR/desktop_files/custom_startup.desktop $HOME/.local/share/applications/
 
-if [ ! -f "$TRASH_DOWNLOADS_SERVICE_FILE" ]; then
-    sudo tee "$TRASH_DOWNLOADS_SERVICE_FILE" > /dev/null <<EOF
-[Unit]
-Description=Clean stale Downloads into .trash at boot
-After=local-fs.target
+#---- Installing systemd files -----
+if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -gt 0 ]; then
+    src="$SCRIPT_DIR/systemd"
+    dst="$HOME/.config/systemd/user"
+    mkdir -p $dst
 
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/env bash /home/hubertas/tools/trash_downloads.sh
+    units=()
+    for f in $src/*.service; do
+        cp -f $f $dst/
+        units+=("$(basename $f)")
+    done
 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    sudo systemctl daemon-reload
-    sudo systemctl enable trash-downloads.service
+    if [ ${#units[@]} -gt 0 ]; then
+        systemctl --user daemon-reload
+        systemctl --user enable --now $units[@]
+        systemctl --user start $units[@]
+    fi
 fi
 
 #--- Linking scripts to ~/tools ----
-if [ ! -L "$HOME/tools" ]; then
+if [ ! -L $HOME/tools ]; then
     ln -s $SCRIPT_DIR/scripts/ $HOME/tools
 fi
 
