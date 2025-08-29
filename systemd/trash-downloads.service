@@ -7,4 +7,4 @@ Type=oneshot
 ExecStart=/usr/bin/env bash %h/tools/trash_downloads.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
