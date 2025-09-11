@@ -431,6 +431,8 @@ python3 -m pip install --break-system-packages gitpython paramiko scp pandas pro
 pip install matplotlib
 #-- Install NPM update checker --
 npm i -g npm-check-updates
+#--- Install image optimizer ----
+sudo npm i -g @funboxteam/optimizt
 
 
 #INFO:------------------------------

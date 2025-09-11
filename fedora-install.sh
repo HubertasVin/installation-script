@@ -67,9 +67,9 @@ EOF
 
     if [ ! -f /etc/yum.repos.d/vscode.repo ]; then
         log "Adding Visual Studio Code repository..."
-	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-	echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-fi
+        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+        echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    fi
 
     log "Cleaning DNF cache..."
     sudo dnf clean all
@@ -152,6 +152,8 @@ install_applications() {
         ansible-vault
         python3-ansible-lint
         adoptiom-temurin-java-repository
+        android-tools
+        android-udev-rules
     )
 
     # Desktop & Applications Packages
