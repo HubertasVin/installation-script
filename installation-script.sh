@@ -32,7 +32,6 @@ initialize_variables() {
     fi
     CONFIGS_DIR="$HOME/dotfiles"
     SEARCH_CODE="%COLORCODE"
-    TRASH_DOWNLOADS_SERVICE_FILE=/etc/systemd/system/trash-downloads.service
     IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
     DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 
@@ -444,20 +443,35 @@ cp $CONFIGS_DIR/desktop_files/custom_startup.desktop $HOME/.local/share/applicat
 #---- Installing systemd files -----
 if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -gt 0 ]; then
     src="$SCRIPT_DIR/systemd"
-    dst="$HOME/.config/systemd/user"
-    mkdir -p $dst
+    dst_user="$HOME/.config/systemd/user"
+    dst_system="/etc/systemd/system"
+    mkdir -p $dst_user
 
-    units=()
-    for f in $src/*.service; do
-        cp -f $f $dst/
-        units+=("$(basename $f)")
+    user_units=()
+    for f in $src/user/*; do
+		cp -f $f $dst_user/
+		user_units+=("$(basename $f)")
+
+		sed -i "s|USER_NAME|$(whoami)|" "$dst_user/$(basename $f)"
+		sed -i "s|/home/USER|$HOME|" "$dst_user/$(basename $f)"
     done
 
-    if [ ${#units[@]} -gt 0 ]; then
-        systemctl --user daemon-reload
-        systemctl --user enable --now $units[@]
-        systemctl --user start $units[@]
-    fi
+    system_units=()
+    for f in $src/system/*; do
+		sudo cp -f $f $dst_system/
+		system_units+=($(basename $f | sed "s/@/@$(whoami)/"))
+
+		sudo sed -i "s|USER_NAME|$(whoami)|" "$dst_system/$(basename $f)"
+		sudo sed -i "s|/home/USER|$HOME|" "$dst_system/$(basename $f)"
+    done
+
+	# Enable system level .service files
+	sudo systemctl daemon-reload
+	sudo systemctl enable --now ${system_units[@]}
+
+	# Enable user level .service files
+	systemctl --user daemon-reload
+	systemctl --user enable --now ${user_units[@]}
 fi
 
 #--- Linking scripts to ~/tools ----
