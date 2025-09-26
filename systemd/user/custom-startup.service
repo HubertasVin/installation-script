@@ -1,0 +1,10 @@
+[Unit]
+Description=Run custom-startup script at startup
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/tools/custom-startup.sh
+
+[Install]
+WantedBy=graphical-session.target
