@@ -302,11 +302,11 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
 
     #-------- Theme installation --------
     #------------- Graphite -------------
-    git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
-    sudo Graphite-gtk-theme/install.sh -t $themeColor
-    rm -rf Graphite-gtk-theme/
-    gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
-    gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
+    # git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
+    # sudo Graphite-gtk-theme/install.sh -t $themeColor
+    # rm -rf Graphite-gtk-theme/
+    # gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
+    # gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
 
     #------------ Flat Remix ------------
     if gnome-shell --version | grep -q "GNOME Shell 47."; then
