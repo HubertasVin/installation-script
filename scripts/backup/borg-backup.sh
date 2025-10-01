@@ -96,9 +96,6 @@ copy_config_files() {
 
     cd ~/dotfiles
     commit_changes_remote "~/dotfiles"
-
-    cd ~/.config/nvim
-    commit_changes_remote "~/.config/nvim"
 }
 
 perform_backup() {
