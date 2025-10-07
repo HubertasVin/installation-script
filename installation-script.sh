@@ -34,6 +34,7 @@ initialize_variables() {
     SEARCH_CODE="%COLORCODE"
     IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
     DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
+	IFS=$'\n'
 
     while [ -z "$gitEmail" ]; do
         echo -n "Enter your git email: "
@@ -223,130 +224,9 @@ sudo systemctl disable NetworkManager-wait-online.service
 
 #INFO: -------------------------------
 #             Gnome setup
-#------- Restore Gnome settings and missing extensions ------
-if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
-    dconf load -f / < $CONFIGS_DIR/saved_settings.dconf
-    # Notification timeout
-    git clone https://github.com/vchlum/notification-timeout.git
-    cd notification-timeout/
-    make build && make install
-    cd .. && rm -rf notification-timeout
-    # Dash-to-dock
-    git clone https://github.com/micheleg/dash-to-dock.git
-    cd dash-to-dock/
-    make && make install
-    cd .. && rm -rf dash-to-dock/
-fi
+#INFO: -------------------------------
+source $SCRIPT_DIR/gnome-setup.sh
 
-#-------- Install GDM themes ---------
-if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
-    select themeColor in default purple pink red orange yellow green teal blue all
-    do
-        case $themeColor in
-            "default")
-                colorCode="#3684DD"
-                iconThemeColor="blue"
-                break
-                ;;
-            "purple")
-                colorCode="#AB47BC"
-                iconThemeColor="purple"
-                break
-                ;;
-            "pink")
-                colorCode="#EC407A"
-                iconThemeColor="pink"
-                break
-                ;;
-            "red")
-                colorCode="#E53935"
-                iconThemeColor="red"
-                break
-                ;;
-            "orange")
-                colorCode="#FB8C00"
-                iconThemeColor="orange"
-                break
-                ;;
-            "yellow")
-                colorCode="#FBC02D"
-                iconThemeColor="yellow"
-                break
-                ;;
-            "green")
-                colorCode="#4CAF50"
-                iconThemeColor="green"
-                break
-                ;;
-            "teal")
-                colorCode="#009688"
-                iconThemeColor="manjaro"
-                break
-                ;;
-            "blue")
-                colorCode="#3684DD"
-                iconThemeColor="blue"
-                break
-                ;;
-            "all")
-                colorCode="#3684DD"
-                iconThemeColor=""
-                break
-                ;;
-            *)
-                echo "Invalid selection. Please select a valid color."
-                ;;
-        esac
-    done
-    echo "Selected the $themeColor color"
-
-    #-------- Theme installation --------
-    #------------- Graphite -------------
-    # git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
-    # sudo Graphite-gtk-theme/install.sh -t $themeColor
-    # rm -rf Graphite-gtk-theme/
-    # gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
-    # gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
-
-    #------------ Flat Remix ------------
-    if gnome-shell --version | grep -q "GNOME Shell 47."; then
-        git clone https://github.com/daniruiz/flat-remix-gnome
-    elif gnome-shell --version | grep -q "GNOME Shell 46."; then
-        git clone --branch 20240813 https://github.com/daniruiz/flat-remix-gnome
-    elif gnome-shell --version | grep -q "GNOME Shell 45." || gnome-shell --version | grep -q "GNOME Shell 44."; then
-        git clone --branch 20231026 https://github.com/daniruiz/flat-remix-gnome
-    elif gnome-shell --version | grep -q "GNOME Shell 43."; then
-        git clone --branch 20221107 https://github.com/daniruiz/flat-remix-gnome
-    elif gnome-shell --version | grep -q "GNOME Shell 42."; then
-        git clone --branch 20220622 https://github.com/daniruiz/flat-remix-gnome
-    else
-        git clone https://github.com/daniruiz/flat-remix-gnome
-    fi
-    cd flat-remix-gnome
-    make && sudo make install
-    cd .. && rm -rf flat-remix-gnome
-    gsettings set org.gnome.shell.extensions.user-theme name "Flat-Remix-Dark-fullPanel"
-
-    #-------- Icon pack installation --------
-    git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
-    Tela-circle-icon-theme/install.sh $iconThemeColor
-    rm -rf Tela-circle-icon-theme/
-    gsettings set org.gnome.desktop.interface icon-theme "Tela-circle-$iconThemeColor-dark"
-
-    #----------- Mouse icon packs -----------
-    mkdir -p $HOME/.icons
-    git clone https://gitlab.com/Burning_Cube/quintom-cursor-theme.git
-    cp -pr quintom-cursor-theme/Quintom_Ink\ Cursors/Quintom_Ink $HOME/.icons
-    cp -pr quintom-cursor-theme/Quintom_Snow\ Cursors/Quintom_Snow $HOME/.icons
-    rm -rf quintom-cursor-theme/
-fi
-
-
-#----------------------------------
-#-------- Setup autorandr ---------
-#if [ ! -d "$HOME/.config/autorandr/laptop" ]; then
-#    bash setup-autorandr.sh
-#fi
 
 #INFO: --------------------------
 #          Ranger setup
@@ -413,7 +293,36 @@ fi
 #INFO: --------------------------
 #          Setup Borg
 #--------------------------------
-source "$SCRIPT_DIR/borg-setup.sh"
+source $SCRIPT_DIR/borg-setup.sh
+
+
+#INFO: --------------------------
+#      Disable wake-on USB
+#--------------------------------
+echo "Choose device you want to disable the wake-up pc functionality on."
+echo "If you would like to stop the loop just choose the option \"exit\"."
+while true; do
+	usb_devices="$(lsusb)"
+	device_ids=($(echo $usb_devices | cut -d' ' -f6-))
+	device_ids+=("exit")
+	if [[ -n $device_ids ]]; then
+		select device in $device_ids[@]; do
+			[[ -n $device ]] || { echo "Invalid option, try again"; continue; }
+			break
+		done
+		if [[ $device == "exit" ]]; then
+			break
+		fi
+
+		device_id="$(echo $device | cut -d' ' -f1)"
+		vendor_id="$(echo $device_id | cut -d: -f1)"
+		product_id="$(echo $device_id | cut -d: -f2)"
+		rule_line="ACTION==\"add|change\", SUBSYSTEM==\"usb\", DRIVERS==\"usb\", ATTRS{idVendor}==\"$vendor_id\", ATTRS{idProduct}==\"$product_id\", ATTR{power/wakeup}=\"disabled\""
+		sudo tee -a /etc/udev/rules.d/40-disable-wakeup-triggers.rules <<< $rule_line
+		echo "Chosen device is \"$device\""
+	fi
+done
+
 
 #INFO: --------------------------
 #    Install development tools
@@ -437,8 +346,7 @@ sudo npm i -g @funboxteam/optimizt
 #INFO:------------------------------
 #    Desktop files and services
 #------- Move .desktop files -------
-cp $CONFIGS_DIR/desktop_files/polybar.desktop $HOME/.local/share/applications/
-cp $CONFIGS_DIR/desktop_files/custom_startup.desktop $HOME/.local/share/applications/
+cp $CONFIGS_DIR/desktop_files/*.desktop $HOME/.local/share/applications/
 
 #---- Installing systemd files -----
 if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -gt 0 ]; then
@@ -449,29 +357,29 @@ if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -t
 
     user_units=()
     for f in $src/user/*; do
-		cp -f $f $dst_user/
-		user_units+=("$(basename $f)")
+        cp -f $f $dst_user/
+        user_units+=("$(basename $f)")
 
-		sed -i "s|USER_NAME|$(whoami)|" "$dst_user/$(basename $f)"
-		sed -i "s|/home/USER|$HOME|" "$dst_user/$(basename $f)"
+        sed -i "s|USER_NAME|$(whoami)|" "$dst_user/$(basename $f)"
+        sed -i "s|/home/USER|$HOME|" "$dst_user/$(basename $f)"
     done
 
     system_units=()
     for f in $src/system/*; do
-		sudo cp -f $f $dst_system/
-		system_units+=($(basename $f | sed "s/@/@$(whoami)/"))
+        sudo cp -f $f $dst_system/
+        system_units+=($(basename $f | sed "s/@/@$(whoami)/"))
 
-		sudo sed -i "s|USER_NAME|$(whoami)|" "$dst_system/$(basename $f)"
-		sudo sed -i "s|/home/USER|$HOME|" "$dst_system/$(basename $f)"
+        sudo sed -i "s|USER_NAME|$(whoami)|" "$dst_system/$(basename $f)"
+        sudo sed -i "s|/home/USER|$HOME|" "$dst_system/$(basename $f)"
     done
 
-	# Enable system level .service files
-	sudo systemctl daemon-reload
-	sudo systemctl enable --now ${system_units[@]}
+    # Enable system level .service files
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now ${system_units[@]}
 
-	# Enable user level .service files
-	systemctl --user daemon-reload
-	systemctl --user enable --now ${user_units[@]}
+    # Enable user level .service files
+    systemctl --user daemon-reload
+    systemctl --user enable --now ${user_units[@]}
 fi
 
 #--- Linking scripts to ~/tools ----
@@ -481,9 +389,8 @@ fi
 
 #-------- Restoring backups --------
 if [ -z "${BORG_RESTORE_DONE:-}" ]; then
-    echo "Restoring backups…"
-    source "$SCRIPT_DIR/scripts/backup/borg-restore.sh"
-    # mark as done
+    echo "Restoring backups..."
+    source $SCRIPT_DIR/scripts/backup/borg-restore.sh
     export BORG_RESTORE_DONE=1
 else
     echo "Backups already restored in this session; skipping."
