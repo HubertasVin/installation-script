@@ -1,0 +1,9 @@
+[Unit]
+Description=Run trash-downloads.service daily at 10:00
+
+[Timer]
+OnCalendar=*-*-* 18:00:00
+Unit=trash-downloads.service
+
+[Install]
+WantedBy=timers.target

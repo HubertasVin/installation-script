@@ -1,0 +1,10 @@
+[Unit]
+Description=Run random-wallpaper.service every 2 hours
+
+[Timer]
+OnUnitActiveSec=2h
+Persistent=true
+Unit=random-wallpaper.service
+
+[Install]
+WantedBy=timers.target
