@@ -3,13 +3,13 @@
 stats=$(git diff --shortstat 2>/dev/null)
 
 awk -v B="$(tput bold)" \
-    -v TF="$(tput setaf 142)" \
-    -v AF="$(tput setaf 70)"  \
-    -v DF="$(tput setaf 124)" \
-    -v UF="$(tput setaf 205)" \
-    -v R="$(tput sgr0)" \
-    -v U="$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')" \
-'BEGIN {
+	-v TF="$(tput setaf 142)" \
+	-v AF="$(tput setaf 70)"  \
+	-v DF="$(tput setaf 124)" \
+	-v UF="$(tput setaf 205)" \
+	-v R="$(tput sgr0)" \
+	-v U="$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')" \
+	'BEGIN {
     split("'"$stats"'", a)
     files    = (a[1] + 0) + (U + 0)
     tracked  = (a[1] + 0)

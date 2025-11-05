@@ -1,3 +1,0 @@
-/home/hubertas/Documents/backup-folder/
-/home/hubertas/Pictures/
-/home/hubertas/dotfiles/

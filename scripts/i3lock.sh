@@ -6,7 +6,7 @@ tmpbg='/tmp/screen.png'
 small_icon='/tmp/small-icon.png'
 
 if [ -f "$tmpbg" ]; then
-    rm -f "$tmpbg"
+	rm -f "$tmpbg"
 fi
 
 # take a screenshot

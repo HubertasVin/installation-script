@@ -13,25 +13,25 @@ sudo apt autoremove -y
 
 #TODO ---- Add repos ----
 if ! grep -q multiverse /etc/apt/sources.list.d/ubuntu.sources; then
-    sudo add-apt-repository multiverse
-    sudo add-apt-repository ppa:daniruiz/flat-remix
-    sudo apt-add-repository ppa:fish-shell/release-3
-    sudo dpkg --add-architecture i386
+	sudo add-apt-repository multiverse
+	sudo add-apt-repository ppa:daniruiz/flat-remix
+	sudo apt-add-repository ppa:fish-shell/release-3
+	sudo dpkg --add-architecture i386
 fi
 #TODO ---- Install MS Teams and VS Code ----
 if [ ! -f /etc/apt/keyrings/packages.microsoft.gpg ]; then
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    rm -f packages.microsoft.gpg
+	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+	rm -f packages.microsoft.gpg
 fi
 
 # Add MS Teams repository
 if [ ! -f /etc/apt/sources.list.d/teams.list ]; then
-    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/ms-teams stable main" | sudo tee /etc/apt/sources.list.d/teams.list
+	echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/ms-teams stable main" | sudo tee /etc/apt/sources.list.d/teams.list
 fi
 # Add VS Code repository
 if [ ! -f /etc/apt/sources.list.d/vscode.list ]; then
-    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+	echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
 fi
 
 sudo apt install -y apt-transport-https
@@ -51,16 +51,16 @@ sudo apt install -y fish htop s-tui nvtop tmux tldr ffmpeg flameshot vlc qbittor
 sudo apt install -y alacritty dconf-editor gnome-tweaks gnome-shell-extensions gnome-shell-pomodoro steam-installer wine
 
 if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/blur-my-shell@aunetx/ ]; then
-    git clone https://github.com/aunetx/blur-my-shell
-    cd blur-my-shell
-    make install
-    cd .. && rm -rf blur-my-shell
+	git clone https://github.com/aunetx/blur-my-shell
+	cd blur-my-shell
+	make install
+	cd .. && rm -rf blur-my-shell
 fi
 if [ ! -d "$HOME"/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com ]; then
-    echo "Install and enable the user theme extension: https://extensions.gnome.org/extension/19/user-themes/"
-    echo -n "(Press any key to continue)"
-    read -n 1 -s
-    echo
+	echo "Install and enable the user theme extension: https://extensions.gnome.org/extension/19/user-themes/"
+	echo -n "(Press any key to continue)"
+	read -n 1 -s
+	echo
 fi
 
 # Snap support

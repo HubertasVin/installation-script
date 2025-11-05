@@ -9,5 +9,5 @@ next="$(find "$BG_DIR" -type f \( -iname '*.avif' -o -iname '*.jpg' -o -iname '*
 uri="file://$next"
 gsettings set org.gnome.desktop.background picture-uri "$uri"
 if gsettings list-keys org.gnome.desktop.background 2>/dev/null | grep -qx 'picture-uri-dark'; then
-    gsettings set org.gnome.desktop.background picture-uri-dark "$uri"
+	gsettings set org.gnome.desktop.background picture-uri-dark "$uri"
 fi
