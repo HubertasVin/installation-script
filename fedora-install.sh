@@ -81,6 +81,35 @@ setup_flatpak() {
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
+setup_snap() {
+	if [ `which snap` ]; then
+		if [ ! -L "/snap" ]; then
+			sudo systemctl enable --now snapd.service
+			sudo ln -s /var/lib/snapd/snap /snap
+			echo 'Reboot your computer to enable snapd to function fully'
+			read -p 'Confirm to reboot your computer (y/N)' answer
+
+			case "$answer" in
+				[yY]|[yY][eE][sS])
+					reboot
+					;;
+				[nN]|[nN][oO]|*)
+					;;
+			esac
+		fi
+	fi
+}
+
+setup_homebrew() {
+	if [ ! -d "/home/linuxbrew" ]; then
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		test -d $HOME/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
+		test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+		echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $HOME/.bashrc
+		eval "\$($(brew --prefix)/bin/brew shellenv)"
+	fi
+}
+
 install_applications() {
 	log "Installing necessary applications..."
 
@@ -225,6 +254,10 @@ install_applications() {
 	log "Removing LibreOffice and installing OnlyOffice..."
 	sudo dnf remove -y 'libreoffice*'
 	flatpak install -y flathub org.onlyoffice.desktopeditors
+
+	if [ ! -d "/opt/obsidian" ]; then
+		bash obsidian-appimage-install.sh
+	fi
 }
 
 configure_docker() {
@@ -243,6 +276,7 @@ main() {
 	update_system
 	add_repos
 	setup_flatpak
+	setup_snap
 	install_applications
 	configure_docker
 	enable_virtualization

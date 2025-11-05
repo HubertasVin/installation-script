@@ -28,13 +28,13 @@ validate_input() {
 
 initialize_variables() {
 	if [ -z $SCRIPT_DIR ]; then
-		SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+		export SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 	fi
-	CONFIGS_DIR="$HOME/dotfiles"
-	SEARCH_CODE="%COLORCODE"
-	IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
-	DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
-	IFS=$'\n'
+	export CONFIGS_DIR="$HOME/dotfiles"
+	export COLOR_SEARCH_CODE="%COLORCODE"
+	exoprt IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+	export DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
+	export IFS=$'\n'
 
 	while [ -z "$gitEmail" ]; do
 		echo -n "Enter your git email: "
@@ -161,59 +161,23 @@ fi
 
 
 #INFO: -------------------------------
-#         Package manager setup
-#------------ Snapd setup ------------
-if [ `which snap` ]; then
-	if [ ! -L "/snap" ]; then
-		sudo systemctl enable --now snapd.service
-		sudo ln -s /var/lib/snapd/snap /snap
-		echo 'Reboot your computer to enable snapd to function fully'
-		read -p 'Confirm to reboot your computer (y/N)' answer
-
-		case "$answer" in
-			[yY]|[yY][eE][sS])
-				reboot
-				;;
-			[nN]|[nN][oO]|*)
-				;;
-		esac
-	fi
-fi
+#      Install missing packages
+#-------------------------------------
 if [ ! `which nvim` ]; then
 	sudo snap install nvim --classic
-fi
-if [ ! -d "/var/snap/obsidian" ]; then
-	sudo snap install obsidian --classic
 fi
 if [ ! `which findstr` ]; then
 	go install github.com/HubertasVin/findstr@latest
 fi
-
-#---------- Install SDKMAN -----------
+#------------ Zen browser ------------
+if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
+	bash <(curl -s https://updates.zen-browser.app/install.sh)
+fi
+#-------------- SDKMAN ---------------
 if [ ! -d $HOME/.sdkman ]; then
 	curl -s "https://get.sdkman.io" | bash
 fi
 source $HOME/.sdkman/bin/sdkman-init.sh
-
-#--------- Install homebrew ----------
-if [ ! -d "/home/linuxbrew" ]; then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	test -d $HOME/.linuxbrew && eval "$('$HOME'/.linuxbrew/bin/brew shellenv)"
-	test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-	echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $HOME/.bashrc
-	eval "\$($(brew --prefix)/bin/brew shellenv)"
-fi
-
-#-- Setup npm dir for global installs --
-if [ ! -d $HOME/.npm-global ]; then
-	npm config set prefix '${HOME}/.npm-global'
-fi
-
-
-#-------- Install Zen browser --------
-if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
-	bash <(curl -s https://updates.zen-browser.app/install.sh)
-fi
 
 
 #INFO: -------------------------------
@@ -228,9 +192,9 @@ sudo systemctl disable NetworkManager-wait-online.service
 source $SCRIPT_DIR/gnome-setup.sh
 
 
-#INFO: --------------------------
-#          Ranger setup
-#--------------------------------
+#INFO: -------------------------------
+#            Ranger setup
+#-------------------------------------
 if [ ! -f $HOME/.config/ranger/rifle.conf ] && [ ! -f $HOME/.config/ranger/commands.py ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
 	ranger --copy-config=rifle
 	ranger --copy-config=rc
@@ -286,7 +250,7 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 	cp $CONFIGS_DIR/alacritty.toml $HOME/.config/alacritty/
 	cp $CONFIGS_DIR/.tmux.conf $HOME/
 	cp $CONFIGS_DIR/.tmux.conf.local $HOME/
-	sed -i "s/$SEARCH_CODE/$colorCode/" $HOME/.tmux.conf.local
+	sed -i "s/$COLOR_SEARCH_CODE/$colorCode/" $HOME/.tmux.conf.local
 	cp $CONFIGS_DIR/ohmyposh.toml $HOME/.config/
 fi
 
@@ -341,6 +305,10 @@ pip install matplotlib
 npm i -g npm-check-updates
 #--- Install image optimizer ----
 sudo npm i -g @funboxteam/optimizt
+#-- Setup npm dir for global installs --
+if [ ! -d $HOME/.npm-global ]; then
+	npm config set prefix '${HOME}/.npm-global'
+fi
 
 
 #INFO:------------------------------
