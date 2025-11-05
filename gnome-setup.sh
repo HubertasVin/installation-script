@@ -78,13 +78,6 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     echo "Selected the $themeColor color"
 
     #-------- Theme installation --------
-    #------------- Graphite -------------
-    # git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
-    # sudo Graphite-gtk-theme/install.sh -t $themeColor
-    # rm -rf Graphite-gtk-theme/
-    # gsettings set org.gnome.desktop.interface gtk-theme "Graphite-$themeColor-Dark"
-    # gsettings set org.gnome.desktop.wm.preferences theme "Graphite-$themeColor-Dark"
-
     #------------ Flat Remix ------------
     if gnome-shell --version | grep -q "GNOME Shell 47."; then
         git clone https://github.com/daniruiz/flat-remix-gnome
@@ -116,4 +109,10 @@ if [ ! -d /usr/share/themes/Flat-Remix-Dark-fullPanel ]; then
     cp -pr quintom-cursor-theme/Quintom_Ink\ Cursors/Quintom_Ink $HOME/.icons
     cp -pr quintom-cursor-theme/Quintom_Snow\ Cursors/Quintom_Snow $HOME/.icons
     rm -rf quintom-cursor-theme/
+fi
+
+#----------- Fixing text fringing -----------
+#------- on high resolution displays --------
+if [ "$(xrandr --current | awk '/\*/{split($1,a,"x"); print a[2]; exit}')" -ge 1440 ]; then
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1.3
 fi
