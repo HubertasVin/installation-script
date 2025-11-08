@@ -38,7 +38,7 @@ initialize_variables() {
 
 	while [ -z "$gitEmail" ]; do
 		echo -n "Enter your git email: "
-		read gitEmail && export gitEmail
+		read gitEmail
 		if ! validate_input "$gitEmail"; then
 			echo "Error: git email cannot be empty." >&2
 			gitEmail=
@@ -47,7 +47,7 @@ initialize_variables() {
 
 	while [ -z "$gitName" ]; do
 		echo -n "Enter your git username: "
-		read gitName && export gitName
+		read gitName
 		if ! validate_input "$gitName"; then
 			echo "Error: git username cannot be empty." >&2
 			gitName=
@@ -110,7 +110,7 @@ esac
 
 #------------ Setup SSH ------------
 if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
-	echo 'Setting up ssh'
+	echo 'Setting up ssh for Github'
 	echo -n 'Enter git email: '
 	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $gitEmail
 	if ps -e | grep -q 'gnome-shell'; then
@@ -124,16 +124,23 @@ if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
 	echo '3. Paste in the copied text in to the text box'
 	read -n 1 -p '(Press any key to continue)' answer
 fi
+if [ ! -f $HOME/.ssh/id_ed25519_vps.pub ]; then
+	echo 'Setting up ssh for vps'
+	SSH_KEY="$HOME/.ssh/id_ed25519_vps"
+	ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "VPS key"
+	ssh-copy-id -i "${SSH_KEY}.pub" ${borgUser}@${sshHost}
+	echo 'SSH key copied to remote vps'
+fi
 
 mkdir -p $HOME/.ssh
 touch $HOME/.ssh/config
 chmod 600 $HOME/.ssh/config
 if ! grep -qE "^[[:space:]]+HostName[[:space:]]+$sshHost\$" $HOME/.ssh/config; then
 	cat >> $HOME/.ssh/config <<EOF
-
 Host vps
-    HostName $sshHost
-    User     $sshUser
+    HostName     $sshHost
+    User         $sshUser
+	IdentityFile ~/.ssh/id_ed25519_vps
 
 Host borg
     HostName $sshHost
@@ -270,36 +277,36 @@ source $SCRIPT_DIR/borg-setup.sh
 echo "Choose device you want to disable the wake-up pc functionality on."
 echo "If you would like to stop the loop just choose the option \"exit\"."
 while true; do
-    device_ids=()
-    
-    while IFS= read -r line; do
-        device_info=$(echo "$line" | grep -oP 'ID \K.*')
-        if [[ -n $device_info ]]; then
-            device_ids+=("$device_info")
-        fi
-    done < <(lsusb)
-    
-    device_ids+=("exit")
+	device_ids=()
 
-    if [[ ${#device_ids[@]} -gt 1 ]]; then
-        select device in "${device_ids[@]}"; do
-            [[ -n $device ]] || { echo "Invalid option, try again"; continue; }
-            break
-        done
+	while IFS= read -r line; do
+		device_info=$(echo "$line" | grep -oP 'ID \K.*')
+		if [[ -n $device_info ]]; then
+			device_ids+=("$device_info")
+		fi
+	done < <(lsusb)
 
-        if [[ $device == "exit" ]]; then
-            break
-        fi
+	device_ids+=("exit")
 
-        device_id="$(echo "$device" | awk '{print $1}')"
-        vendor_id="$(echo "$device_id" | cut -d: -f1)"
-        product_id="$(echo "$device_id" | cut -d: -f2)"
-        
-        rule_line="ACTION==\"add|change\", SUBSYSTEM==\"usb\", DRIVERS==\"usb\", ATTRS{idVendor}==\"$vendor_id\", ATTRS{idProduct}==\"$product_id\", ATTR{power/wakeup}=\"disabled\""
-        
-        sudo tee -a /etc/udev/rules.d/40-disable-wakeup-triggers.rules <<< "$rule_line"
-        echo "Chosen device is \"$device\""
-    fi
+	if [[ ${#device_ids[@]} -gt 1 ]]; then
+		select device in "${device_ids[@]}"; do
+			[[ -n $device ]] || { echo "Invalid option, try again"; continue; }
+			break
+		done
+
+		if [[ $device == "exit" ]]; then
+			break
+		fi
+
+		device_id="$(echo "$device" | awk '{print $1}')"
+		vendor_id="$(echo "$device_id" | cut -d: -f1)"
+		product_id="$(echo "$device_id" | cut -d: -f2)"
+
+		rule_line="ACTION==\"add|change\", SUBSYSTEM==\"usb\", DRIVERS==\"usb\", ATTRS{idVendor}==\"$vendor_id\", ATTRS{idProduct}==\"$product_id\", ATTR{power/wakeup}=\"disabled\""
+
+		sudo tee -a /etc/udev/rules.d/40-disable-wakeup-triggers.rules <<< "$rule_line"
+		echo "Chosen device is \"$device\""
+	fi
 done
 
 

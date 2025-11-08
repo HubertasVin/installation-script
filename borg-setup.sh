@@ -30,8 +30,8 @@ SSH_KEY="$HOME/.ssh/id_ed25519_borg"
 if [[ ! -f "$SSH_KEY" ]]; then
 	echo "Generating SSH key for borguser at $SSH_KEY…"
 	ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "borg backup key"
-	echo "Copying public key to borguser@198.7.118.97…"
-	ssh-copy-id -i "${SSH_KEY}.pub" borguser@198.7.118.97
+	echo "Copying public key to ${borgUser}@${sshHost}"
+	ssh-copy-id -i "${SSH_KEY}.pub" ${borgUser}@${sshHost}
 fi
 
 # Export BORG_RSH so borg will use your key
