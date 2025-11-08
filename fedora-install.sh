@@ -34,9 +34,6 @@ add_repos() {
 	if [ ! -f /etc/yum.repos.d/shells:zsh-users:zsh-autosuggestions.repo ]; then
 		sudo dnf config-manager addrepo --from-repofile="https://download.opensuse.org/repositories/shells:zsh-users:zsh-autosuggestions/Fedora_Rawhide/shells:zsh-users:zsh-autosuggestions.repo"
 	fi
-	if [ ! -f /etc/yum.repos.d/brave-browser.repo ]; then
-		sudo dnf config-manager addrepo --from-repofile="https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo"
-	fi
 
 	# Add AMD/ATI specific repositories if applicable
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
@@ -247,9 +244,6 @@ install_applications() {
 	sudo dnf install -y --skip-unavailable --allowerasing "${all_packages[@]}"
 	sudo dnf install -y --skip-unavailable --allowerasing temurin-11-jdk temurin-17-jdk
 	sudo dnf group install -y d-development c-development development-tools
-
-	log "Installing Flatpak applications..."
-	flatpak install -y flathub net.nokyan.Resources
 
 	log "Removing LibreOffice and installing OnlyOffice..."
 	sudo dnf remove -y 'libreoffice*'

@@ -32,7 +32,7 @@ initialize_variables() {
 	fi
 	export CONFIGS_DIR="$HOME/dotfiles"
 	export COLOR_SEARCH_CODE="%COLORCODE"
-	exoprt IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+	export IP_REGEX='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
 	export DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 	export IFS=$'\n'
 
@@ -99,7 +99,7 @@ case "$ID" in
 	fedora)
 		bash fedora-install.sh
 		;;
-	arch|manjaro)
+	arch|manjaro|endeavouros)
 		bash arch-install.sh
 		;;
 	*)
@@ -242,7 +242,7 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 		echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
 	fi
 
-	chsh $(whoami) -s $(which zsh)
+	chsh -s $(which zsh)
 	brew install zsh-autosuggestions zsh-syntax-highlighting
 	brew install jandedobbeleer/oh-my-posh/oh-my-posh
 
@@ -299,8 +299,8 @@ fi
 #--- Install language servers ---
 go install golang.org/x/tools/gopls@latest
 #------- Install libraries ------
-python3 -m pip install --break-system-packages gitpython paramiko scp pandas prompt_toolkit==1.0.18
-pip install matplotlib
+python3 -m pip install --user gitpython paramiko scp pandas prompt_toolkit==1.0.18
+pipx install matplotlib
 #-- Install NPM update checker --
 npm i -g npm-check-updates
 #--- Install image optimizer ----
