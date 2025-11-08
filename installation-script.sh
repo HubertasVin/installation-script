@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #-------- Script error handling --------
 touch /tmp/error
@@ -38,7 +38,7 @@ initialize_variables() {
 
 	while [ -z "$gitEmail" ]; do
 		echo -n "Enter your git email: "
-		read gitEmail
+		read gitEmail && export gitEmail
 		if ! validate_input "$gitEmail"; then
 			echo "Error: git email cannot be empty." >&2
 			gitEmail=
@@ -47,7 +47,7 @@ initialize_variables() {
 
 	while [ -z "$gitName" ]; do
 		echo -n "Enter your git username: "
-		read gitName
+		read gitName && export gitName
 		if ! validate_input "$gitName"; then
 			echo "Error: git username cannot be empty." >&2
 			gitName=
@@ -56,7 +56,7 @@ initialize_variables() {
 
 	while [ -z "$sshHost" ]; do
 		echo -n "Enter VPS SSH host (domain or IPv4): "
-		read sshHost
+		read sshHost && export sshHost
 		case "$(validate_input "$sshHost" "($IP_REGEX|$DOMAIN_REGEX)"; echo $?)" in
 			1) echo "Error: host cannot be empty." >&2; sshHost= ;;
 			2) echo "Error: '$sshHost' is not a valid domain or IPv4." >&2; sshHost= ;;
@@ -65,7 +65,7 @@ initialize_variables() {
 
 	while [ -z "$sshUser" ]; do
 		echo -n "Enter VPS SSH user: "
-		read sshUser
+		read sshUser && export sshUser
 		if ! validate_input "$sshUser"; then
 			echo "Error: SSH user cannot be empty." >&2
 			sshUser=
@@ -74,7 +74,7 @@ initialize_variables() {
 
 	while [ -z "$borgUser" ]; do
 		echo -n "Enter VPS Borg user: "
-		read borgUser
+		read borgUser && export borgUser
 		if ! validate_input "$borgUser"; then
 			echo "Error: Borg user cannot be empty." >&2
 			borgUser=
@@ -138,6 +138,10 @@ Host vps
 Host borg
     HostName $sshHost
     User     $borgUser
+
+Host github.com
+    User $gitName
+    IdentityFile ~/.ssh/id_rsa_github
 EOF
 fi
 
@@ -219,7 +223,7 @@ fi
 #          Setup NeoVim
 #--------------------------------
 if [ ! -f $HOME/.local/share/fonts/JetBrainsMonoNLNerdFont-Regular.ttf ] || ! grep -q "\"nvim-treesitter/nvim-treesitter\"" $HOME/.config/nvim/lua/plugins/init.lua; then
-	git clone https://github.com/HubertasVin/nvim-config.git ~/.config/nvim && nvim
+	git clone git@github.com:HubertasVin/nvim-config.git ~/.config/nvim && nvim
 	mkdir -p $HOME/.local/share/fonts
 	cp $CONFIGS_DIR/fonts/* $HOME/.local/share/fonts/
 	fc-cache -f -v
@@ -242,7 +246,7 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 		echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
 	fi
 
-	chsh -s $(which zsh)
+	sudo chsh -s $(which zsh)
 	brew install zsh-autosuggestions zsh-syntax-highlighting
 	brew install jandedobbeleer/oh-my-posh/oh-my-posh
 
@@ -266,25 +270,36 @@ source $SCRIPT_DIR/borg-setup.sh
 echo "Choose device you want to disable the wake-up pc functionality on."
 echo "If you would like to stop the loop just choose the option \"exit\"."
 while true; do
-	usb_devices="$(lsusb)"
-	device_ids=($(echo $usb_devices | cut -d' ' -f6-))
-	device_ids+=("exit")
-	if [[ -n $device_ids ]]; then
-		select device in $device_ids[@]; do
-			[[ -n $device ]] || { echo "Invalid option, try again"; continue; }
-			break
-		done
-		if [[ $device == "exit" ]]; then
-			break
-		fi
+    device_ids=()
+    
+    while IFS= read -r line; do
+        device_info=$(echo "$line" | grep -oP 'ID \K.*')
+        if [[ -n $device_info ]]; then
+            device_ids+=("$device_info")
+        fi
+    done < <(lsusb)
+    
+    device_ids+=("exit")
 
-		device_id="$(echo $device | cut -d' ' -f1)"
-		vendor_id="$(echo $device_id | cut -d: -f1)"
-		product_id="$(echo $device_id | cut -d: -f2)"
-		rule_line="ACTION==\"add|change\", SUBSYSTEM==\"usb\", DRIVERS==\"usb\", ATTRS{idVendor}==\"$vendor_id\", ATTRS{idProduct}==\"$product_id\", ATTR{power/wakeup}=\"disabled\""
-		sudo tee -a /etc/udev/rules.d/40-disable-wakeup-triggers.rules <<< $rule_line
-		echo "Chosen device is \"$device\""
-	fi
+    if [[ ${#device_ids[@]} -gt 1 ]]; then
+        select device in "${device_ids[@]}"; do
+            [[ -n $device ]] || { echo "Invalid option, try again"; continue; }
+            break
+        done
+
+        if [[ $device == "exit" ]]; then
+            break
+        fi
+
+        device_id="$(echo "$device" | awk '{print $1}')"
+        vendor_id="$(echo "$device_id" | cut -d: -f1)"
+        product_id="$(echo "$device_id" | cut -d: -f2)"
+        
+        rule_line="ACTION==\"add|change\", SUBSYSTEM==\"usb\", DRIVERS==\"usb\", ATTRS{idVendor}==\"$vendor_id\", ATTRS{idProduct}==\"$product_id\", ATTR{power/wakeup}=\"disabled\""
+        
+        sudo tee -a /etc/udev/rules.d/40-disable-wakeup-triggers.rules <<< "$rule_line"
+        echo "Chosen device is \"$device\""
+    fi
 done
 
 
@@ -299,12 +314,10 @@ fi
 #--- Install language servers ---
 go install golang.org/x/tools/gopls@latest
 #------- Install libraries ------
-python3 -m pip install --user gitpython paramiko scp pandas prompt_toolkit==1.0.18
-pipx install matplotlib
+pipx install --include-deps scp matplotlib
 #-- Install NPM update checker --
-npm i -g npm-check-updates
-#--- Install image optimizer ----
-sudo npm i -g @funboxteam/optimizt
+#----- and image optimizer ------
+sudo npm i -g @funboxteam/optimizt npm-check-updates
 #-- Setup npm dir for global installs --
 if [ ! -d $HOME/.npm-global ]; then
 	npm config set prefix '${HOME}/.npm-global'
@@ -313,10 +326,7 @@ fi
 
 #INFO:------------------------------
 #    Desktop files and services
-#------- Move .desktop files -------
-cp $CONFIGS_DIR/desktop_files/*.desktop $HOME/.local/share/applications/
-
-#---- Installing systemd files -----
+#--------- Systemd files -----------
 if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -gt 0 ]; then
 	src="$SCRIPT_DIR/systemd"
 	dst_user="$HOME/.config/systemd/user"

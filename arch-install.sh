@@ -95,6 +95,7 @@ install_applications() {
 		ncurses
 		maven
 		python-pipx
+		python-pip
 		dotnet-sdk
 		jdk17-openjdk
 		jdk21-openjdk
@@ -108,19 +109,28 @@ install_applications() {
 		jdk-openjdk
 		github-cli
 		rust
-		cargo
+		nodejs
+		npm
 		zsh
+		zip
 		php
 		ansible
 		android-tools
 		android-udev
 	)
 
+	python_libraries=(
+		python-gitpython
+		python-paramiko
+		python-pandas
+		python-prompt_toolkit
+	)
+
 	# Desktop & Applications Packages (Official Repos)
 	desktop_apps=(
+		chromium
 		borgbackup
 		ffmpeg
-		gst-plugin-openh264
 		wine
 		wine-mono
 		wine-gecko
@@ -133,7 +143,6 @@ install_applications() {
 		ntfs-3g
 		playerctl
 		xbindkeys
-		xkb-switch
 		dunst
 		polybar
 		udiskie
@@ -167,10 +176,11 @@ install_applications() {
 		zoxide
 		zsh-autosuggestions
 		zsh-syntax-highlighting
+		tmux
 	)
 
 	# Combine arrays
-	all_packages=("${system_dev[@]}" "${desktop_apps[@]}")
+	all_packages=("${system_dev[@]}" "${desktop_apps[@]}" "${python_libraries[@]}")
 
 	log "Installing official repository packages..."
 	sudo pacman -S --needed --noconfirm "${all_packages[@]}"
@@ -179,7 +189,6 @@ install_applications() {
 	log "Installing AUR packages..."
 	aur_packages=(
 		visual-studio-code-bin
-		brave-bin
 		jdk11-openjdk
 		jdk17-openjdk
 		gnome-pomodoro
@@ -214,6 +223,7 @@ main() {
 	update_system
 	setup_yay
 	enable_multilib
+	setup_homebrew
 	install_applications
 	configure_docker
 	enable_virtualization
