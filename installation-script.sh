@@ -334,7 +334,7 @@ fi
 #INFO:------------------------------
 #    Desktop files and services
 #--------- Systemd files -----------
-if [ ! -d $HOME/.config/systemd/user ] && [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -gt 0 ]; then
+if [ ! -d $HOME/.config/systemd/user ] || [ $(find $HOME/.config/systemd/user -type f -iname "*.service" | wc -l) -eq 0 ]; then
 	src="$SCRIPT_DIR/systemd"
 	dst_user="$HOME/.config/systemd/user"
 	dst_system="/etc/systemd/system"
