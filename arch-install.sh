@@ -117,6 +117,7 @@ install_applications() {
 		ansible
 		android-tools
 		android-udev
+		kconfig
 	)
 
 	python_libraries=(
@@ -177,6 +178,16 @@ install_applications() {
 		zsh-autosuggestions
 		zsh-syntax-highlighting
 		tmux
+
+		nautilus
+		gnome-text-editor
+		gnome-calculator
+		evince eog file-roller
+		gnome-disk-utility
+		gnome-system-monitor
+		totem rhythmbox
+		gnome-software
+		simple-scan
 	)
 
 	# Combine arrays
@@ -184,6 +195,8 @@ install_applications() {
 
 	log "Installing official repository packages..."
 	sudo pacman -S --needed --noconfirm "${all_packages[@]}"
+
+	sudo pacman -Rns dolphin konsole kate gwenview okular ark kcalc spectacle dolphin-plugins endeavouros-konsole-colors
 
 	# AUR Packages
 	log "Installing AUR packages..."
@@ -216,6 +229,16 @@ enable_virtualization() {
 	sudo systemctl enable --now virtlogd.service
 	sudo usermod -a -G libvirt "$USER"
 	log "You'll need to log out and back in for libvirt group changes to take effect"
+}
+
+configure_kde() {
+	xdg-mime query default inode/directory
+	xdg-mime query default text/plain
+	xdg-mime query default application/pdf
+	xdg-mime query default image/jpeg
+	xdg-mime query default image/png
+	xdg-mime query default application/zip
+	xdg-mime query default application/x-tar
 }
 
 main() {
