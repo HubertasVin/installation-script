@@ -196,7 +196,7 @@ install_applications() {
 	log "Installing official repository packages..."
 	sudo pacman -S --needed --noconfirm "${all_packages[@]}"
 
-	sudo pacman -Rns dolphin konsole kate gwenview okular ark kcalc spectacle dolphin-plugins endeavouros-konsole-colors
+	sudo pacman -Rns dolphin konsole kate gwenview okular ark kcalc dolphin-plugins endeavouros-konsole-colors
 
 	# AUR Packages
 	log "Installing AUR packages..."
