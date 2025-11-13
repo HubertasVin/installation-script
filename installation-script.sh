@@ -248,13 +248,9 @@ if ! grep -q "# Source: https://github.com/HubertasVin/dotfiles/blob/main/.tmux.
 	cat $CONFIGS_DIR/.bashrc > $HOME/.bashrc
 	#-------- Setup zsh --------
 	cat $CONFIGS_DIR/.zshrc > $HOME/.zshrc
-	if ! grep -q "HSA_OVERRIDE_GFX_VERSION" ~/.zshrc; then
-		echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.zshrc
-		echo "export HSA_OVERRIDE_GFX_VERSION=10.3.0" >> ~/.bashrc
-	fi
 
 	sudo chsh -s $(which zsh)
-	brew install zsh-autosuggestions zsh-syntax-highlighting
+	brew install zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search
 	brew install jandedobbeleer/oh-my-posh/oh-my-posh
 
 	mkdir -p $HOME/.config/alacritty/
