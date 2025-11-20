@@ -1,8 +1,8 @@
 [Unit]
-Description=Run random-wallpaper.service every 2 hours
+Description=Run random-wallpaper.service every 12 hours
 
 [Timer]
-OnUnitActiveSec=2h
+OnUnitActiveSec=12h
 Persistent=true
 Unit=random-wallpaper.service
 

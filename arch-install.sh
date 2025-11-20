@@ -129,6 +129,7 @@ install_applications() {
 
 	# Desktop & Applications Packages (Official Repos)
 	desktop_apps=(
+		foliate
 		chromium
 		borgbackup
 		ffmpeg
