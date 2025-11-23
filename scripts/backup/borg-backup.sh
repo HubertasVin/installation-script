@@ -105,8 +105,6 @@ copy_config_files() {
 	cp ~/.config/ranger/rifle.conf ~/dotfiles/ranger/ 2>/dev/null || :
 	# Copy Terminator configuration
 	cp ~/.config/alacritty/alacritty.toml ~/dotfiles/ 2>/dev/null || :
-	# Copy GNOME settings
-	dconf dump / > ~/dotfiles/saved_settings.dconf
 
 	cd ~/dotfiles
 	commit_changes_remote "~/dotfiles"
@@ -124,6 +122,10 @@ perform_backup() {
 	if [ "$KDE_FULL_SESSION" = "true" ] || [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
 		backup_kde
 	fi
+	if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ]; then
+		dconf dump / > ~/dotfiles/saved_settings.dconf
+	fi
+
 	copy_config_files
 
 	# Build a temporary exclude‐file from all .gitignore rules
