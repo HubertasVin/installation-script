@@ -63,6 +63,20 @@ commit_changes_remote() {
 	print_console ""
 }
 
+backup_kde() {
+	bash <(curl -s https://gitlab.com/cscs/transfuse/-/raw/main/transfuse) -b "$(whoami)"
+	kde_settings_file=$(ls -t -- *.tar.gz | head -n 1)
+	rm -rf kde-settings
+	mkdir -p kde-settings
+	tar -xzf "$kde_settings_file" -C kde-settings
+	setopt NULL_GLOB 2>/dev/null || :
+	rm -rf kde-settings/*/.local/share/fonts
+	rm -rf kde-settings/*/.local/share/icons
+	cleaned_file="$HOME/dotfiles/kde-settings.tar.gz"
+	tar -czf "$cleaned_file" -C kde-settings .
+	rm -rf kde-settings
+}
+
 copy_config_files() {
 	currentLoc=$(pwd)
 	CYAN='\033[0;96m'
@@ -107,6 +121,9 @@ perform_backup() {
 		"$HOME/Pictures"
 	)
 
+	if [ "$KDE_FULL_SESSION" = "true" ] || [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
+		backup_kde
+	fi
 	copy_config_files
 
 	# Build a temporary exclude‐file from all .gitignore rules

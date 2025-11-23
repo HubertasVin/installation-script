@@ -118,6 +118,7 @@ install_applications() {
 		android-tools
 		android-udev
 		kconfig
+		openfortivpn
 	)
 
 	python_libraries=(

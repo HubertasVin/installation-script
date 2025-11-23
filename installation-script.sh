@@ -204,6 +204,12 @@ source $SCRIPT_DIR/gnome-setup.sh
 
 
 #INFO: -------------------------------
+#              KDE setup
+#INFO: -------------------------------
+source $SCRIPT_DIR/kde-setup.sh
+
+
+#INFO: -------------------------------
 #            Ranger setup
 #-------------------------------------
 if [ ! -f $HOME/.config/ranger/rifle.conf ] && [ ! -f $HOME/.config/ranger/commands.py ] && ! grep -q "from plugins.ranger_udisk_menu.mounter import mount" $HOME/.config/ranger/commands.py; then
