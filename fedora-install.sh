@@ -23,7 +23,7 @@ add_repos() {
 		sudo dnf config-manager addrepo --from-repofile="https://dl.winehq.org/wine-builds/fedora/$(rpm -E %fedora)/winehq.repo"
 	fi
 	if [ ! -f /etc/yum.repos.d/terra.repo ]; then
-		sudo dnf config-manager addrepo --from-repofile="https://terra.fyralabs.com/terra.repo"
+		sudo dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 	fi
 	if [ ! -f /etc/yum.repos.d/gh-cli.repo ]; then
 		sudo dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
@@ -38,17 +38,6 @@ add_repos() {
 	# Add AMD/ATI specific repositories if applicable
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
 		log "Detected AMD/ATI graphics. Adding AMD repositories..."
-		if [ ! -f /etc/yum.repos.d/amdgpu.repo ]; then
-			sudo tee /etc/yum.repos.d/amdgpu.repo > /dev/null <<EOF
-[amdgpu]
-name=amdgpu
-baseurl=https://repo.radeon.com/amdgpu/6.0/rhel/9.3/main/x86_64/
-enabled=1
-priority=50
-gpgcheck=1
-gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key
-EOF
-		fi
 		if [ ! -f /etc/yum.repos.d/rocm.repo ]; then
 			sudo tee /etc/yum.repos.d/rocm.repo > /dev/null <<EOF
 [ROCm-6.0]
@@ -117,7 +106,7 @@ install_applications() {
 	fi
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
 		log "Installing AMD drivers..."
-		sudo dnf install -y amdgpu-dkms rocm
+		sudo dnf install -y rocm
 	fi
 
 	# System & Development Packages
@@ -282,6 +271,7 @@ main() {
 	add_repos
 	setup_flatpak
 	setup_snap
+	setup_homebrew
 	install_applications
 	configure_docker
 	enable_virtualization

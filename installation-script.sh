@@ -113,10 +113,10 @@ if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
 	echo 'Setting up ssh for Github'
 	echo -n 'Enter git email: '
 	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $gitEmail
-	if ps -e | grep -q 'gnome-shell'; then
-		cat $HOME/.ssh/id_rsa_github.pub | xclip -selection clipboard
+	if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
+	    wl-copy < "$HOME/.ssh/id_rsa_github.pub"
 	else
-		cat $HOME/.ssh/id_rsa_github.pub | wl-copy
+	    xclip -selection clipboard < "$HOME/.ssh/id_rsa_github.pub"
 	fi
 	echo 'SSH key copied to clipboard, go to Github:'
 	echo '1. Go to user settings'
@@ -128,6 +128,7 @@ if [ ! -f $HOME/.ssh/id_ed25519_vps.pub ]; then
 	echo 'Setting up ssh for vps'
 	SSH_KEY="$HOME/.ssh/id_ed25519_vps"
 	ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "VPS key"
+	ssh-keyscan -H "$sshHost" >> ~/.ssh/known_hosts
 	ssh-copy-id -i "${SSH_KEY}.pub" ${borgUser}@${sshHost}
 	echo 'SSH key copied to remote vps'
 fi
@@ -332,6 +333,10 @@ if [ ! -d $HOME/.npm-global ]; then
 	npm config set prefix '${HOME}/.npm-global'
 fi
 
+#--- Linking scripts to ~/tools ----
+if [ ! -L $HOME/tools ]; then
+	ln -s $SCRIPT_DIR/scripts/ $HOME/tools
+fi
 
 #INFO:------------------------------
 #    Desktop files and services
@@ -367,11 +372,6 @@ if [ ! -d $HOME/.config/systemd/user ] || [ $(find $HOME/.config/systemd/user -t
 	# Enable user level .service files
 	systemctl --user daemon-reload
 	systemctl --user enable --now ${user_units[@]}
-fi
-
-#--- Linking scripts to ~/tools ----
-if [ ! -L $HOME/tools ]; then
-	ln -s $SCRIPT_DIR/scripts/ $HOME/tools
 fi
 
 #-------- Restoring backups --------
