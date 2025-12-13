@@ -180,6 +180,7 @@ install_applications() {
 		adoptiom-temurin-java-repository
 		android-tools
 		android-udev-rules
+		openfortivpn
 	)
 
 	# Desktop & Applications Packages
@@ -264,6 +265,16 @@ enable_virtualization() {
 	log "Enabling virtualization services..."
 	sudo systemctl start libvirtd
 	sudo systemctl enable libvirtd
+}
+
+configure_kde() {
+	xdg-mime query default inode/directory
+	xdg-mime query default text/plain
+	xdg-mime query default application/pdf
+	xdg-mime query default image/jpeg
+	xdg-mime query default image/png
+	xdg-mime query default application/zip
+	xdg-mime query default application/x-tar
 }
 
 main() {
