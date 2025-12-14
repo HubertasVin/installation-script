@@ -212,7 +212,6 @@ install_applications() {
 		autorandr
 		pamixer
 		tldr
-		flameshot
 		peek
 		alacritty
 		ncdu
@@ -238,6 +237,10 @@ install_applications() {
 	log "Removing LibreOffice and installing OnlyOffice..."
 	sudo dnf remove -y 'libreoffice*'
 	flatpak install -y flathub org.onlyoffice.desktopeditors
+
+	log "Setting up Flameshot..."
+	flatpak install flathub org.flameshot.Flameshot
+	flatpak permission-set screenshot screenshot org.flameshot.Flameshot yes
 
 	if [ ! -d "/opt/obsidian" ]; then
 		bash obsidian-appimage-install.sh
