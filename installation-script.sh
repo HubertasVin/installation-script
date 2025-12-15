@@ -129,6 +129,7 @@ if [ ! -f $HOME/.ssh/id_ed25519_vps.pub ]; then
 	SSH_KEY="$HOME/.ssh/id_ed25519_vps"
 	ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "VPS key"
 	ssh-keyscan -H "$sshHost" >> ~/.ssh/known_hosts
+	ssh-copy-id -i "${SSH_KEY}.pub" ${sshUser}@${sshHost}
 	ssh-copy-id -i "${SSH_KEY}.pub" ${borgUser}@${sshHost}
 	echo 'SSH key copied to remote vps'
 fi
