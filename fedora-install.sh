@@ -170,6 +170,9 @@ install_applications() {
 		android-tools
 		android-udev-rules
 		openfortivpn
+		libpcap-devel
+		libusb1-devel
+		pkgconf-pkg-config
 	)
 
 	# Desktop & Applications Packages

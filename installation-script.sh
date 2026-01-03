@@ -181,6 +181,11 @@ if [ ! `which nvim` ]; then
 fi
 if [ ! `which findstr` ]; then
 	go install github.com/HubertasVin/findstr@latest
+	sudo install -m 0755 "$(command -v findstr)" /usr/local/bin/findstr
+fi
+if [ | `which bettercap` ]; then
+	go install github.com/bettercap/bettercap/v2@latest
+	sudo install -m 0755 "$(command -v bettercap)" /usr/local/bin/bettercap
 fi
 #------------ Zen browser ------------
 if [ ! -f /home/hubertas/.tarball-installations/zen/zen ]; then
