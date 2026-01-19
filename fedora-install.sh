@@ -173,6 +173,7 @@ install_applications() {
 		libpcap-devel
 		libusb1-devel
 		pkgconf-pkg-config
+		wmctrl
 	)
 
 	# Desktop & Applications Packages

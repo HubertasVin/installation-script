@@ -4,7 +4,10 @@ After=graphical-session.target
 
 [Service]
 Type=oneshot
+KillMode=process
 ExecStart=%h/tools/custom-startup.sh
+StandardOutput=append:/tmp/startup.log
+StandardError=append:/tmp/startup.log
 
 [Install]
 WantedBy=graphical-session.target
