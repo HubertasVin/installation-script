@@ -174,6 +174,7 @@ install_applications() {
 		libusb1-devel
 		pkgconf-pkg-config
 		wmctrl
+		gamescope
 	)
 
 	# Desktop & Applications Packages
