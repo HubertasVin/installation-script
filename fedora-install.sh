@@ -175,6 +175,10 @@ install_applications() {
 		pkgconf-pkg-config
 		wmctrl
 		gamescope
+		pandoc
+		tesseract-langpack-lit
+		ocrmypdf
+		pdfjam
 	)
 
 	# Desktop & Applications Packages
