@@ -106,7 +106,13 @@ install_applications() {
 	fi
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD'; then
 		log "Installing AMD drivers..."
-		sudo dnf install -y rocm
+		if ! dnf copr list | grep -q "ilyaz/LACT"; then
+			sudo dnf copr enable ilyaz/LACT -y
+		fi
+		sudo dnf install -y mesa-dri-drivers mesa-vulkan-drivers vulkan-tools \
+			mesa-va-drivers mesa-vdpau-drivers libva-utils \
+			mesa-dri-drivers.i686 mesa-vulkan-drivers.i686 \
+			rocm rocm-opencl rocm-hip
 	fi
 
 	# System & Development Packages
@@ -233,6 +239,7 @@ install_applications() {
 		pavucontrol
 		fzf
 		zoxide
+		lact
 	)
 
 	# Combine both arrays into a single installation list
@@ -268,6 +275,10 @@ enable_virtualization() {
 	sudo systemctl enable libvirtd
 }
 
+enable_lact() {
+	sudo systemctl enable --now lactd
+}
+
 configure_kde() {
 	xdg-mime query default inode/directory
 	xdg-mime query default text/plain
@@ -287,6 +298,7 @@ main() {
 	install_applications
 	configure_docker
 	enable_virtualization
+	enable_lact
 	log "Performing final system update..."
 	sudo dnf update -y
 }

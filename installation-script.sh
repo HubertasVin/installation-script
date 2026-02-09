@@ -196,6 +196,12 @@ if [ ! -d $HOME/.sdkman ]; then
 	curl -s "https://get.sdkman.io" | bash
 fi
 source $HOME/.sdkman/bin/sdkman-init.sh
+#------------ Proton-GE --------------
+if [ ! -d $HOME/.steam/root/compatibilitytools.d ]; then
+	pip3 install protonup
+	protonup -d"~/.steam/root/compatibilitytools.d/"
+	protonup -y
+fi
 
 
 #INFO: -------------------------------
