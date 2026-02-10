@@ -13,6 +13,12 @@ if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumsk
 	cd dash-to-dock/
 	make && make install
 	cd .. && rm -rf dash-to-dock/
+
+	# Tiling assistant
+	git clone https://github.com/Leleat/Tiling-Assistant.git
+	cd Tiling-Assistant/
+	bash scripts/build.sh
+	cd .. && rm -rf Tiling-Assistant/
 fi
 
 #-------- Install GDM themes ---------

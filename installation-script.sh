@@ -87,6 +87,8 @@ initialize_variables() {
 	if [ -z "$iconThemeColor" ]; then
 		iconThemeColor="blue"
 	fi
+
+	export PATH="$HOME/.npm-global/bin:$PATH:$HOME/.dotnet/tools:$HOME/go/bin:$HOME/.local/bin"
 }
 initialize_variables
 
@@ -107,6 +109,8 @@ case "$ID" in
 		exit 1
 		;;
 esac
+
+test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 #------------ Setup SSH ------------
 if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
@@ -183,7 +187,7 @@ if [ ! `which findstr` ]; then
 	go install github.com/HubertasVin/findstr@latest
 	sudo install -m 0755 "$(command -v findstr)" /usr/local/bin/findstr
 fi
-if [ | `which bettercap` ]; then
+if [ ! `which bettercap` ]; then
 	go install github.com/bettercap/bettercap/v2@latest
 	sudo install -m 0755 "$(command -v bettercap)" /usr/local/bin/bettercap
 fi
@@ -383,7 +387,7 @@ if [ ! -d $HOME/.config/systemd/user ] || [ $(find $HOME/.config/systemd/user -t
 
 	# Enable user level .service files
 	systemctl --user daemon-reload
-	systemctl --user enable --now ${user_units[@]}
+	systemctl --user enable ${user_units[@]}
 fi
 
 #-------- Restoring backups --------

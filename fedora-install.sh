@@ -240,6 +240,7 @@ install_applications() {
 		fzf
 		zoxide
 		lact
+		flameshot
 	)
 
 	# Combine both arrays into a single installation list
@@ -253,10 +254,6 @@ install_applications() {
 	log "Removing LibreOffice and installing OnlyOffice..."
 	sudo dnf remove -y 'libreoffice*'
 	flatpak install -y flathub org.onlyoffice.desktopeditors
-
-	log "Setting up Flameshot..."
-	flatpak install flathub org.flameshot.Flameshot
-	flatpak permission-set screenshot screenshot org.flameshot.Flameshot yes
 
 	if [ ! -d "/opt/obsidian" ]; then
 		bash obsidian-appimage-install.sh
