@@ -206,6 +206,12 @@ if [ ! -d $HOME/.steam/root/compatibilitytools.d ]; then
 	protonup -d"$HOME/.local/share/Steam/compatibilitytools.d"
 	protonup -y
 fi
+#------------- Flutter ---------------
+if [ ! -d $HOME/.local.opt && ! -d $HOME/.local/opt/flutter ]; then
+	mkdir -p $HOME/.local/opt $HOME/.local/bin
+	git clone https://github.com/flutter/flutter.git -b stable $HOME/.local/opt/flutter
+	ln -sf $HOME/.local/opt/flutter/bin/flutter $HOME/.local/bin/flutter
+fi
 
 
 #INFO: -------------------------------
