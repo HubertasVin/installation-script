@@ -150,6 +150,10 @@ install_applications() {
 		brightnessctl
 		dkms
 		gcc
+		clang
+		gtk3-devel
+		kernel-cachyos
+		kernel-cachyos-devel
 		ncurses-devel
 		maven
 		pipx
