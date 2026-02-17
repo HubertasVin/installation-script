@@ -19,6 +19,11 @@ if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumsk
 	cd Tiling-Assistant/
 	bash scripts/build.sh
 	cd .. && rm -rf Tiling-Assistant/
+
+	git clone https://github.com/galets/gnome-keyboard-reset.git
+	cd gnome-keyboard-reset
+	make install
+	cd .. && rm -rf gnome-keyboard-reset
 fi
 
 #-------- Install GDM themes ---------

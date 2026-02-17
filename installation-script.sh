@@ -36,12 +36,21 @@ initialize_variables() {
 	export DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 	export IFS=$'\n'
 
-	while [ -z "$gitEmail" ]; do
-		echo -n "Enter your git email: "
-		read gitEmail
-		if ! validate_input "$gitEmail"; then
+	while [ -z "$githubEmail" ]; do
+		echo -n "Enter your GitHub email: "
+		read githubEmail
+		if ! validate_input "$githubEmail"; then
+			echo "Error: GitHub email cannot be empty." >&2
+			githubEmail=
+		fi
+	done
+
+	while [ -z "$gitlabEmail" ]; do
+		echo -n "Enter your GitLab email: "
+		read gitlabEmail
+		if ! validate_input "$gitlabEmail"; then
 			echo "Error: git email cannot be empty." >&2
-			gitEmail=
+			gitlabEmail=
 		fi
 	done
 
@@ -114,18 +123,34 @@ test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/bre
 
 #------------ Setup SSH ------------
 if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
-	echo 'Setting up ssh for Github'
-	echo -n 'Enter git email: '
-	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $gitEmail
+	echo 'Setting up ssh for GitHub'
+	echo -n 'Enter GitHub email: '
+	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $githubEmail
 	if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
-	    wl-copy < "$HOME/.ssh/id_rsa_github.pub"
+	    wl-copy < $HOME/.ssh/id_rsa_github.pub
 	else
-	    xclip -selection clipboard < "$HOME/.ssh/id_rsa_github.pub"
+	    xclip -selection clipboard < $HOME/.ssh/id_rsa_github.pub
 	fi
-	echo 'SSH key copied to clipboard, go to Github:'
+	echo 'SSH key copied to clipboard, go to GitHub:'
 	echo '1. Go to user settings'
 	echo '2. Press "SSH and GPG keys"'
 	echo '3. Paste in the copied text in to the text box'
+	read -n 1 -p '(Press any key to continue)' answer
+fi
+if [ ! -f $HOME/.ssh/id_rsa_gitlab.pub ]; then
+	echo 'Setting up ssh for GitLab'
+	echo -n 'Enter GitLab email: '
+	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_gitlab -N "" -C $gitlabEmail
+	if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
+	    wl-copy < $HOME/.ssh/id_rsa_gitlab.pub
+	else
+	    xclip -selection clipboard < $HOME/.ssh/id_rsa_gitlab.pub
+	fi
+	echo 'SSH key copied to clipboard, go to GitLab:'
+	echo '1. Go to "Edit profile"'
+	echo '2. Press "SSH keys"'
+	echo '3. Press "Add new key"'
+	echo '4. Paste in the copied text in to the text box'
 	read -n 1 -p '(Press any key to continue)' answer
 fi
 if [ ! -f $HOME/.ssh/id_ed25519_vps.pub ]; then
