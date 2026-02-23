@@ -170,6 +170,8 @@ install_applications() {
 		java-21-openjdk-devel
 		gh
 		rust
+		rust-src
+		rustfmt
 		cargo
 		zsh
 		php
@@ -219,6 +221,7 @@ install_applications() {
 		xset
 		vlc
 		code
+		zed
 		steam
 		btop
 		htop
