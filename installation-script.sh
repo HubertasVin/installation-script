@@ -321,6 +321,13 @@ fi
 #--------------------------------
 source $SCRIPT_DIR/borg-setup.sh
 
+#INFO: ---------------------------
+#        Configure apps
+#--------------------------------
+
+# Discord
+jq '. + {"SKIP_HOST_UPDATE": true}' "$HOME"/.config/discord/settings.json > settings.json.tmp && mv settings.json.tmp "$HOME"/.config/discord/settings.json
+
 
 #INFO: --------------------------
 #      Disable wake-on USB
