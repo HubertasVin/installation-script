@@ -204,8 +204,6 @@ install_applications() {
 		sassc
 		lm_sensors
 		wl-clipboard
-		xkill
-		xinput
 		ntfs-3g
 		playerctl
 		xbindkeys
@@ -248,6 +246,7 @@ install_applications() {
 		zoxide
 		lact
 		flameshot
+		foliate
 	)
 
 	# Combine both arrays into a single installation list
