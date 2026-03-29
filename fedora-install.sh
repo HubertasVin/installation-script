@@ -161,6 +161,7 @@ install_applications() {
 		dotnet-sdk-9.0
 		ghc-compiler
 		go
+		golang
 		clang-tools-extra
 		bash-completion
 		docker-cli
