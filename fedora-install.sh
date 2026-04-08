@@ -257,6 +257,9 @@ install_applications() {
 	sudo dnf install -y --skip-unavailable --allowerasing "${all_packages[@]}"
 	sudo dnf install -y --skip-unavailable --allowerasing temurin-11-jdk temurin-17-jdk
 	sudo dnf group install -y d-development c-development development-tools
+	# Fix HEVC decoding problems
+	sudo dnf install -y --allowerasing libva libva-utils mesa-va-drivers-freeworld mesa-vdpau-drivers-freeworld
+	sudo dnf group upgrade multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 
 	log "Removing LibreOffice and installing OnlyOffice..."
 	sudo dnf remove -y 'libreoffice*'

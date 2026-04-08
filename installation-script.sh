@@ -180,6 +180,11 @@ Host borg
 Host github.com
     User $gitName
     IdentityFile ~/.ssh/id_rsa_github
+
+Host *
+    StrictHostKeyChecking no
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
 EOF
 fi
 
@@ -192,8 +197,6 @@ if [ ! -f $HOME/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" $HOME/
 	git config --global user.email "$gitEmail"
 	git config --global diff.algorithm patience
 	git config --global init.defaultBranch main
-	echo "Host *" >> $HOME/.ssh/config
-	echo "    StrictHostKeyChecking no" >> $HOME/.ssh/config
 fi
 
 #-------- Download dotfiles ----------
