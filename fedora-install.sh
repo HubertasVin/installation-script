@@ -192,6 +192,7 @@ install_applications() {
 		tesseract-langpack-lit
 		ocrmypdf
 		pdfjam
+		fd-find
 	)
 
 	# Desktop & Applications Packages
