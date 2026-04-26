@@ -212,6 +212,7 @@ if [ ! `which nvim` ]; then
 	sudo snap install nvim --classic
 fi
 if [ ! `which findstr` ]; then
+	go install github.com/HubertasVin/vidcoder@latest
 	go install github.com/HubertasVin/findstr@latest
 	sudo install -m 0755 "$(command -v findstr)" /usr/local/bin/findstr
 fi
