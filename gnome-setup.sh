@@ -3,23 +3,41 @@
 #------- Restore Gnome settings and missing extensions ------
 if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumskyvaclav.gmail.com ]; then
 	dconf load -f / < $CONFIGS_DIR/saved_settings.dconf
-	# Notification timeout
-	git clone https://github.com/vchlum/notification-timeout.git
-	cd notification-timeout/
-	make build && make install
-	cd .. && rm -rf notification-timeout
-	# Dash-to-dock
-	git clone https://github.com/micheleg/dash-to-dock.git
-	cd dash-to-dock/
-	make && make install
-	cd .. && rm -rf dash-to-dock/
 
-	# Tiling assistant
-	git clone https://github.com/Leleat/Tiling-Assistant.git
-	cd Tiling-Assistant/
-	bash scripts/build.sh
-	cd .. && rm -rf Tiling-Assistant/
+	# Extensions
+	# Tiling Assistant
+	curl -L -o tiling-assistant@leleat-on-github.shell-extension.zip \
+		https://github.com/Leleat/Tiling-Assistant/releases/latest/download/tiling-assistant@leleat-on-github.shell-extension.zip
+	gnome-extensions install tiling-assistant@leleat-on-github.shell-extension.zip
+	rm tiling-assistant@leleat-on-github.shell-extension.zip
 
+	# AppIndicator
+	curl -L -o appindicatorsupport@rgcjonas.gmail.com.zip \
+		https://github.com/Leleat/Tiling-Assistant/releases/latest/download/appindicatorsupport@rgcjonas.gmail.com.zip
+	gnome-extensions install tiling-assistant@leleat-on-github.shell-extension.zip
+	rm tiling-assistant@leleat-on-github.shell-extension.zip
+
+	# Blur-My-Shell
+	curl -L -o blur-my-shell@aunetx.shell-extension.zip \
+		https://github.com/aunetx/blur-my-shell/releases/latest/download/blur-my-shell@aunetx.shell-extension.zip
+	gnome-extensions install blur-my-shell@aunetx.shell-extension.zip
+	rm blur-my-shell@aunetx.shell-extension.zip
+
+	# Notification Timeout
+	tag="$(git ls-remote --tags --refs https://github.com/vchlum/notification-timeout.git | awk -F/ '{print $3}' | sort -V | tail -n1)"
+	curl -L -o "notification-timeout-${tag}.zip" \
+	    "https://github.com/vchlum/notification-timeout/archive/refs/tags/${tag}.zip"
+	gnome-extensions install "notification-timeout-${tag}.zip"
+    rm "notification-timeout-${tag}.zip"
+
+	# Notification Timeout
+	tag="$(git ls-remote --tags --refs https://github.com/focustimerhq/FocusTimer.git | awk -F/ '{print $3}' | sort -V | tail -n1)"
+	curl -L -o "FocusTimer-${tag}.zip" \
+	    "https://github.com/vchlum/notification-timeout/archive/refs/tags/${tag}.zip"
+	gnome-extensions install "FocusTimer-${tag}.zip"
+    rm "FocusTimer-${tag}.zip"
+
+	# Keyboard Reset
 	git clone https://github.com/galets/gnome-keyboard-reset.git
 	cd gnome-keyboard-reset
 	make install

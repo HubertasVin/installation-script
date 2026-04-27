@@ -271,13 +271,13 @@ sudo systemctl disable NetworkManager-wait-online.service
 #INFO: -------------------------------
 #             Gnome setup
 #INFO: -------------------------------
-source $SCRIPT_DIR/gnome-setup.sh
+bash $SCRIPT_DIR/gnome-setup.sh
 
 
 #INFO: -------------------------------
 #              KDE setup
 #INFO: -------------------------------
-source $SCRIPT_DIR/kde-setup.sh
+bash $SCRIPT_DIR/kde-setup.sh
 
 
 #INFO: -------------------------------
