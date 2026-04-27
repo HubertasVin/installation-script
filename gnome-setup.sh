@@ -24,18 +24,9 @@ if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumsk
 	rm blur-my-shell@aunetx.shell-extension.zip
 
 	# Notification Timeout
-	tag="$(git ls-remote --tags --refs https://github.com/vchlum/notification-timeout.git | awk -F/ '{print $3}' | sort -V | tail -n1)"
-	curl -L -o "notification-timeout-${tag}.zip" \
-	    "https://github.com/vchlum/notification-timeout/archive/refs/tags/${tag}.zip"
-	gnome-extensions install "notification-timeout-${tag}.zip"
-    rm "notification-timeout-${tag}.zip"
-
-	# Notification Timeout
-	tag="$(git ls-remote --tags --refs https://github.com/focustimerhq/FocusTimer.git | awk -F/ '{print $3}' | sort -V | tail -n1)"
-	curl -L -o "FocusTimer-${tag}.zip" \
-	    "https://github.com/vchlum/notification-timeout/archive/refs/tags/${tag}.zip"
-	gnome-extensions install "FocusTimer-${tag}.zip"
-    rm "FocusTimer-${tag}.zip"
+	git clone https://github.com/vchlum/notification-timeout.git
+    cd notification-timeout
+    make build && make install
 
 	# Keyboard Reset
 	git clone https://github.com/galets/gnome-keyboard-reset.git
