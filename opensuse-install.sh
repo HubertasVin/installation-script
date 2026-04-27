@@ -99,13 +99,13 @@ install_gpu_drivers() {
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iq 'NVIDIA'; then
 		log "Installing NVIDIA drivers..."
 		# Tumbleweed uses x11-video-nvidiaG06 for current cards
-		sudo zypper --non-interactive install-new-recommends
-		sudo zypper --non-interactive install \
+		sudo zypper --non-interactive --auto-agree-with-licenses install-new-recommends
+		sudo zypper --non-interactive --auto-agree-with-licenses install \
 			x11-video-nvidiaG06 \
 			nvidia-glG06 \
 			nvidia-computeG06 \
 			nvidia-video-G06 || \
-		sudo zypper --non-interactive install x11-video-nvidiaG05
+		sudo zypper --non-interactive --auto-agree-with-licenses install x11-video-nvidiaG05
 	fi
 
 	# AMD
