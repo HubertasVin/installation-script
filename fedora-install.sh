@@ -76,11 +76,8 @@ setup_snap() {
 			read -p 'Confirm to reboot your computer (y/N)' answer
 
 			case "$answer" in
-				[yY]|[yY][eE][sS])
-					reboot
-					;;
-				[nN]|[nN][oO]|*)
-					;;
+    			[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
+    			*) ;;
 			esac
 		fi
 	fi

@@ -84,7 +84,7 @@ setup_snap() {
 			echo 'Reboot your computer to enable snapd to function fully'
 			read -p 'Confirm to reboot your computer (y/N) ' answer
 			case "$answer" in
-				[yY]|[yY][eE][sS]) reboot ;;
+				[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
 				*) ;;
 			esac
 		fi
@@ -124,7 +124,7 @@ install_gpu_drivers() {
 			Mesa-32bit Mesa-dri-32bit Mesa-libGL1-32bit Mesa-libEGL1-32bit \
 			libvulkan1-32bit libvulkan_radeon-32bit
 		# ROCm (optional; available in Tumbleweed via science repo)
-		sudo zypper --non-interactive install rocm-opencl rocminfo hip-runtime-amd
+		sudo zypper --non-interactive install rocm-opencl rocminfo hipcc
 	fi
 }
 
