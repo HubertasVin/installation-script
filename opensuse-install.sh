@@ -23,7 +23,7 @@ add_repos() {
 	log "Adding additional repositories..."
 
 	# Wine repo
-	if ! zypper lr -d | grep -qi "Emulators:Wine"; then
+	if ! zypper lr -d | grep -qi "Emulators_Wine"; then
 		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
 	fi
 

@@ -36,12 +36,18 @@ initialize_variables() {
 	export DOMAIN_REGEX='^([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$'
 	export IFS=$'\n'
 
+	CONFIG_FILE=".config/config"
+	mkdir -p "$(dirname "$CONFIG_FILE")"
+	[ -f "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+
 	while [ -z "$githubEmail" ]; do
 		echo -n "Enter your GitHub email: "
 		read githubEmail
 		if ! validate_input "$githubEmail"; then
 			echo "Error: GitHub email cannot be empty." >&2
 			githubEmail=
+		else
+			echo "export githubEmail=\"$githubEmail\"" >> "$CONFIG_FILE"
 		fi
 	done
 
@@ -51,6 +57,8 @@ initialize_variables() {
 		if ! validate_input "$gitlabEmail"; then
 			echo "Error: git email cannot be empty." >&2
 			gitlabEmail=
+		else
+			echo "export gitlabEmail=\"$gitlabEmail\"" >> "$CONFIG_FILE"
 		fi
 	done
 
@@ -60,6 +68,8 @@ initialize_variables() {
 		if ! validate_input "$gitName"; then
 			echo "Error: git username cannot be empty." >&2
 			gitName=
+		else
+			echo "export gitName=\"$gitName\"" >> "$CONFIG_FILE"
 		fi
 	done
 
@@ -69,6 +79,7 @@ initialize_variables() {
 		case "$(validate_input "$sshHost" "($IP_REGEX|$DOMAIN_REGEX)"; echo $?)" in
 			1) echo "Error: host cannot be empty." >&2; sshHost= ;;
 			2) echo "Error: '$sshHost' is not a valid domain or IPv4." >&2; sshHost= ;;
+			*) echo "export sshHost=\"$sshHost\"" >> "$CONFIG_FILE" ;;
 		esac
 	done
 
@@ -78,6 +89,8 @@ initialize_variables() {
 		if ! validate_input "$sshUser"; then
 			echo "Error: SSH user cannot be empty." >&2
 			sshUser=
+		else
+			echo "export sshUser=\"$sshUser\"" >> "$CONFIG_FILE"
 		fi
 	done
 
@@ -87,6 +100,8 @@ initialize_variables() {
 		if ! validate_input "$borgUser"; then
 			echo "Error: Borg user cannot be empty." >&2
 			borgUser=
+		else
+			echo "export borgUser=\"$borgUser\"" >> "$CONFIG_FILE"
 		fi
 	done
 
