@@ -249,12 +249,12 @@ fi
 source $HOME/.sdkman/bin/sdkman-init.sh
 #------------ Proton-GE --------------
 if [ ! -d $HOME/.steam/root/compatibilitytools.d ]; then
-	pip3 install protonup
+	pipx install protonup
 	protonup -d"$HOME/.local/share/Steam/compatibilitytools.d"
 	protonup -y
 fi
 #------------- Flutter ---------------
-if [ ! -d $HOME/.local.opt && ! -d $HOME/.local/opt/flutter ]; then
+if [ ! -d $HOME/.local.opt ] && [ ! -d $HOME/.local/opt/flutter ]; then
 	mkdir -p $HOME/.local/opt $HOME/.local/bin
 	git clone https://github.com/flutter/flutter.git -b stable $HOME/.local/opt/flutter
 	ln -sf $HOME/.local/opt/flutter/bin/flutter $HOME/.local/bin/flutter
@@ -395,7 +395,7 @@ done
 #-------- Install Gradle --------
 sdk install gradle
 #-------- Install dotnet script for running .cs files --------
-if ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
+if `which dotnet` && ! dotnet tool list -g | grep -qE "dotnet-script|csharp-ls"; then
 	dotnet tool install -g dotnet-script
 fi
 #--- Install language servers ---

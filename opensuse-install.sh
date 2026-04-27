@@ -1,53 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Logging function for readability
+trap 'echo "[ERROR] Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
+
 log() {
 	echo "[$(date +"%H:%M:%S")] $*"
 }
 
 update_system() {
 	log "Updating and refreshing the system..."
-	sudo zypper refresh
-	sudo zypper --non-interactive dup --allow-vendor-change
+	sudo zypper --non-interactive refresh
+	sudo zypper dup --auto-agree-with-licenses --allow-vendor-change
 }
 
 add_repos() {
 	log "Adding Packman repository (for multimedia/ffmpeg)..."
-	if ! zypper lr -d | grep -qi packman; then
+	if ! zypper lr -d | grep -qi '^[[:space:]]*[0-9]\+[[:space:]]*|[[:space:]]*packman[[:space:]]*|'; then
 		sudo zypper ar -cfp 90 https://ftp.fau.de/packman/suse/openSUSE_Tumbleweed/ packman
 		sudo zypper --gpg-auto-import-keys refresh
-		sudo zypper --non-interactive dup --from packman --allow-vendor-change
+		sudo zypper dup --auto-agree-with-licenses \
+			--from packman --allow-vendor-change
 	fi
 
 	log "Adding additional repositories..."
 
-	# Wine repo
-	if ! zypper lr -d | grep -qi "Emulators_Wine"; then
-		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
-	fi
-
-	# VS Code repo
 	if ! zypper lr -d | grep -qi "vscode"; then
 		log "Adding Visual Studio Code repository..."
 		sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-		sudo zypper ar -cfp 90 https://packages.microsoft.com/yumrepos/vscode vscode
+		sudo tee /etc/zypp/repos.d/vscode.repo > /dev/null <<'EOF'
+[vscode]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+autorefresh=1
+type=rpm-md
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+EOF
 	fi
 
-	# Docker repo (official Docker CE for openSUSE uses CentOS repo; openSUSE ships docker natively)
-	# We'll rely on native zypper docker package instead of docker-ce
-
-	# Google's gnome-pomodoro, snap, etc. are in OBS home repos
 	if ! zypper lr -d | grep -qi "snappy"; then
-		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
+		sudo zypper ar -cfp 90 \
+			https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
 	fi
 
-	# AMD/ATI specific repositories if applicable
-	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
-		log "Detected AMD/ATI graphics. No extra repo needed — Tumbleweed ships Mesa/ROCm natively."
+	if ! zypper lr -d | grep -qi "openh264"; then
+		sudo zypper ar -cfp 90 https://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/ openh264
 	fi
 
-	# NVIDIA repo if NVIDIA is detected
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iq 'NVIDIA'; then
 		log "Detected NVIDIA graphics. Adding NVIDIA repository..."
 		if ! zypper lr -d | grep -qi "nvidia"; then
@@ -61,27 +61,25 @@ add_repos() {
 
 setup_flatpak() {
 	log "Setting up Flatpak..."
-	sudo zypper --non-interactive install flatpak
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	sudo zypper install --auto-agree-with-licenses flatpak
+	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 setup_snap() {
 	log "Setting up Snap..."
 	if ! command -v snap &>/dev/null; then
-		sudo zypper --non-interactive install snapd
+		sudo zypper install --auto-agree-with-licenses snapd
 	fi
-	if command -v snap &>/dev/null; then
-		sudo systemctl enable --now snapd.service
-		sudo systemctl enable --now snapd.apparmor.service
-		if [ ! -L "/snap" ] && [ ! -d "/snap" ]; then
-			sudo ln -s /var/lib/snapd/snap /snap
-			echo 'Reboot your computer to enable snapd to function fully'
-			read -p 'Confirm to reboot your computer (y/N) ' answer
-			case "$answer" in
-				[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
-				*) ;;
-			esac
-		fi
+	sudo systemctl enable --now snapd.service
+	sudo systemctl enable --now snapd.apparmor.service
+	if [ ! -L "/snap" ] && [ ! -d "/snap" ]; then
+		sudo ln -s /var/lib/snapd/snap /snap
+		echo 'Reboot your computer to enable snapd to function fully'
+		read -r -p 'Confirm to reboot your computer (y/N) ' answer
+		case "$answer" in
+			[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
+			*) ;;
+		esac
 	fi
 }
 
@@ -92,33 +90,45 @@ setup_homebrew() {
 		test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 		echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> "$HOME/.bashrc"
 	fi
+	test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 
 install_gpu_drivers() {
-	# NVIDIA
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iq 'NVIDIA'; then
 		log "Installing NVIDIA drivers..."
-		# Tumbleweed uses x11-video-nvidiaG06 for current cards
-		sudo zypper --non-interactive --auto-agree-with-licenses install-new-recommends
-		sudo zypper --non-interactive --auto-agree-with-licenses install \
-			x11-video-nvidiaG06 \
-			nvidia-glG06 \
-			nvidia-computeG06 \
-			nvidia-video-G06 || \
-		sudo zypper --non-interactive --auto-agree-with-licenses install x11-video-nvidiaG05
+		sudo zypper install --auto-agree-with-licenses \
+			nvidia-userspace-meta-G06 \
+			nvidia-compute-utils-G06 \
+			nvidia-video-G06
 	fi
 
-	# AMD
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iqE 'AMD|ATI'; then
-		log "Installing AMD drivers and Mesa stack..."
-		sudo zypper --non-interactive install \
+		log "Installing AMD Mesa/Vulkan stack..."
+		sudo zypper install --auto-agree-with-licenses \
 			Mesa Mesa-dri Mesa-libGL1 Mesa-libEGL1 Mesa-libva \
 			libvulkan1 libvulkan_radeon vulkan-tools \
 			libva2 libva-utils \
 			Mesa-32bit Mesa-dri-32bit Mesa-libGL1-32bit Mesa-libEGL1-32bit \
 			libvulkan1-32bit libvulkan_radeon-32bit
-		# ROCm (optional; available in Tumbleweed via science repo)
-		sudo zypper --non-interactive install rocm-opencl rocminfo hipcc
+
+		log "Installing ROCm / HIP stack (optional)..."
+		# Query available ROCm packages first and install only what exists.
+		local rocm_candidates=(rocm-smi rocminfo rocm-opencl rocm-opencl-devel hipcc hip-devel)
+		local rocm_available=()
+		for pkg in "${rocm_candidates[@]}"; do
+			if zypper search --match-exact "$pkg" \
+					| awk -v p="$pkg" '$3==p {found=1} END {exit !found}'; then
+				rocm_available+=("$pkg")
+			else
+				log "Note: $pkg not in repos; skipping."
+			fi
+		done
+		if [ ${#rocm_available[@]} -gt 0 ]; then
+			sudo zypper install --auto-agree-with-licenses \
+				"${rocm_available[@]}"
+		else
+			log "No ROCm packages available in configured repos. Skipping ROCm stack."
+		fi
 	fi
 }
 
@@ -126,170 +136,86 @@ install_applications() {
 	log "Installing necessary applications..."
 
 	system_dev=(
-		# Build/dev libs
-		dbus-1-devel
-		libconfig-devel
-		libdrm-devel
-		libev-devel
-		libX11-devel
-		libxcb-devel
-		libepoxy-devel
-		pcre2-devel
-		libpixman-1-0-devel
-		uthash-devel
-		xcb-util-image-devel
-		xcb-util-renderutil-devel
-		xcb-util-devel
-		xorgproto-devel
-		Mesa-libGL-devel
-		Mesa-libEGL-devel
-		util-linux
-		cmake
-		ninja
-		python3-devel
-		python3-pip
-		python3-virtualenv
-		python311
-		python311-devel
-		xrandr
-		kernel-devel
-		kernel-default-devel
-		kernel-source
-		acpi
-		acpid
-		brightnessctl
-		dkms
-		gcc
-		gcc-c++
-		clang
-		clang-tools
-		gtk3-devel
-		ncurses-devel
-		maven
-		python3-pipx
-		dotnet-sdk-8.0
-		go
-		bash-completion
-		docker
-		docker-compose
-		docker-compose-switch
-		containerd
-		java-21-openjdk
-		java-21-openjdk-devel
-		java-11-openjdk
-		java-11-openjdk-devel
-		java-17-openjdk
-		java-17-openjdk-devel
-		gh
-		rust
-		rust-std
-		cargo
-		zsh
-		php8
-		ansible
-		android-tools
-		openfortivpn
-		libpcap-devel
-		libusb-1_0-devel
-		pkgconf-pkg-config
-		wmctrl
-		gamescope
-		pandoc
-		fd
-
-		# Virtualization
-		libvirt
-		libvirt-daemon
-		libvirt-daemon-qemu
-		virt-manager
-		qemu-kvm
-		qemu-tools
-		bridge-utils
+		dbus-1-devel libconfig-devel libdrm-devel libev-devel
+		libX11-devel libxcb-devel libepoxy-devel pcre2-devel
+		libpixman-1-0-devel uthash-devel
+		xcb-util-image-devel xcb-util-renderutil-devel xcb-util-devel
+		xorgproto-devel Mesa-libGL-devel Mesa-libEGL-devel
+		util-linux cmake ninja
+		python3-devel python3-pip python3-virtualenv python311 python311-devel
+		xrandr kernel-devel kernel-default-devel kernel-source
+		acpi acpid brightnessctl dkms
+		gcc gcc-c++ clang clang-tools
+		gtk3-devel ncurses-devel maven python3-pipx
+		go bash-completion nodejs-common
+		docker docker-compose docker-compose-switch containerd
+		java-21-openjdk java-21-openjdk-devel
+		java-11-openjdk java-11-openjdk-devel
+		java-17-openjdk java-17-openjdk-devel
+		gh rust rust-std cargo zsh php8 ansible
+		android-tools openfortivpn libpcap-devel libusb-1_0-devel
+		pkgconf-pkg-config wmctrl gamescope pandoc fd
+		libvirt libvirt-daemon libvirt-daemon-qemu
+		virt-manager qemu-kvm qemu-tools bridge-utils
 	)
 
-	# Desktop & Applications Packages
 	desktop_apps=(
-		borgbackup
-		ffmpeg-7
-		ffmpeg-7-devel
-		gstreamer-plugin-openh264
-		wine
-		sassc
-		sensors
-		wl-clipboard
-		ntfs-3g
-		playerctl
-		xbindkeys
-		xkb-switch
-		dunst
-		polybar
-		udiskie
-		valgrind
-		neovim
-		gnome-tweaks
-		gnome-shell-pomodoro
-		xset
-		vlc
-		code
-		zed
-		steam
-		btop
-		htop
-		qbittorrent
-		discord
-		ranger
-		trash-cli
-		putty
-		arandr
-		autorandr
-		pamixer
-		tldr
-		peek
-		alacritty
-		ncdu
-		gnome-shell-extension-user-theme
-		glib2-devel
-		ImageMagick
-		fontawesome-fonts
-		pavucontrol
-		fzf
-		zoxide
-		lact
-		flameshot
-		foliate
+		borgbackup ffmpeg tmux
+		sassc sensors wl-clipboard ntfs-3g playerctl
+		xbindkeys xkb-switch dunst polybar udiskie valgrind neovim
+		gnome-tweaks gnome-pomodoro xset vlc code steam
+		btop htop qbittorrent discord ranger trash-cli putty
+		arandr autorandr pamixer tealdeer peek alacritty ncdu
+		gnome-shell-extension-user-theme glib2-devel ImageMagick
+		fontawesome-fonts pavucontrol fzf zoxide lact flameshot foliate
 	)
 
 	log "Installing packages (system + dev)..."
-	sudo zypper --non-interactive install --force-resolution --no-confirm \
+	sudo zypper --non-interactive install --auto-agree-with-licenses \
+		--force-resolution --no-confirm \
 		"${system_dev[@]}"
 
 	log "Installing packages (desktop apps)..."
-	sudo zypper --non-interactive install --force-resolution --no-confirm \
+	sudo zypper --non-interactive install --auto-agree-with-licenses \
+		--force-resolution --no-confirm \
 		"${desktop_apps[@]}"
 
 	log "Installing development patterns..."
-	sudo zypper --non-interactive install -t pattern devel_basis devel_C_C++ devel_python3
+	sudo zypper --non-interactive install --auto-agree-with-licenses \
+		-t pattern devel_basis devel_C_C++ devel_python3
 
-	# Fix HEVC / VAAPI via Packman (vendor change to Packman versions)
 	log "Switching multimedia packages to Packman versions..."
-	sudo zypper --non-interactive dup --from packman --allow-vendor-change
+	sudo zypper dup --auto-agree-with-licenses \
+		--from packman --allow-vendor-change
 
-	log "Installing Flatpak fallbacks for missing packages..."
-	flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager
-	flatpak install -y --noninteractive flathub io.github.ocrmypdf.OCRmyPDF
+	sudo zypper --non-interactive install --auto-agree-with-licenses --force-resolution wine
 
-	log "Installing tools that are not packaged natively..."
+	if [ ! `which ocrmypdf` ]; then
+		log "Installing Flatpak packages..."
+		sudo flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager
+		brew install ocrmypdf
+	fi
+
+	log "Installing Python tool..."
 	pipx install ansible-lint
 	pipx install ansible-core
-	cargo install rustfmt 2>/dev/null || rustup component add rustfmt 2>/dev/null
+	if command -v rustup &>/dev/null; then
+		rustup component add rustfmt
+	else
+		cargo install rustfmt
+	fi
 
 	log "Removing LibreOffice and installing OnlyOffice via Flatpak..."
-	sudo zypper --non-interactive remove 'libreoffice*'
-	flatpak install -y --noninteractive flathub org.onlyoffice.desktopeditors
+	if rpm -qa 'libreoffice*' | grep -q .; then
+		sudo zypper --non-interactive remove 'libreoffice*'
+	fi
+	sudo snap install onlyoffice-desktopeditors
 
 	if [ ! -d "/opt/obsidian" ] && [ -f obsidian-appimage-install.sh ]; then
 		bash obsidian-appimage-install.sh
 	fi
+
+	curl -f https://zed.dev/install.sh | sh
 }
 
 configure_docker() {
@@ -333,7 +259,7 @@ main() {
 	enable_lact
 	configure_desktop
 	log "Performing final system update..."
-	sudo zypper --non-interactive dup --allow-vendor-change
+	sudo zypper dup --auto-agree-with-licenses --allow-vendor-change
 	log "Done. A reboot is recommended."
 }
 
