@@ -29,8 +29,8 @@ add_repos() {
 
 	# GitHub CLI repo
 	if ! zypper lr | grep -qi "gh-cli"; then
-		sudo rpm --import https://cli.github.com/packages/rpm/gh-cli.asc || true
-		sudo zypper ar -cfp 90 https://cli.github.com/packages/rpm/gh-cli.repo gh-cli || true
+		sudo rpm --import https://cli.github.com/packages/rpm/gh-cli.asc
+		sudo zypper ar -cfp 90 https://cli.github.com/packages/rpm/gh-cli.repo gh-cli
 	fi
 
 	# VS Code repo
@@ -45,7 +45,7 @@ add_repos() {
 
 	# Google's gnome-pomodoro, snap, etc. are in OBS home repos
 	if ! zypper lr | grep -qi "snappy"; then
-		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy || true
+		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
 	fi
 
 	# AMD/ATI specific repositories if applicable
@@ -74,11 +74,11 @@ setup_flatpak() {
 setup_snap() {
 	log "Setting up Snap..."
 	if ! command -v snap &>/dev/null; then
-		sudo zypper --non-interactive install snapd || true
+		sudo zypper --non-interactive install snapd
 	fi
 	if command -v snap &>/dev/null; then
-		sudo systemctl enable --now snapd.service || true
-		sudo systemctl enable --now snapd.apparmor.service || true
+		sudo systemctl enable --now snapd.service
+		sudo systemctl enable --now snapd.apparmor.service
 		if [ ! -L "/snap" ] && [ ! -d "/snap" ]; then
 			sudo ln -s /var/lib/snapd/snap /snap
 			echo 'Reboot your computer to enable snapd to function fully'
@@ -105,13 +105,13 @@ install_gpu_drivers() {
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iq 'NVIDIA'; then
 		log "Installing NVIDIA drivers..."
 		# Tumbleweed uses x11-video-nvidiaG06 for current cards
-		sudo zypper --non-interactive install-new-recommends || true
+		sudo zypper --non-interactive install-new-recommends
 		sudo zypper --non-interactive install \
 			x11-video-nvidiaG06 \
 			nvidia-glG06 \
 			nvidia-computeG06 \
 			nvidia-video-G06 || \
-		sudo zypper --non-interactive install x11-video-nvidiaG05 || true
+		sudo zypper --non-interactive install x11-video-nvidiaG05
 	fi
 
 	# AMD
@@ -122,21 +122,18 @@ install_gpu_drivers() {
 			libvulkan1 libvulkan_radeon vulkan-tools \
 			libva2 libva-utils \
 			Mesa-32bit Mesa-dri-32bit Mesa-libGL1-32bit Mesa-libEGL1-32bit \
-			libvulkan1-32bit libvulkan_radeon-32bit || true
+			libvulkan1-32bit libvulkan_radeon-32bit
 		# ROCm (optional; available in Tumbleweed via science repo)
-		sudo zypper --non-interactive install rocm-opencl rocminfo hip-runtime-amd || true
+		sudo zypper --non-interactive install rocm-opencl rocminfo hip-runtime-amd
 	fi
 }
 
 install_applications() {
 	log "Installing necessary applications..."
 
-	# System & Development Packages
-	# Mapped from Fedora → openSUSE Tumbleweed.
-	# Dropped: packages unavailable on Tumbleweed (kernel-cachyos, @virtualization group, etc.)
 	system_dev=(
 		# Build/dev libs
-		dbus-1-devel                 # was: dbus-devel
+		dbus-1-devel
 		libconfig-devel
 		libdrm-devel
 		libev-devel
@@ -144,17 +141,17 @@ install_applications() {
 		libxcb-devel
 		libepoxy-devel
 		pcre2-devel
-		libpixman-1-0-devel          # was: pixman-devel
+		libpixman-1-0-devel
 		uthash-devel
 		xcb-util-image-devel
 		xcb-util-renderutil-devel
 		xcb-util-devel
-		xorgproto-devel              # was: xorg-x11-proto-devel
-		Mesa-libGL-devel             # was: libGL-devel
-		Mesa-libEGL-devel            # was: libEGL-devel
-		util-linux                   # provides `script` utility
+		xorgproto-devel
+		Mesa-libGL-devel
+		Mesa-libEGL-devel
+		util-linux
 		cmake
-		ninja                        # was: ninja-build
+		ninja
 		python3-devel
 		python3-pip
 		python3-virtualenv
@@ -171,14 +168,12 @@ install_applications() {
 		gcc
 		gcc-c++
 		clang
-		clang-tools                  # was: clang-tools-extra
+		clang-tools
 		gtk3-devel
 		ncurses-devel
 		maven
-		python3-pipx                 # was: pipx
+		python3-pipx
 		dotnet-sdk-8.0
-		# dotnet-sdk-9.0 not (yet) in Tumbleweed main — skipped
-		ghc                          # was: ghc-compiler
 		go
 		bash-completion
 		docker
@@ -187,6 +182,10 @@ install_applications() {
 		containerd
 		java-21-openjdk
 		java-21-openjdk-devel
+		java-11-openjdk
+		java-11-openjdk-devel
+		java-17-openjdk
+		java-17-openjdk-devel
 		gh
 		rust
 		rust-std
@@ -197,16 +196,14 @@ install_applications() {
 		android-tools
 		openfortivpn
 		libpcap-devel
-		libusb-1_0-devel             # was: libusb1-devel
+		libusb-1_0-devel
 		pkgconf-pkg-config
 		wmctrl
 		gamescope
 		pandoc
-		tesseract-ocr-traineddata-lithuanian  # was: tesseract-langpack-lit
-		texlive-pdfjam               # was: pdfjam
-		fd                           # was: fd-find
+		fd
 
-		# Virtualization (group equivalent on Tumbleweed)
+		# Virtualization
 		libvirt
 		libvirt-daemon
 		libvirt-daemon-qemu
@@ -219,12 +216,12 @@ install_applications() {
 	# Desktop & Applications Packages
 	desktop_apps=(
 		borgbackup
-		ffmpeg-7                     # was: ffmpeg-free (Packman provides full build)
-		ffmpeg-7-devel               # was: ffmpeg-free-devel
-		gstreamer-plugin-openh264    # was: gstreamer1-plugin-openh264
+		ffmpeg-7
+		ffmpeg-7-devel
+		gstreamer-plugin-openh264
 		wine
 		sassc
-		sensors                      # was: lm_sensors
+		sensors
 		wl-clipboard
 		ntfs-3g
 		playerctl
@@ -236,7 +233,7 @@ install_applications() {
 		valgrind
 		neovim
 		gnome-tweaks
-		gnome-shell-pomodoro         # was: gnome-pomodoro
+		gnome-shell-pomodoro
 		xset
 		vlc
 		code
@@ -270,37 +267,30 @@ install_applications() {
 
 	log "Installing packages (system + dev)..."
 	sudo zypper --non-interactive install --force-resolution --no-confirm \
-		"${system_dev[@]}" || true
+		"${system_dev[@]}"
 
 	log "Installing packages (desktop apps)..."
 	sudo zypper --non-interactive install --force-resolution --no-confirm \
-		"${desktop_apps[@]}" || true
+		"${desktop_apps[@]}"
 
-	# Additional JDKs
-	sudo zypper --non-interactive install java-11-openjdk java-17-openjdk || true
-
-	# Development patterns (Tumbleweed equivalent of "group install")
 	log "Installing development patterns..."
-	sudo zypper --non-interactive install -t pattern devel_basis devel_C_C++ devel_python3 || true
+	sudo zypper --non-interactive install -t pattern devel_basis devel_C_C++ devel_python3
 
 	# Fix HEVC / VAAPI via Packman (vendor change to Packman versions)
 	log "Switching multimedia packages to Packman versions..."
-	sudo zypper --non-interactive dup --from packman --allow-vendor-change || true
+	sudo zypper --non-interactive dup --from packman --allow-vendor-change
 
-	# Flatpak apps: try to install extensions/apps that aren't in Tumbleweed repos
 	log "Installing Flatpak fallbacks for missing packages..."
-	flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager || true
-	flatpak install -y --noninteractive flathub io.github.ocrmypdf.OCRmyPDF || true   # was: ocrmypdf
-	# gnome-shell-extension-blur-my-shell and -forge must be installed via Extension Manager / extensions.gnome.org
+	flatpak install -y --noninteractive flathub com.mattjakeman.ExtensionManager
+	flatpak install -y --noninteractive flathub io.github.ocrmypdf.OCRmyPDF
 
-	# Missing in distro repos — suggest via pipx/cargo
 	log "Installing tools that are not packaged natively..."
-	pipx install ansible-lint || true        # was: python3-ansible-lint
-	pipx install ansible-core || true
-	cargo install rustfmt 2>/dev/null || rustup component add rustfmt 2>/dev/null || true
+	pipx install ansible-lint
+	pipx install ansible-core
+	cargo install rustfmt 2>/dev/null || rustup component add rustfmt 2>/dev/null
 
 	log "Removing LibreOffice and installing OnlyOffice via Flatpak..."
-	sudo zypper --non-interactive remove 'libreoffice*' || true
+	sudo zypper --non-interactive remove 'libreoffice*'
 	flatpak install -y --noninteractive flathub org.onlyoffice.desktopeditors
 
 	if [ ! -d "/opt/obsidian" ] && [ -f obsidian-appimage-install.sh ]; then
@@ -317,13 +307,13 @@ configure_docker() {
 enable_virtualization() {
 	log "Enabling virtualization services..."
 	sudo systemctl enable --now libvirtd
-	sudo gpasswd -a "$USER" libvirt || true
-	sudo gpasswd -a "$USER" kvm || true
+	sudo gpasswd -a "$USER" libvirt
+	sudo gpasswd -a "$USER" kvm
 }
 
 enable_lact() {
 	log "Enabling LACT service (AMD GPU tuning)..."
-	sudo systemctl enable --now lactd || true
+	sudo systemctl enable --now lactd
 }
 
 configure_desktop() {
