@@ -14,7 +14,7 @@ update_system() {
 
 add_repos() {
 	log "Adding Packman repository (for multimedia/ffmpeg)..."
-	if ! zypper lr | grep -qi packman; then
+	if ! zypper lr -d | grep -qi packman; then
 		sudo zypper ar -cfp 90 https://ftp.fau.de/packman/suse/openSUSE_Tumbleweed/ packman
 		sudo zypper --gpg-auto-import-keys refresh
 		sudo zypper --non-interactive dup --from packman --allow-vendor-change
@@ -23,18 +23,12 @@ add_repos() {
 	log "Adding additional repositories..."
 
 	# Wine repo
-	if ! zypper lr | grep -qi "Emulators:Wine"; then
+	if ! zypper lr -d | grep -qi "Emulators:Wine"; then
 		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
 	fi
 
-	# GitHub CLI repo
-	if ! zypper lr | grep -qi "gh-cli"; then
-		sudo rpm --import https://cli.github.com/packages/rpm/gh-cli.asc
-		sudo zypper ar -cfp 90 https://cli.github.com/packages/rpm/gh-cli.repo gh-cli
-	fi
-
 	# VS Code repo
-	if ! zypper lr | grep -qi "vscode"; then
+	if ! zypper lr -d | grep -qi "vscode"; then
 		log "Adding Visual Studio Code repository..."
 		sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 		sudo zypper ar -cfp 90 https://packages.microsoft.com/yumrepos/vscode vscode
@@ -44,7 +38,7 @@ add_repos() {
 	# We'll rely on native zypper docker package instead of docker-ce
 
 	# Google's gnome-pomodoro, snap, etc. are in OBS home repos
-	if ! zypper lr | grep -qi "snappy"; then
+	if ! zypper lr -d | grep -qi "snappy"; then
 		sudo zypper ar -cfp 90 https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
 	fi
 
@@ -56,7 +50,7 @@ add_repos() {
 	# NVIDIA repo if NVIDIA is detected
 	if lspci | grep -iE 'VGA|3D|Display' | grep -iq 'NVIDIA'; then
 		log "Detected NVIDIA graphics. Adding NVIDIA repository..."
-		if ! zypper lr | grep -qi "nvidia"; then
+		if ! zypper lr -d | grep -qi "nvidia"; then
 			sudo zypper ar -cfp 90 https://download.nvidia.com/opensuse/tumbleweed/ NVIDIA
 		fi
 	fi
