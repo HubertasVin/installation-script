@@ -13,7 +13,7 @@ if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumsk
 
 	# AppIndicator
 	curl -L -o appindicatorsupport@rgcjonas.gmail.com.zip \
-		https://github.com/Leleat/Tiling-Assistant/releases/latest/download/appindicatorsupport@rgcjonas.gmail.com.zip
+		https://github.com/ubuntu/gnome-shell-extension-appindicator/releases/latest/download/appindicatorsupport@rgcjonas.gmail.com.zip
 	gnome-extensions install appindicatorsupport@rgcjonas.gmail.com.zip
 	rm appindicatorsupport@rgcjonas.gmail.com.zip
 
