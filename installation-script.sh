@@ -110,6 +110,9 @@ case "$ID" in
 	fedora)
 		bash fedora-install.sh
 		;;
+	opensuse-tumbleweed)
+		bash opensuse-install.sh
+		;;
 	arch|manjaro|endeavouros)
 		bash arch-install.sh
 		;;
