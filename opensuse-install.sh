@@ -157,10 +157,11 @@ install_applications() {
 		pkgconf-pkg-config wmctrl gamescope pandoc fd
 		libvirt libvirt-daemon libvirt-daemon-qemu
 		virt-manager qemu-kvm qemu-tools bridge-utils
+		ripgrep
 	)
 
 	desktop_apps=(
-		borgbackup ffmpeg tmux
+		borgbackup ffmpeg tmux NetworkManager-connection-editor
 		sassc sensors wl-clipboard ntfs-3g playerctl
 		xbindkeys xkb-switch dunst polybar udiskie valgrind neovim
 		gnome-tweaks gnome-pomodoro xset vlc code steam
