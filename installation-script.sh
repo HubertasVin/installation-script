@@ -27,7 +27,7 @@ validate_input() {
 }
 
 initialize_variables() {
-	if [ -z $SCRIPT_DIR ]; then
+	if [ -z "$SCRIPT_DIR" ]; then
 		export SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 	fi
 	export CONFIGS_DIR="$HOME/dotfiles"
@@ -40,25 +40,14 @@ initialize_variables() {
 	mkdir -p "$(dirname "$CONFIG_FILE")"
 	[ -f "$CONFIG_FILE" ] && source "$CONFIG_FILE"
 
-	while [ -z "$githubEmail" ]; do
-		echo -n "Enter your GitHub email: "
-		read githubEmail
-		if ! validate_input "$githubEmail"; then
-			echo "Error: GitHub email cannot be empty." >&2
-			githubEmail=
+	while [ -z "$gitEmail" ]; do
+		echo -n "Enter your Git email: "
+		read gitEmail
+		if ! validate_input "$gitEmail"; then
+			echo "Error: Git email cannot be empty." >&2
+			gitEmail=
 		else
-			echo "export githubEmail=\"$githubEmail\"" >> "$CONFIG_FILE"
-		fi
-	done
-
-	while [ -z "$gitlabEmail" ]; do
-		echo -n "Enter your GitLab email: "
-		read gitlabEmail
-		if ! validate_input "$gitlabEmail"; then
-			echo "Error: git email cannot be empty." >&2
-			gitlabEmail=
-		else
-			echo "export gitlabEmail=\"$gitlabEmail\"" >> "$CONFIG_FILE"
+			echo "export gitEmail=\"$gitEmail\"" >> "$CONFIG_FILE"
 		fi
 	done
 
@@ -143,7 +132,7 @@ test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/bre
 if [ ! -f $HOME/.ssh/id_rsa_github.pub ]; then
 	echo 'Setting up ssh for GitHub'
 	echo -n 'Enter GitHub email: '
-	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $githubEmail
+	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_github -N "" -C $gitEmail
 	if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
 	    wl-copy < $HOME/.ssh/id_rsa_github.pub
 	else
@@ -158,7 +147,7 @@ fi
 if [ ! -f $HOME/.ssh/id_rsa_gitlab.pub ]; then
 	echo 'Setting up ssh for GitLab'
 	echo -n 'Enter GitLab email: '
-	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_gitlab -N "" -C $gitlabEmail
+	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa_gitlab -N "" -C $gitEmail
 	if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
 	    wl-copy < $HOME/.ssh/id_rsa_gitlab.pub
 	else
@@ -204,13 +193,8 @@ Host *
     ServerAliveInterval 60
     ServerAliveCountMax 3
 EOF
-fi
 
-#------------- Setup git -------------
-if [ ! -f $HOME/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" $HOME/.ssh/config; then
 	echo 'Setting up git'
-	echo -n 'Enter git username: '
-	echo -n 'Enter git email: '
 	git config --global user.name "$gitName"
 	git config --global user.email "$gitEmail"
 	git config --global diff.algorithm patience
