@@ -157,7 +157,7 @@ install_applications() {
 		pkgconf-pkg-config wmctrl gamescope pandoc fd
 		libvirt libvirt-daemon libvirt-daemon-qemu
 		virt-manager qemu-kvm qemu-tools bridge-utils
-		ripgrep
+		ripgrep power-profiles-daemon
 	)
 
 	desktop_apps=(
