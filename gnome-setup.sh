@@ -33,6 +33,12 @@ if [ ! -d $HOME/.local/share/gnome-shell/extensions/notification-timeout@chlumsk
 	cd gnome-keyboard-reset
 	make install
 	cd .. && rm -rf gnome-keyboard-reset
+
+	# Auto
+	git clone https://github.com/dmy3k/auto-power-profile
+	cd auto-power-profile
+	make install && make enable
+	cd .. && rm -rf auto-power-profile
 fi
 
 #-------- Install GDM themes ---------
