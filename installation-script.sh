@@ -215,6 +215,7 @@ if [ ! -f $HOME/.ssh/config ] || ! grep -q "    StrictHostKeyChecking no" $HOME/
 	git config --global user.email "$gitEmail"
 	git config --global diff.algorithm patience
 	git config --global init.defaultBranch main
+	git config --global pull.rebase false
 fi
 
 #-------- Download dotfiles ----------
