@@ -76,8 +76,8 @@ setup_snap() {
 			read -p 'Confirm to reboot your computer (y/N)' answer
 
 			case "$answer" in
-    			[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
-    			*) ;;
+				[yY]|[yY][eE][sS]) /usr/sbin/reboot ;;
+				*) ;;
 			esac
 		fi
 	fi
@@ -90,6 +90,70 @@ setup_homebrew() {
 		test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 		echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> $HOME/.bashrc
 		eval "\$($(brew --prefix)/bin/brew shellenv)"
+	fi
+}
+
+secure_boot_kernel_setup() {
+	if mokutil --sb-state 2>/dev/null | grep -q enabled; then
+		log "Secure Boot enabled – setting up automatic kernel signing"
+
+		# Install signing tool
+		sudo dnf install -y pesign
+
+		MOK_CN="CachyOS Secure Boot"
+		KEY_DIR="${HOME}/.local/share/mok"
+		SIGN_SCRIPT="/etc/kernel/postinst.d/00-signing"
+
+		# Generate key if it does not exist
+		mkdir -p "$KEY_DIR"
+		if [ ! -f "$KEY_DIR/MOK.priv" ] || [ ! -f "$KEY_DIR/MOK.der" ]; then
+			log "Generating MOK keypair..."
+			openssl req -new -x509 -newkey rsa:2048 \
+				-keyout "$KEY_DIR/MOK.priv" -outform DER -out "$KEY_DIR/MOK.der" \
+				-days 36500 -subj "/CN=${MOK_CN}/" -nodes
+			sudo certutil -d /etc/pki/pesign -N --empty-password
+			sudo certutil -d /etc/pki/pesign -A \
+				-n "$MOK_CN" -t Pu,Pu,Pu -i "$KEY_DIR/MOK.der"
+		fi
+
+		# Create the signing hook
+		if [ ! -f "$SIGN_SCRIPT" ]; then
+			log "Creating kernel signing hook..."
+			sudo tee "$SIGN_SCRIPT" > /dev/null <<'EOF'
+#!/bin/sh
+set -e
+KERNEL_IMAGE="$2"
+MOK_KEY_NICKNAME="CachyOS Secure Boot"
+if [ "$#" -ne 2 ] ; then
+	echo "Wrong count of command line arguments. This is not meant to be called directly." >&2
+	exit 1
+fi
+if [ ! -x "$(command -v pesign)" ] ; then
+	echo "pesign not executable. Bailing." >&2
+	exit 1
+fi
+if [ ! -w "$KERNEL_IMAGE" ] ; then
+	echo "Kernel image $KERNEL_IMAGE is not writable." >&2
+	exit 1
+fi
+echo "Signing $KERNEL_IMAGE..."
+pesign --certificate "$MOK_KEY_NICKNAME" --in "$KERNEL_IMAGE" --sign --out "$KERNEL_IMAGE.signed"
+mv "$KERNEL_IMAGE.signed" "$KERNEL_IMAGE"
+EOF
+			sudo chmod +x "$SIGN_SCRIPT"
+		fi
+
+		# Enroll the key if not already present
+		if ! sudo mokutil --list-enrolled 2>/dev/null | grep -q "CN=${MOK_CN}"; then
+			log "MOK not enrolled – importing and requesting enrollment"
+			sudo mokutil --import "$KEY_DIR/MOK.der"
+			log ">>> Reboot and use the MOK Manager to enroll the key <<<"
+			log "After reboot, the signing hook will automatically sign every new kernel."
+		else
+			log "MOK already enrolled – signing hook is active."
+		fi
+	else
+		log "Secure Boot not enabled – skipping MOK setup"
 	fi
 }
 
@@ -111,6 +175,11 @@ install_applications() {
 			mesa-dri-drivers.i686 mesa-vulkan-drivers.i686 \
 			rocm rocm-opencl rocm-hip
 	fi
+
+	# ----------------------------------------------------------------------
+	# Secure Boot: auto-sign custom kernels (CachyOS, etc.) with a MOK
+	# ----------------------------------------------------------------------
+	secure_boot_kernel_setup
 
 	# System & Development Packages
 	system_dev=(
