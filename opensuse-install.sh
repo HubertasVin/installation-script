@@ -185,6 +185,9 @@ install_applications() {
 	sudo zypper --non-interactive install --auto-agree-with-licenses \
 		-t pattern devel_basis devel_C_C++ devel_python3
 
+	log "Removing unnecessary packages..."
+	sudo zypper --non-interactive remove totem
+
 	log "Switching multimedia packages to Packman versions..."
 	sudo zypper dup --auto-agree-with-licenses \
 		--from packman --allow-vendor-change
