@@ -296,7 +296,6 @@ install_applications() {
 		ranger
 		trash-cli
 		putty
-		arandr
 		autorandr
 		pamixer
 		tldr

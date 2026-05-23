@@ -166,7 +166,7 @@ install_applications() {
 		xbindkeys xkb-switch dunst polybar udiskie valgrind neovim
 		gnome-tweaks gnome-pomodoro xset vlc code steam
 		btop htop qbittorrent discord ranger trash-cli putty
-		arandr autorandr pamixer tealdeer peek alacritty ncdu
+		pamixer tealdeer peek alacritty ncdu
 		gnome-shell-extension-user-theme glib2-devel ImageMagick
 		fontawesome-fonts pavucontrol fzf zoxide lact flameshot foliate
 	)
