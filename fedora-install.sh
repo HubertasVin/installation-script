@@ -259,6 +259,8 @@ install_applications() {
 		ocrmypdf
 		pdfjam
 		fd-find
+		libsecret-devel
+		pkg-config
 	)
 
 	# Desktop & Applications Packages
