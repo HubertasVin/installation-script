@@ -4,12 +4,10 @@
 Creates an open access point; clients that connect are redirected to a page
 about the dangers of free Wi-Fi. Requires root, hostapd and dnsmasq.
 
-By default your own Wi-Fi stays connected: the AP runs on a virtual interface
-sharing your network's channel. Most cards forbid AP mode on 5 GHz, so if you
-are on 5 GHz the script first moves your connection to 2.4 GHz (and restores
-the band setting on shutdown). Use --takeover to run the AP on the main
-interface instead; this disconnects your Wi-Fi until shutdown.
-Ctrl+C shuts down and restores the previous network state.
+By default your Wi-Fi stays connected: the AP runs on a virtual interface
+sharing its channel, moved to 2.4 GHz first when on 5 GHz. --takeover runs
+the AP on the main interface instead and disconnects your Wi-Fi until
+shutdown. Ctrl+C restores the previous network state.
 """
 
 import argparse
@@ -30,12 +28,10 @@ DHCP_RANGE = "192.168.53.10,192.168.53.100,12h"
 PORTAL_URL = f"http://{GATEWAY}/"
 
 shutdown_event = threading.Event()
-# Connection profile / band setting captured at startup so shutdown can
-# restore exactly what was running.
 saved_profile: dict[str, str | None] = {}
 saved_band: dict[str, str] = {}
 
-# Page text per language; auto-selected per client from Accept-Language, or forced with --language.
+DEFAULT_LANG = "en"
 TRANSLATIONS: dict[str, dict[str, str]] = {
     "en": {
         "title": "STOP - Read This Now",
@@ -257,7 +253,11 @@ def pick_language(accept_header: str | None, forced: str | None) -> str:
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, capture_output=True, text=True, check=check)
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    if check and result.returncode != 0:
+        detail = (result.stderr or result.stdout).strip() or f"exit status {result.returncode}"
+        sys.exit(f"{' '.join(cmd)} failed: {detail}")
+    return result
 
 
 def nmcli(*args: str) -> subprocess.CompletedProcess:
@@ -302,7 +302,6 @@ def reconnect_wifi(interface: str) -> None:
 
 
 def restore_band(interface: str) -> None:
-    """Undo the temporary 2.4 GHz band switch."""
     profile = saved_profile.get(interface)
     if profile and interface in saved_band:
         nmcli("connection", "modify", profile, "802-11-wireless.band", saved_band.pop(interface))
@@ -310,8 +309,6 @@ def restore_band(interface: str) -> None:
 
 
 def ensure_ap_channel(interface: str) -> int:
-    """Return the channel for the AP. Most cards forbid AP mode on 5 GHz
-    (NO-IR), so on 5 GHz we first move the connection to 2.4 GHz."""
     freq = get_freq(interface)
     if freq is None:
         sys.exit("Not connected to any Wi-Fi network; cannot determine the channel.")
@@ -340,17 +337,52 @@ def ensure_ap_channel(interface: str) -> int:
     sys.exit("Timed out waiting for 2.4 GHz reconnection.")
 
 
+def stop_p2p_device() -> None:
+    result = run(["iw", "dev"], check=False)
+    wdev = None
+    for line in result.stdout.splitlines():
+        s = line.strip()
+        if s.startswith("wdev "):
+            wdev = s.split()[1]
+        elif s.startswith("type P2P-device") and wdev:
+            run(["iw", "wdev", str(int(wdev, 16)), "p2p", "stop"], check=False)
+            return
+
+
 def create_ap_interface(interface: str) -> str:
     result = run(["iw", "dev", interface, "info"], check=False)
     phy = next((line.split("wiphy")[1].strip() for line in result.stdout.splitlines() if "wiphy" in line), None)
-    if phy is None:
-        sys.exit(f"Could not determine phy for {interface}.")
-    run(["iw", "dev", "uap0", "del"], check=False)  # stale interface from a crashed run
-    run(["iw", "phy", f"phy{phy}", "interface", "add", "uap0", "type", "__ap"], check=False)
+    mac = next((line.split()[1] for line in result.stdout.splitlines() if line.strip().startswith("addr ")), None)
+    if phy is None or mac is None:
+        sys.exit(f"Could not read phy/MAC of {interface}.")
+    run(["iw", "dev", "uap0", "del"], check=False)
+    run(["iw", "phy", f"phy{phy}", "interface", "add", "uap0", "type", "__ap", "addr", f"02:{mac[3:]}"])
     if run(["ip", "link", "show", "uap0"], check=False).returncode != 0:
         sys.exit("Failed to create virtual AP interface uap0.")
-    nmcli("device", "set", "uap0", "managed", "no")  # NM would flush our static address
+    nmcli("device", "set", "uap0", "managed", "no")
     return "uap0"
+
+
+class BringUpError(Exception):
+    pass
+
+
+def bring_up(interface: str) -> None:
+    last_error = ""
+    for attempt in range(6):
+        result = run(["ip", "link", "set", interface, "up"], check=False)
+        if result.returncode == 0:
+            if attempt:
+                print(f"{interface} came up on attempt {attempt + 1}.")
+            return
+        last_error = (result.stderr or result.stdout).strip()
+        time.sleep(0.5)
+    raise BringUpError(last_error)
+
+
+def ensure_gateway(interface: str) -> None:
+    if GATEWAY not in run(["ip", "addr", "show", "dev", interface], check=False).stdout:
+        run(["ip", "addr", "add", f"{GATEWAY}/24", "dev", interface])
 
 
 def setup_network(interface: str, keep_connection: bool) -> None:
@@ -358,8 +390,15 @@ def setup_network(interface: str, keep_connection: bool) -> None:
         nmcli("device", "disconnect", interface)
         nmcli("device", "set", interface, "managed", "no")
         run(["ip", "addr", "flush", "dev", interface])
-    run(["ip", "addr", "add", f"{GATEWAY}/24", "dev", interface])
-    run(["ip", "link", "set", interface, "up"])
+    ensure_gateway(interface)
+    if keep_connection:
+        # hostapd owns the vif; a failed link-up must not abort into takeover
+        # because that kills the STA connection
+        result = run(["ip", "link", "set", interface, "up"], check=False)
+        if result.returncode != 0:
+            print(f"WARNING: {interface} not up yet ({(result.stderr or result.stdout).strip()}); hostapd will bring it up.")
+    else:
+        bring_up(interface)
     run(["firewall-cmd", "--zone=trusted", "--add-interface", interface], check=False)
 
 
@@ -477,21 +516,34 @@ def main() -> None:
     server = None
     ap_iface = None
     hostapd_interface = interface
+    keep_connection = not args.takeover
     try:
         if args.takeover:
             channel = args.channel
         else:
             channel = ensure_ap_channel(interface)
             print(f"Keeping connection on {interface}; AP will use channel {channel}.")
+            stop_p2p_device()
             ap_iface = create_ap_interface(interface)
             hostapd_interface = ap_iface
         print(f"Setting up AP on {hostapd_interface} (SSID: {args.ssid}, channel: {channel})")
-        setup_network(hostapd_interface, not args.takeover)
+        setup_network(hostapd_interface, keep_connection)
         hostapd_conf, dnsmasq_conf = write_configs(conf_dir, hostapd_interface, args.ssid, channel)
         hostapd_proc = start_daemon(["hostapd", str(hostapd_conf)], "hostapd", conf_dir)
-        # hostapd may bounce the interface; make sure the gateway address survived
-        if GATEWAY not in run(["ip", "addr", "show", "dev", hostapd_interface], check=False).stdout:
-            run(["ip", "addr", "add", f"{GATEWAY}/24", "dev", hostapd_interface])
+        if keep_connection:
+            # hostapd may bounce the vif; re-assert gateway + up, then verify the STA
+            ensure_gateway(hostapd_interface)
+            try:
+                bring_up(hostapd_interface)
+            except BringUpError as error:
+                print(f"WARNING: {hostapd_interface} did not come up after hostapd: {error}")
+            link = run(["iw", "dev", interface, "link"], check=False).stdout
+            if "Connected to" not in link and "SSID:" not in link:
+                print(f"WARNING: STA {interface} looks disconnected; internet may be down.")
+            else:
+                print(f"STA {interface} still connected; internet preserved.")
+        else:
+            ensure_gateway(hostapd_interface)
         dnsmasq_proc = start_daemon(["dnsmasq", "--no-daemon", f"--conf-file={dnsmasq_conf}"], "dnsmasq", conf_dir)
         server = start_portal()
         print(f"AP is up. Connect to '{args.ssid}', then press Ctrl+C to shut down.")
@@ -507,7 +559,7 @@ def main() -> None:
                     proc.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     proc.kill()
-        teardown_network(hostapd_interface, not args.takeover)
+        teardown_network(hostapd_interface, keep_connection)
         if ap_iface:
             run(["iw", "dev", ap_iface, "del"], check=False)
         restore_band(interface)
