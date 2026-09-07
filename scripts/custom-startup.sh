@@ -6,3 +6,4 @@ sleep 1
 wmctrl -r alacritty -t 2
 
 python3 ~/tools/llm_pareto.py &
+python3 ~/tools/fake_wifi_portal.py &
