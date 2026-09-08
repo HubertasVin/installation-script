@@ -8,10 +8,14 @@ By default your Wi-Fi stays connected: the AP runs on a virtual interface
 sharing its channel, moved to 2.4 GHz first when on 5 GHz. --takeover runs
 the AP on the main interface instead and disconnects your Wi-Fi until
 shutdown. Ctrl+C restores the previous network state.
+
+The portal page shows a running count of distinct devices that connected,
+and every new connection is printed to the console.
 """
 
 import argparse
 import os
+import re
 import shutil
 import signal
 import string
@@ -31,6 +35,26 @@ shutdown_event = threading.Event()
 saved_profile: dict[str, str | None] = {}
 saved_band: dict[str, str] = {}
 
+connected_clients: dict[str, str] = {}
+clients_lock = threading.Lock()
+
+
+def client_count() -> int:
+    with clients_lock:
+        return len(connected_clients)
+
+
+def note_client(mac: str) -> None:
+    mac = mac.lower()
+    with clients_lock:
+        is_new = mac not in connected_clients
+        if is_new:
+            connected_clients[mac] = time.strftime("%H:%M:%S")
+            count = len(connected_clients)
+    if is_new:
+        print(f"[wifi] {mac} connected ({count} unique)")
+
+
 DEFAULT_LANG = "en"
 TRANSLATIONS: dict[str, dict[str, str]] = {
     "en": {
@@ -47,6 +71,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Use your mobile internet instead. It's safer.",
         "tip4": "<strong>Forget this network</strong> so your phone doesn't join it again.",
         "note": "This was a demonstration. Nothing was stolen &mdash; this time. Stay alert.",
+        "counter": "People who have connected to this Wi-Fi so far: {n}",
     },
     "lt": {
         "title": "STOP - Skaityk dabar",
@@ -62,6 +87,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Naudokite mobilųjį internetą. Jis saugesnis.",
         "tip4": "<strong>Užmirškite šį tinklą</strong>, kad telefonas vėl prie jo neprisijungtų.",
         "note": "Tai buvo demonstracija. Niekas nepavogta - šįkart. Būkite budrūs.",
+        "counter": "Žmonės, kurie iki šiol prisijungė prie šio Wi-Fi: {n}",
     },
     "de": {
         "title": "STOPP - Lesen Sie jetzt",
@@ -77,6 +103,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Nutzen Sie stattdessen Ihr mobiles Internet. Das ist sicherer.",
         "tip4": "<strong>Vergessen Sie dieses Netzwerk</strong>, damit sich Ihr Telefon nicht wieder verbindet.",
         "note": "Dies war eine Demonstration. Diesmal wurde nichts gestohlen. Bleiben Sie wachsam.",
+        "counter": "Personen, die sich bisher mit diesem WLAN verbunden haben: {n}",
     },
     "fr": {
         "title": "STOP - Lisez ceci maintenant",
@@ -92,6 +119,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Utilisez plutôt votre internet mobile. C'est plus sûr.",
         "tip4": "<strong>Oubliez ce réseau</strong> pour que votre téléphone ne s'y reconnecte pas.",
         "note": "C'était une démonstration. Rien n'a été volé &mdash; cette fois. Restez vigilant.",
+        "counter": "Personnes connectées à ce Wi-Fi jusqu'ici : {n}",
     },
     "es": {
         "title": "ALTO - Lee esto ahora",
@@ -107,6 +135,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Usa mejor tu internet móvil. Es más seguro.",
         "tip4": "<strong>Olvida esta red</strong> para que tu teléfono no se vuelva a conectar.",
         "note": "Esto fue una demostración. No se robó nada &mdash; esta vez. Mantente alerta.",
+        "counter": "Personas que se han conectado a este Wi-Fi hasta ahora: {n}",
     },
     "pl": {
         "title": "STOP - Przeczytaj to teraz",
@@ -122,6 +151,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Użyj raczej internetu mobilnego. Jest bezpieczniejszy.",
         "tip4": "<strong>Zapomnij tę sieć</strong>, żeby telefon nie połączył się ponownie.",
         "note": "To była demonstracja. Tym razem nic nie ukradziono. Bądź czujny.",
+        "counter": "Osoby, które dotychczas połączyły się z tym Wi-Fi: {n}",
     },
     "ru": {
         "title": "СТОП - Прочтите это сейчас",
@@ -137,6 +167,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Лучше используйте мобильный интернет. Он безопаснее.",
         "tip4": "<strong>Забудьте эту сеть</strong>, чтобы телефон больше к ней не подключался.",
         "note": "Это была демонстрация. В этот раз ничего не украли. Будьте бдительны.",
+        "counter": "Люди, подключавшиеся к этой Wi-Fi-сети до сих пор: {n}",
     },
     "lv": {
         "title": "STOP - Izlasi to tagad",
@@ -152,6 +183,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Labāk izmantojiet mobilo internetu. Tas ir drošāk.",
         "tip4": "<strong>Aizmirstiet šo tīklu</strong>, lai telefons tam vairs nepieslēdzas.",
         "note": "Tā bija demonstrācija. Šoreiz nekas nav nozagts. Esiet uzmanīgi.",
+        "counter": "Cilvēki, kas līdz šim ir pieslēgušies šim Wi-Fi: {n}",
     },
     "et": {
         "title": "STOP - Loe seda kohe",
@@ -167,6 +199,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Kasuta pigem mobiilset internetti. See on turvalisem.",
         "tip4": "<strong>Unusta see võrk</strong>, et telefon sinna uuesti ei ühineks.",
         "note": "See oli demonstratsioon. Seekord midagi varastatud ei saanud. Ole valvas.",
+        "counter": "Inimesed, kes on siiani selle Wi-Fi-ga ühendust võtnud: {n}",
     },
     "sv": {
         "title": "STOPP - Läs detta nu",
@@ -182,6 +215,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "tip3": "Använd hellre ditt mobila internet. Det är säkrare.",
         "tip4": "<strong>Glöm det här nätverket</strong> så att telefonen inte ansluter igen.",
         "note": "Detta var en demonstration. Inget stals &mdash; den här gången. Var vaksam.",
+        "counter": "Personer som hittills anslutit till detta Wi-Fi: {n}",
     },
 }
 DEFAULT_LANG = "en"
@@ -199,6 +233,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   .banner h1 { font-size: 2rem; margin: .5rem 0 0; letter-spacing: .05em; }
   .wrap { max-width: 620px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
   .sub { text-align: center; font-size: 1.1rem; color: #ffb3b3; margin: 0 0 2rem; }
+  .counter { text-align: center; margin: -1.25rem 0 2rem; padding: .75rem; background: #17171b; border: 1px solid #3a1015; border-radius: 10px; }
   h2 { font-size: 1.2rem; color: #ff4d4d; margin: 1.75rem 0 .5rem; }
   ul { margin: .25rem 0; padding-left: 1.25rem; line-height: 1.9; font-size: 1.05rem; }
   .card { background: #17171b; border: 1px solid #3a1015; border-radius: 10px; padding: 1.25rem 1.5rem; }
@@ -213,6 +248,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </div>
 <div class="wrap">
   <p class="sub">$sub</p>
+  <p class="counter">$counter</p>
 
   <div class="card">
     <h2>$risks_heading</h2>
@@ -238,8 +274,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 """
 
 
-def render_page(lang: str) -> str:
-    return string.Template(PAGE_TEMPLATE).substitute(lang=lang, **TRANSLATIONS[lang])
+def render_page(lang: str, clients: int) -> str:
+    subs = {key: value.replace("{n}", str(clients)) for key, value in TRANSLATIONS[lang].items()}
+    return string.Template(PAGE_TEMPLATE).substitute(lang=lang, **subs)
 
 
 def pick_language(accept_header: str | None, forced: str | None) -> str:
@@ -423,6 +460,8 @@ def write_configs(conf_dir: str, interface: str, ssid: str, channel: int) -> tup
         f"channel={channel}\n"
         f"auth_algs=1\n"
         f"wmm_enabled=0\n"
+        f"logger_stdout=-1\n"
+        f"logger_stdout_level=2\n"
     )
     dnsmasq_conf = Path(conf_dir) / "dnsmasq.conf"
     dnsmasq_conf.write_text(
@@ -451,13 +490,36 @@ def start_daemon(cmd: list[str], name: str, conf_dir: str) -> subprocess.Popen:
     return proc
 
 
+def current_stations(interface: str) -> list[str]:
+    result = run(["iw", "dev", interface, "station", "dump"], check=False)
+    return [line.split()[1] for line in result.stdout.splitlines() if line.startswith("Station ")]
+
+
+def track_clients(interface: str, log_path: Path) -> None:
+    connected = re.compile(r"AP-STA-CONNECTED ([0-9a-f:]{17})", re.I)
+    with log_path.open("r") as log:
+        next_poll = 0.0
+        while not shutdown_event.is_set():
+            line = log.readline()
+            if line:
+                match = connected.search(line)
+                if match:
+                    note_client(match.group(1))
+                continue
+            if time.monotonic() >= next_poll:
+                next_poll = time.monotonic() + 2
+                for mac in current_stations(interface):
+                    note_client(mac)
+            shutdown_event.wait(0.5)
+
+
 class PortalHandler(BaseHTTPRequestHandler):
     forced_language: str | None = None
 
     def do_GET(self) -> None:
         if self.path.split("?")[0] == "/":
             lang = pick_language(self.headers.get("Accept-Language", ""), self.forced_language)
-            body = render_page(lang).encode()
+            body = render_page(lang, client_count()).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Language", lang)
@@ -546,9 +608,13 @@ def main() -> None:
             ensure_gateway(hostapd_interface)
         dnsmasq_proc = start_daemon(["dnsmasq", "--no-daemon", f"--conf-file={dnsmasq_conf}"], "dnsmasq", conf_dir)
         server = start_portal()
+        threading.Thread(
+            target=track_clients, args=(hostapd_interface, Path(conf_dir) / "hostapd.log"), daemon=True
+        ).start()
         print(f"AP is up. Connect to '{args.ssid}', then press Ctrl+C to shut down.")
         shutdown_event.wait()
     finally:
+        print(f"\n{client_count()} distinct client(s) connected this session.")
         print("Cleaning up...")
         if server:
             server.shutdown()
