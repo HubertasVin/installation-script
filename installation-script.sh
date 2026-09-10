@@ -245,6 +245,10 @@ if [ ! -d $HOME/.local.opt ] && [ ! -d $HOME/.local/opt/flutter ]; then
 	ln -sf $HOME/.local/opt/flutter/bin/flutter $HOME/.local/bin/flutter
 	ln -sf $HOME/.local/opt/flutter/bin/cache/dart-sdk/bin/dart $HOME/.local/bin/dart
 fi
+#--------- OpenRouter proxy ----------
+if ! systemctl --user is-enabled openrouter-proxy &>/dev/null; then
+	bash <(curl -s https://raw.githubusercontent.com/HubertasVin/openrouter-proxy/main/install.sh)
+fi
 
 
 #INFO: -------------------------------
