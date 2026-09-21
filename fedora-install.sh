@@ -40,9 +40,9 @@ add_repos() {
 		log "Detected AMD/ATI graphics. Adding AMD repositories..."
 		if [ ! -f /etc/yum.repos.d/rocm.repo ]; then
 			sudo tee /etc/yum.repos.d/rocm.repo > /dev/null <<EOF
-[ROCm-6.0]
-name=ROCm6.0
-baseurl=https://repo.radeon.com/rocm/rhel9/6.0/main
+[ROCm-7.0]
+name=ROCm7.0
+baseurl=https://repo.radeon.com/rocm/rhel9/7.0/main
 enabled=1
 priority=50
 gpgcheck=1
